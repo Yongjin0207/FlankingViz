@@ -1,0 +1,13 @@
+name: maize
+species: maize
+reference: maizegdb_b104
+
+genome_fasta: /home/yongjin/FlankingViz/Maize/Zm-B104-REFERENCE-CORTEVA-1.0.fa
+blast_db: /home/yongjin/FlankingViz/Maize/Zm-B104
+
+gff_files:
+  - /home/yongjin/FlankingViz/Maize/Zm-B104-REFERENCE-CORTEVA-1.0_Zm00057aa.1.gff3
+
+gene_feature: gene
+attr_priority: [Name, ID]
+seqid_normalization: none

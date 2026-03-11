@@ -1,0 +1,15 @@
+name: rice
+species: rice
+reference: irgsp_rap_msu
+
+genome_fasta: /home/yongjin/FlankingViz/Rice/IRGSP1.0.fa
+blast_db: /home/yongjin/FlankingViz/Rice/IRGSP1.0
+
+gff_files:
+  - /home/yongjin/FlankingViz/Rice/rapdb.gff3
+  - /home/yongjin/FlankingViz/Rice/rapdb_predicted.gff3
+  - /home/yongjin/FlankingViz/Rice/msu_chr_genes.gff3
+
+gene_feature: gene
+attr_priority: [Name, ID]
+seqid_normalization: rice

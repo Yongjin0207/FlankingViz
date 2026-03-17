@@ -1,0 +1,1006 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>FlankingViz</title>
+<style>
+  :root{--headerH:54px;
+    --bg:#f7f8fb; --panel:#ffffff; --text:#0b1220; --muted:#4b5563;
+    --axis:#1f2937; --ins:#c73535; --geneP:#1f6feb; --geneM:#0f766e;
+    --radius:14px; --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+    --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  }
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);overflow:auto;}
+  header{padding:12px 16px;border-bottom:1px solid rgba(15,23,42,.10);background:var(--panel);position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:8px;height:var(--headerH);box-sizing:border-box;display:flex;align-items:center;}
+  header b{letter-spacing:.2px}
+  .hint{color:var(--muted);font-size:12px}
+  .err{display:none; padding:10px 16px; border-bottom:1px solid rgba(15,23,42,.10);
+       background:rgba(210,69,69,.12); color:#ffb4b4; font-family:var(--mono); font-size:12px; white-space:pre-wrap;}
+  .wrap{display:grid;grid-template-columns: 340px 420px 1fr;grid-template-rows:auto auto;gap:10px;padding:10px;align-items:start;box-sizing:border-box;}
+  .scrollY{overflow:auto;max-height:740px;padding-right:6px;}
+  .card{
+    background:var(--panel);
+    border:1px solid rgba(15,23,42,.10);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:0 6px 22px rgba(15,23,42,.05);
+  }background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+        border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); overflow:hidden;}
+  .hd{padding:10px 12px;background:rgba(15,23,42,.02);border-bottom:1px solid rgba(15,23,42,.08);font-weight:800;}
+  .bd{padding:10px;display:flex;flex-direction:column;gap:10px;}
+  textarea,input,select{width:100%;background:#f3f4f6;border:1px solid rgba(15,23,42,.14);
+    color:var(--text);border-radius:10px;padding:9px 10px;outline:none;font-size:13px;}
+  textarea{min-height:150px;font-family:var(--mono);font-size:12px;white-space:pre;}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .btn{border:1px solid rgba(15,23,42,.14);background:#ffffff;color:var(--text);
+       padding:9px 10px;border-radius:12px;cursor:pointer;font-weight:800;font-size:13px;}
+  .btn:hover{background:#f3f4f6;}
+  .btn.primary{background:rgba(31,111,235,.10);border-color:rgba(31,111,235,.35);}
+  .list{max-height:460px;overflow:auto;border-radius:12px;border:1px solid rgba(15,23,42,.12);background:#f9fafb;}
+  .item{padding:14px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;}
+  .item:last-child{border-bottom:0;}
+  .item.active{background:rgba(47,111,179,.16);}
+  .k{font-weight:850;font-size:14px;}
+  .s{color:var(--muted);font-size:12.5px;margin-top:2px;font-family:var(--mono);}
+  .toolbar{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;
+           padding:10px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);}
+  .pill{border:1px solid rgba(255,255,255,.10);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:12px;}
+  svg{width:100%;height:520px;display:block;background:#ffffff;border:1px solid rgba(15,23,42,.12);border-radius:14px;}
+  .mini{font-size:12px;color:var(--muted)}
+  .kbd{font-family:var(--mono);font-size:11px;padding:2px 6px;border:1px solid rgba(255,255,255,.18);border-radius:7px;color:var(--muted)}
+
+  
+
+  body{font-size:13px;}
+  .hd{padding:8px 10px;font-size:14px;}
+  .bd{padding:10px;}
+  .row{gap:8px;margin-top:8px;}
+  textarea{min-height:120px; font-size:12px;}
+  input,select{padding:8px 10px; font-size:12px;}
+  .btn{padding:8px 10px; font-size:12px;}
+  .mini{font-size:12px; line-height:1.35;}
+  .list{max-height:460px;}
+  .toolbar{padding:8px 10px;}
+  .pill{font-size:12px;}
+  svg{height:420px;} /* 결과는 고정 높이 */
+
+
+  #optCard .bd{padding:8px 10px;}
+  #optCard .row{margin-top:6px;}
+  #optCard .row:first-child{margin-top:0;}
+  #optCard .mini{margin-top:6px;}
+
+
+
+/* ---- FlankingViz: publication-style tweaks (vQ1) ---- */
+:root{
+  /* High-quality neutral palette */
+  --ink:#0b1220;
+  --muted:#334155;
+  --muted2:#64748b;
+  --line:#cbd5e1;
+  --gene:#e2e8f0;
+  --gene2:#f1f5f9;
+  --accent:#e11d48; /* rose */
+  --accent2:#fb7185; /* light rose */
+  --bg:#ffffff;
+}
+body{background:var(--bg); color:var(--ink);} .card{background:#ffffff;}
+.canvasWrap{background:#fff;}
+svg text{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  fill:var(--ink);
+  dominant-baseline:middle;
+}
+svg .distText{fill:var(--muted2); font-weight:650;}
+svg .geneText{font-weight:750;}
+svg .distLine{stroke:var(--line); stroke-width:1.2; stroke-linecap:round;}
+svg .geneLine{stroke:rgba(11,18,32,.75); stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round;}
+svg .geneBody{stroke:rgba(11,18,32,.22); stroke-width:1.1; stroke-linejoin:round;}
+svg .insTri{stroke:rgba(15,23,42,.18); stroke-width:1.2;}
+svg .insArrow{stroke-width:3; stroke-linecap:round;}
+
+  footer.appFooter{padding:10px 16px 18px;color:var(--muted);font-size:12px;text-align:center;}
+  footer.appFooter b{font-weight:700;}
+</style>
+</head>
+<body>
+<header>
+  <div><b>FlankingViz</b> <span class="hint">Drag: move along x-axis · Double-click: edit text · <span class="kbd">F</span>: strand flip</span></div>
+  <div class="hint">FlankingViz • Yong Jin Choi • Kyung Hee University</div>
+</header>
+<div id="err" class="err"></div>
+
+<div class="wrap">
+  <!-- Left: data -->
+  <div class="card" style="grid-column:1;grid-row:1 / span 2;">
+    <div class="hd">1) Data Input</div>
+    <div class="bd scrollY">
+      <input id="file" type="file" accept=".csv,text/csv"/>
+      <textarea id="csvText" placeholder="Species,line,Chr,insertion_strand,left_id,left_strand,left_dist_bp,left_size_bp,right_id,right_strand,right_dist_bp,right_size_bp"></textarea>
+      <div class="row">
+        <button class="btn primary" id="loadBtn">Load / Parse</button>
+              </div>
+      <div class="mini">
+        • If the distance field is <b>X</b>, it is treated as an “intragenic insertion.”<br/>
+        • Comma, tab, or multiple spaces are all accepted as delimiters.
+      </div>
+
+      <div class="hd" style="margin:10px -12px 0 -12px;">2) Line Selection</div>
+      <div class="list" id="list"></div>
+
+      <div class="row" style="margin-top:10px;">
+        <button class="btn" id="resetCurrent">Reset edits (current)</button>
+        <button class="btn" id="resetAll">Reset edits (ALL)</button>
+      </div>
+
+      <div class="mini" style="margin-top:6px;">
+        • Reset clears position (dx), strand, and label overrides.
+      </div>
+    </div>
+  </div>
+
+  <!-- Middle: render options -->
+  <div class="card" id="optCard" style="grid-column:2;grid-row:1;">
+    <div class="hd">3) Render Options</div>
+    <div class="bd">
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Auto fit</span>
+        <select id="autoFit">
+          <option value="on" selected>ON</option>
+          <option value="off">OFF</option>
+        </select>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">bp → px</span>
+        <input id="bpPerPx" type="number" step="0.001" min="0.001" value="1.000"/>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Palette</span>
+        <select id="palette">
+          <option value="nature" selected>Nature</option>
+          <option value="gray">Gray</option>
+        </select>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Labels</span>
+        <select id="labels">
+          <option value="all" selected>Distance + size + strand</option>
+          <option value="dist">Distance only</option>
+          <option value="none">Hidden</option>
+        </select>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Overlap fix</span>
+        <select id="overlapFix">
+          <option value="on" selected>ON (separate along x-axis)</option>
+          <option value="off">OFF</option>
+        </select>
+      </div>
+      <div class="row">
+        <button class="btn" id="rerender">Re-render</button>
+      </div>
+      <details class="mini" style="margin-top:8px;"><summary style="cursor:pointer;">Help (collapse/expand)</summary>
+• Overlap resolution automatically spreads elements along the x-axis <b>without moving them on the y-axis</b>.<br/>
+• Drag moves elements only along the x-axis, double-click edits text, and <span class="kbd">F</span> flips the strand.
+</details>
+    </div>
+  </div>
+
+  <!-- Right: selection editor -->
+  <div class="card" style="grid-column:2;grid-row:2;">
+    <div class="hd">4) Edit Selected Element</div>
+    <div class="bd">
+      <div class="row"><span class="mini" style="min-width:90px;">Selection</span><input id="selKey" type="text" readonly value="(none)"/></div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Strand</span>
+        <select id="selStrand">
+          <option value="">(N/A)</option>
+          <option value="+">+</option>
+          <option value="-">-</option>
+        </select>
+      </div>
+      <div class="row"><span class="mini" style="min-width:90px;">Text</span><input id="selText" type="text" placeholder="Label override (leave blank for default)"/></div>
+      <div class="row">
+        <button class="btn" id="applySel">Apply</button>
+        <button class="btn" id="flipSel">Flip (F)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom: preview spans col 2-3 -->
+  <div class="card" style="grid-column:3;grid-row:1 / span 2;">
+    <div class="toolbar">
+      <div class="row">
+        <span class="pill" id="metaPill">No data</span>
+        <span class="pill" id="scalePill">scale: -</span>
+      </div>
+      <div class="row">
+        <button class="btn" id="exportSvg">Export SVG</button>
+        <button class="btn" id="exportAllSvg">Export ALL (ZIP)</button>
+      </div>
+    </div>
+    <div class="svgWrap" style="padding:10px;min-height:0;">
+      <svg id="svg" viewBox="0 0 1400 520" tabindex="0"></svg>
+    </div>
+  </div>
+</div>
+
+<footer class="appFooter">Created by <b>Yongjin Choi</b></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+
+/* Error surface */
+const errBox = document.getElementById("err");
+function showErr(msg){
+  if(!msg){ errBox.style.display="none"; errBox.textContent=""; return; }
+  errBox.style.display="block";
+  errBox.textContent = "ERROR\\n" + msg;
+}
+window.addEventListener("error",(e)=> showErr((e.message||"") + "\\n" + (e.filename||"") + ":" + (e.lineno||"")));
+window.addEventListener("unhandledrejection",(e)=> showErr(String(e.reason||e)));
+
+/* Palette */
+function setPalette(){
+  const root = document.documentElement;
+  const pal = document.getElementById("palette").value;
+  if(pal==="gray"){
+    root.style.setProperty("--geneP","#9aa4b2");
+    root.style.setProperty("--geneM","#6b7280");
+    root.style.setProperty("--ins","#d24545");
+    root.style.setProperty("--axis","#7e8a97");
+  } else {
+    root.style.setProperty("--geneP","#2f6fb3");
+    root.style.setProperty("--geneM","#2a9d8f");
+    root.style.setProperty("--ins","#d24545");
+    root.style.setProperty("--axis","#7a8a9a");
+  }
+}
+function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+function COL(){ return {axis:cssVar("--axis"), ins:cssVar("--ins"), gp:cssVar("--geneP"), gm:cssVar("--geneM"),
+                       text:cssVar("--text"), muted:cssVar("--muted")}; }
+
+/* Flexible parsing: comma / tab / whitespace */
+function detectMode(headerLine){
+  const c = (headerLine.match(/,/g)||[]).length;
+  const t = (headerLine.match(/\\t/g)||[]).length;
+  if(c>0) return "comma";
+  if(t>0) return "tab";
+  return "ws";
+}
+function splitFlex(line, mode){
+  line = line.trim();
+  if(mode==="comma") return splitQuoted(line, ",");
+  if(mode==="tab") return splitQuoted(line, "\\t");
+  // whitespace: collapse multiple spaces/tabs; NO quote support needed for your use-case
+  return line.split(/\\s+/g);
+}
+function splitQuoted(line, delim){
+  const out=[]; let cur="", inQ=false;
+  for(let i=0;i<line.length;i++){
+    const ch=line[i];
+    if(ch === '"'){
+      if(inQ && line[i+1] === '"'){ cur+='"'; i++; }
+      else inQ = !inQ;
+    } else if(ch===delim && !inQ){
+      out.push(cur); cur="";
+    } else cur += ch;
+  }
+  out.push(cur);
+  return out;
+}
+function parseTable(text){
+  // Normalize line separators across environments
+  let raw = (text ?? "").toString();
+  raw = raw.replace(/\r\n/g,"\n").replace(/\r/g,"\n").replace(/\u2028|\u2029/g,"\n");
+  raw = raw.trim();
+  if(!raw) return [];
+
+  // --- Fix: allow multiline quoted fields (e.g., pasted FASTA in "sequence" column)
+  // Replace newlines that occur INSIDE double quotes with a single space.
+  // Also supports escaped quotes ("") inside quoted fields.
+  (function(){
+    let out = "";
+    let inQ = false;
+    for(let i=0;i<raw.length;i++){
+      const c = raw[i];
+      if(c === '"'){
+        if(inQ && raw[i+1] === '"'){ out += '"'; i++; continue; }
+        inQ = !inQ;
+        out += '"';
+        continue;
+      }
+      if(c === "\n" && inQ){ out += " "; continue; }
+      out += c;
+    }
+    raw = out;
+  })();
+
+  // If everything came in as a single line (common when pasting from some UIs),
+  // try to reconstruct records by splitting at "GB::" boundaries.
+  if(!raw.includes("\n") && raw.includes("GB::")){
+    const first = raw.indexOf("GB::");
+    if(first > 0){
+      const header = raw.slice(0, first).trim();
+      const rest = raw.slice(first).trim();
+      const recs = rest.split(/(?=GB::)/g).map(s=>s.trim()).filter(Boolean);
+      raw = [header, ...recs].join("\n");
+    }
+  }
+
+  let lines = raw.split("\n").map(l=>l.trim()).filter(l=>l.length>0);
+  if(lines.length < 1) return [];
+
+  const mode = detectMode(lines[0]);
+  const firstCols = splitFlex(lines[0], mode).map(s=>s.trim());
+
+  // Headerless input support (e.g., direct CSV export with no header row)
+  const headStr = firstCols.join("|").toLowerCase();
+  const looksLikeHeader =
+    headStr.includes("species") || headStr.includes("chr") || headStr.includes("왼쪽") ||
+    headStr.includes("오른쪽") || headStr.includes("left") || headStr.includes("right");
+
+  let header = firstCols;
+  let startIdx = 1;
+
+  if(!looksLikeHeader){
+    const n = firstCols.length;
+
+    // --- Headerless column inference ---
+    // Supports both:
+    //  A) with sequence column (often multiline FASTA): Species,line,Chr,insertion_strand,Bar_fw sequence,왼쪽,왼쪽 strand,왼쪽 거리(bp),왼쪽 size (bp),오른쪽,오른쪽 strand,오른쪽 거리(bp),오른쪽 size (bp)  (n=13)
+    //  B) without sequence column: Species,line,Chr,insertion_strand,왼쪽,왼쪽 strand,왼쪽 거리(bp),왼쪽 size (bp),오른쪽,오른쪽 strand,오른쪽 거리(bp),오른쪽 size (bp) (n=12)
+
+    if(n >= 13){
+      header = ["Species","line","Chr","insertion_strand","Bar_fw sequence","왼쪽","왼쪽 strand","왼쪽 거리(bp)","왼쪽 size (bp)","오른쪽","오른쪽 strand","오른쪽 거리(bp)","오른쪽 size (bp)"].slice(0,n);
+    }else if(n === 12){
+      header = ["Species","line","Chr","insertion_strand","왼쪽","왼쪽 strand","왼쪽 거리(bp)","왼쪽 size (bp)","오른쪽","오른쪽 strand","오른쪽 거리(bp)","오른쪽 size (bp)"];
+    }else if(n === 11){
+      // legacy (no insertion_strand column)
+      header = ["Species","line","Chr","왼쪽","왼쪽 strand","왼쪽 거리(bp)","왼쪽 size (bp)","오른쪽","오른쪽 strand","오른쪽 거리(bp)","오른쪽 size (bp)"];
+    }else{
+      header = Array.from({length:n}, (_,i)=>`col${i+1}`);
+    }
+    startIdx = 0; // include the first line as a data row
+  }
+
+  const rows=[];
+  for(let i=startIdx;i<lines.length;i++){
+    const cols = splitFlex(lines[i], mode);
+    if(cols.length===1 && cols[0]==="") continue;
+    const obj={};
+    for(let j=0;j<header.length;j++) obj[header[j]] = (cols[j]??"").trim();
+    rows.push(obj);
+  }
+  return rows;
+}
+
+
+/* Normalization */
+function normStrand(s){
+  s=(s??"").toString().trim();
+  if(["+","→","(→)"].includes(s)) return "+";
+  if(["-","←","(←)"].includes(s)) return "-";
+  return "";
+}
+function isX(v){ return (v??"").toString().trim().toLowerCase()==="x"; }
+function toNum(v){
+  const s=(v??"").toString().trim();
+  if(!s || isX(s)) return null;
+  const n=Number(s);
+  return Number.isFinite(n)?n:null;
+}
+function normalizeRows(rows){
+  const get=(o,...ks)=>{ for(const k of ks){ if(k in o) return o[k]; } return ""; };
+  return rows.map(r=>({
+    Note:get(r,"Note","note","NOTE","Heuristic","heuristic","비고")||"",
+    Species:get(r,"Species"),
+    line:get(r,"line","Line"),
+    Chr:get(r,"Chr","chr"),
+    insertion_strand:normStrand(get(r,"insertion_strand","Insertion strand","insertion strand","삽입 strand","삽입 방향","ins_strand","insertion","Insertion"))||"",
+    left_id:get(r,"left_id","left","Left","왼쪽"),
+    left_strand:normStrand(get(r,"left_strand","left strand","왼쪽 strand","왼쪽 방향"))||"+",
+    left_intragenic:isX(get(r,"left_dist_bp","left_dist_bp","left distance","왼쪽 거리(bp)")),
+    left_dist_bp:toNum(get(r,"left_dist_bp","left_dist_bp","left distance","왼쪽 거리(bp)")),
+    left_size_bp:toNum(get(r,"left_size_bp","left_size_bp","left size","왼쪽 size (bp)")) ?? 0,
+    right_id:get(r,"right_id","right","Right","오른쪽"),
+    right_strand:normStrand(get(r,"right_strand","right strand","오른쪽 strand","오른쪽 방향"))||"+",
+    right_intragenic:isX(get(r,"right_dist_bp","right_dist_bp","right distance","오른쪽 거리(bp)")),
+    right_dist_bp:toNum(get(r,"right_dist_bp","right_dist_bp","right distance","오른쪽 거리(bp)")),
+    right_size_bp:toNum(get(r,"right_size_bp","right_size_bp","right size","오른쪽 size (bp)")) ?? 0,
+  }));
+}
+
+/* State */
+let data=[], selectedIndex=-1, selectedKey=null;
+const edits = new Map(); // recKey -> {dxLeft, dxRight, strandLeft, strandRight, text:{}}
+function recKey(r){ return `${r.Species||""}__${r.line||""}__${r.Chr||""}`; }
+function getEd(r){
+  const k=recKey(r);
+  if(!edits.has(k)) edits.set(k,{dxLeft:0, dxRight:0, strandLeft:null, strandRight:null, text:{}});
+  return edits.get(k);
+}
+
+/* SVG helpers */
+const svg = document.getElementById("svg");
+const metaPill = document.getElementById("metaPill");
+const scalePill = document.getElementById("scalePill");
+const list = document.getElementById("list");
+
+function mk(tag, attrs={}){
+  const el=document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for(const [k,v] of Object.entries(attrs)) el.setAttribute(k,String(v));
+  return el;
+}
+function clearSVG(){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+function clientToSvg(evt){
+  const vb = svg.viewBox.baseVal;
+  const rect = svg.getBoundingClientRect();
+  const x = (evt.clientX - rect.left) * (vb.width / rect.width) + vb.x;
+  const y = (evt.clientY - rect.top)  * (vb.height/ rect.height)+ vb.y;
+  return {x,y};
+}
+
+function pxFromBp(bp, bpPerPx){ return bp / bpPerPx; }
+function geneInterval(centerX, sizeBp, bpPerPx, minVisBp){
+  const visBp=Math.max(sizeBp, minVisBp);
+  const w=pxFromBp(visBp, bpPerPx);
+  return {w, xL:centerX-w/2, xR:centerX+w/2};
+}
+function ellipseText(s, max=28){
+  s=(s??"").toString();
+  if(s.length<=max) return s;
+  return s.slice(0, Math.max(0, max-3)) + "...";
+}
+function computeScale(r, W, margin, minVisBp){
+  const leftSize=Math.max(r.left_size_bp||0,0);
+  const rightSize=Math.max(r.right_size_bp||0,0);
+  const leftExt = r.left_id ? (r.left_intragenic ? Math.max(leftSize/2, minVisBp/2)
+    : (Math.max(r.left_dist_bp||0,0)+Math.max(leftSize/2,minVisBp/2))) : 1;
+  const rightExt = r.right_id? (r.right_intragenic ? Math.max(rightSize/2, minVisBp/2)
+    : (Math.max(r.right_dist_bp||0,0)+Math.max(rightSize/2,minVisBp/2))) : 1;
+  const usable = W-2*margin;
+  const maxExt = Math.max(leftExt,rightExt,1);
+  return maxExt/(usable/2);
+}
+function assignLanes(leftInfo, rightInfo){
+  if(!leftInfo || !rightInfo) return {l:0,r:0};
+  const overlap = !(leftInfo.interval.xR < rightInfo.interval.xL || rightInfo.interval.xR < leftInfo.interval.xL);
+  if(!overlap) return {l:0,r:0};
+  return {l:-95,r:+95};
+}
+
+function drawGeneGroup(root, r, side, cfg){
+  const col=COL();
+  const ed=getEd(r);
+  const isLeft = side==="left";
+  const id = isLeft ? r.left_id : r.right_id;
+  if(!id) return null;
+
+  const keyGene = isLeft ? "leftGene" : "rightGene";
+  const keyName = isLeft ? "leftName" : "rightName";
+  const keyStr  = isLeft ? "leftStrand" : "rightStrand";
+  const keySize = isLeft ? "leftSize" : "rightSize";
+  const keyDist = isLeft ? "leftDist" : "rightDist";
+
+  const baseStr = isLeft ? r.left_strand : r.right_strand;
+  const strand  = isLeft ? (ed.strandLeft||baseStr) : (ed.strandRight||baseStr);
+
+  const sizeBp  = isLeft ? (r.left_size_bp||0) : (r.right_size_bp||0);
+  const distBp  = isLeft ? (r.left_dist_bp||0) : (r.right_dist_bp||0);
+  const intragenic = isLeft ? r.left_intragenic : r.right_intragenic;
+
+  const dxManual = isLeft ? ed.dxLeft : ed.dxRight;
+
+  let centerX;
+  if(intragenic) centerX = cfg.x0;
+  else {
+    const dx = pxFromBp(distBp, cfg.bpPerPx);
+    centerX = isLeft ? (cfg.x0 - dx) : (cfg.x0 + dx);
+  }
+  centerX += dxManual;
+
+  const interval = geneInterval(centerX, sizeBp, cfg.bpPerPx, cfg.minVisBp);
+  const w=interval.w;
+
+  const geneH=34;
+  const yCenter = cfg.baseY + cfg.laneY;
+  const yT = yCenter - geneH/2;
+
+  const head=Math.min(Math.max(w*0.16,18),64);
+  const body=Math.max(w-head,10);
+
+  let d;
+  if(strand==="-"){
+    d=`M ${interval.xR} ${yT}
+       L ${interval.xR-body} ${yT}
+       L ${interval.xR-body} ${yT-geneH*0.55}
+       L ${interval.xL} ${yT+geneH/2}
+       L ${interval.xR-body} ${yT+geneH+geneH*0.55}
+       L ${interval.xR-body} ${yT+geneH}
+       L ${interval.xR} ${yT+geneH} Z`;
+  } else {
+    d=`M ${interval.xL} ${yT}
+       L ${interval.xL+body} ${yT}
+       L ${interval.xL+body} ${yT-geneH*0.55}
+       L ${interval.xR} ${yT+geneH/2}
+       L ${interval.xL+body} ${yT+geneH+geneH*0.55}
+       L ${interval.xL+body} ${yT+geneH}
+       L ${interval.xL} ${yT+geneH} Z`;
+  }
+
+  const g = mk("g", {"data-key": keyGene, cursor:"ew-resize"});
+  root.appendChild(g);
+  const fill = (strand==="-") ? col.gm : col.gp;
+  g.appendChild(mk("path",{d, fill, stroke:"rgba(0,0,0,.35)", "stroke-width":"2"}));
+
+  const labelsMode = document.getElementById("labels").value;
+  if(labelsMode!=="none"){
+    const nameText = ed.text[keyName] ?? id;
+    const tName = mk("text",{x:centerX,y:yT-18,"text-anchor":"middle",fill:col.text,"font-size":"13","font-weight":"850"});
+    tName.textContent = ellipseText(nameText, 30);
+    tName.setAttribute("data-key", keyName);
+    g.appendChild(tName);
+
+    if(labelsMode==="all"){
+      const tStr = mk("text",{x:centerX,y:yT-42,"text-anchor":"middle",fill:col.muted,"font-size":"13","font-weight":"800"});
+      tStr.textContent = ed.text[keyStr] ?? `(${strand})`;
+      tStr.setAttribute("data-key", keyStr);
+      g.appendChild(tStr);
+
+      const tSize = mk("text",{x:centerX,y:yT+geneH+26,"text-anchor":"middle",fill:col.muted,"font-size":"13","font-weight":"650"});
+      tSize.textContent = ed.text[keySize] ?? `size ${Math.round(sizeBp)} bp`;
+      tSize.setAttribute("data-key", keySize);
+      g.appendChild(tSize);
+    }
+  }
+
+  if(intragenic){
+    // tick at insertion
+    root.appendChild(mk("line",{x1:cfg.x0,y1:cfg.baseY-20,x2:cfg.x0,y2:cfg.baseY+20,stroke:col.ins,"stroke-width":"5","stroke-linecap":"round"}));
+    return {interval, intragenic:true};
+  }
+
+  // distance bracket line
+  const xIns = cfg.x0;
+  const xEdge = isLeft ? interval.xR : interval.xL;
+  const yBracket = cfg.baseY + 72;
+  const yStemTop = yBracket - 14, yStemBot = yBracket + 14;
+
+  root.appendChild(mk("line",{x1:xEdge,y1:yBracket,x2:xIns,y2:yBracket,stroke:col.muted,"stroke-width":"3","stroke-dasharray":"10 8"}));
+  root.appendChild(mk("line",{x1:xEdge,y1:yStemTop,x2:xEdge,y2:yStemBot,stroke:col.muted,"stroke-width":"3"}));
+  root.appendChild(mk("line",{x1:xIns,y1:yStemTop,x2:xIns,y2:yStemBot,stroke:col.muted,"stroke-width":"3"}));
+
+  if(labelsMode!=="none"){
+    const tDist = mk("text",{x:(xEdge+xIns)/2,y:yBracket+32,"text-anchor":"middle",fill:col.text,"font-size":"20","font-weight":"900"});
+    tDist.textContent = ed.text[keyDist] ?? `${Math.round(distBp)} bp`;
+    tDist.setAttribute("data-key", keyDist);
+    root.appendChild(tDist);
+  }
+
+  return {interval, intragenic:false};
+}
+
+function drawRecord(r){
+  showErr("");
+  setPalette();
+  clearSVG();
+
+  const col=COL();
+  const W0=1400, margin=80, baseY=300, x0=W0/2, minVisBp=250;
+
+  const autoFit = document.getElementById("autoFit").value==="on";
+  let bpPerPx = Number(document.getElementById("bpPerPx").value||1);
+  if(autoFit){
+    bpPerPx = computeScale(r, W0, margin, minVisBp);
+    document.getElementById("bpPerPx").value = bpPerPx.toFixed(3);
+  }
+  scalePill.textContent = `scale: 1px = ${bpPerPx.toFixed(3)} bp`;
+  metaPill.textContent = `${r.Species||"(no speceis)"} | line ${r.line||"-"} | Chr ${r.Chr||"-"}`;
+
+  const root = mk("g",{}); svg.appendChild(root);
+
+  const ed=getEd(r);
+
+  function centerFor(side){
+    const isLeft = side==="left";
+    const id = isLeft ? r.left_id : r.right_id;
+    if(!id) return null;
+    const distBp = isLeft ? (r.left_dist_bp||0) : (r.right_dist_bp||0);
+    const intragenic = isLeft ? r.left_intragenic : r.right_intragenic;
+    const dxManual = isLeft ? (ed.dxLeft||0) : (ed.dxRight||0);
+
+    let cx = intragenic ? x0 : (isLeft ? (x0 - pxFromBp(distBp,bpPerPx)) : (x0 + pxFromBp(distBp,bpPerPx)));
+    cx += dxManual;
+    return cx;
+  }
+  let cxL = centerFor("left");
+  let cxR = centerFor("right");
+
+  const overlapFix = document.getElementById("overlapFix")?.value==="on";
+  if(overlapFix){
+    const pad = 34;
+    const insPad = 36;
+    const maxIter = 4;
+
+    for(let iter=0; iter<maxIter; iter++){
+      let changed=false;
+
+      if(cxL!=null && r.left_id && !r.left_intragenic){
+        const Lint = geneInterval(cxL, r.left_size_bp||0, bpPerPx, minVisBp);
+        const maxRight = x0 - insPad;
+        if(Lint.xR > maxRight){
+          const shift = (Lint.xR - maxRight);
+          cxL -= shift;
+          ed.dxLeft = (ed.dxLeft||0) - shift;
+          changed=true;
+        }
+      }
+      if(cxR!=null && r.right_id && !r.right_intragenic){
+        const Rint = geneInterval(cxR, r.right_size_bp||0, bpPerPx, minVisBp);
+        const minLeft = x0 + insPad;
+        if(Rint.xL < minLeft){
+          const shift = (minLeft - Rint.xL);
+          cxR += shift;
+          ed.dxRight = (ed.dxRight||0) + shift;
+          changed=true;
+        }
+      }
+
+      if(cxL!=null && cxR!=null && r.left_id && r.right_id){
+        const Lint = geneInterval(cxL, r.left_size_bp||0, bpPerPx, minVisBp);
+        const Rint = geneInterval(cxR, r.right_size_bp||0, bpPerPx, minVisBp);
+        const overlap = (Lint.xR + pad) - Rint.xL;
+        if(overlap > 0){
+          const shift = overlap/2;
+          cxL -= shift;
+          cxR += shift;
+          ed.dxLeft  = (ed.dxLeft||0)  - shift;
+          ed.dxRight = (ed.dxRight||0) + shift;
+          changed=true;
+        }
+      }
+
+      if(!changed) break;
+    }
+  }
+
+  let minX = x0 - 520, maxX = x0 + 520;
+  function considerGene(cx, sizeBp, distBp, intragenic){
+    if(cx==null) return;
+    const gi = geneInterval(cx, sizeBp||0, bpPerPx, minVisBp);
+    minX = Math.min(minX, gi.xL);
+    maxX = Math.max(maxX, gi.xR);
+    if(!intragenic && distBp!=null){
+      minX = Math.min(minX, x0, gi.xL, gi.xR);
+      maxX = Math.max(maxX, x0, gi.xL, gi.xR);
+    }
+  }
+  considerGene(cxL, r.left_size_bp, r.left_dist_bp, r.left_intragenic);
+  considerGene(cxR, r.right_size_bp, r.right_dist_bp, r.right_intragenic);
+  minX -= 140; maxX += 140;
+
+  const vbX = minX;
+  const vbW = Math.max(1200, maxX - minX);
+  svg.setAttribute("viewBox", `${vbX} 0 ${vbW} 520`);
+
+  root.appendChild(mk("line",{x1:minX+40,y1:baseY,x2:maxX-40,y2:baseY,stroke:col.axis,"stroke-width":"4","stroke-linecap":"round"}));
+
+  const title = mk("text",{x:(minX+maxX)/2,y:66,"text-anchor":"middle",fill:col.text,"font-size":"30","font-weight":"900"});
+  title.setAttribute("data-key","mainTitle");
+  title.style.cursor="text";
+  const defaultMainTitle = `${r.Species||""} | line ${r.line||""} | Chr ${r.Chr||""}`;
+  title.textContent = (ed.text && ed.text["mainTitle"]) ? ed.text["mainTitle"] : defaultMainTitle;
+  root.appendChild(title);
+
+  // Insertion marker (selectable)
+  const gIns = mk("g",{"data-key":"insertion"});
+  const tri = mk("path",{d:`M ${x0-18} ${baseY-78} L ${x0+18} ${baseY-78} L ${x0} ${baseY} Z`,
+    fill:col.ins, stroke:"rgba(15,23,42,.18)","stroke-width":"1.2","class":"insTri"});
+  gIns.appendChild(tri);
+
+  // insertion strand (from edit override > CSV)
+  const insS = (ed.insStrand || r.insertion_strand || "").trim();
+  const insText = mk("text",{x:x0,y:baseY-104,"text-anchor":"middle",fill:col.text,"font-size":"13","font-weight":"850","data-key":"insertion"});
+  insText.textContent = (insS==="+"||insS==="-") ? `Insertion (${insS})` : "Insertion";
+  gIns.appendChild(insText);
+
+  if(insS==="+" || insS==="-"){
+    const yA = baseY - 132; // above label
+    const L = 26; // shorter arrow
+    const x1 = insS==="+" ? (x0 - L) : (x0 + L);
+    const x2 = insS==="+" ? (x0 + L) : (x0 - L);
+    gIns.appendChild(mk("line",{x1, y1:yA, x2, y2:yA, stroke:col.ins, "stroke-width":"3", "stroke-linecap":"round","class":"insArrow"}));
+    const ah = 14, aw = 12;
+    const hx = x2, hy = yA;
+    const sign = insS==="+" ? 1 : -1;
+    const p = `M ${hx} ${hy} L ${hx - sign*ah} ${hy - aw/2} L ${hx - sign*ah} ${hy + aw/2} Z`;
+    gIns.appendChild(mk("path",{d:p, fill:col.ins, stroke:"rgba(0,0,0,.15)", "stroke-width":"2"}));
+  }
+
+  root.appendChild(gIns);
+
+  drawGeneGroup(root, r, "left",  {x0, baseY, bpPerPx, minVisBp, laneY:0});
+  drawGeneGroup(root, r, "right", {x0, baseY, bpPerPx, minVisBp, laneY:0});
+}
+
+/* List */
+function renderList(){
+  list.innerHTML="";
+  data.forEach((r,i)=>{
+    const div=document.createElement("div");
+    div.className="item"+(i===selectedIndex?" active":"");
+    const k=document.createElement("div"); k.className="k";
+    k.textContent=`${r.Species||"(no species)"} | line ${r.line||"-"} | Chr ${r.Chr||"-"}`;
+    const s=document.createElement("div"); s.className="s";
+    const L = r.left_id ? `L:${r.left_id}${r.left_intragenic?"(X)":"("+ (r.left_dist_bp??"-")+"bp)"}` : "L:-";
+    const R = r.right_id? `R:${r.right_id}${r.right_intragenic?"(X)":"("+ (r.right_dist_bp??"-")+"bp)"}` : "R:-";
+    const N = (r.Note||"").toString().trim();
+    s.textContent = N ? `${L}  ${R} | ${N}` : `${L}  ${R}`;
+    div.appendChild(k); div.appendChild(s);
+    div.onclick=()=>{ selectedIndex=i; selectedKey=null; syncSelUI(); renderList(); render(); };
+    list.appendChild(div);
+  });
+}
+
+/* Selection */
+function syncSelUI(){
+  document.getElementById("selKey").value = selectedKey || "(none)";
+  document.getElementById("selText").value = "";
+  document.getElementById("selStrand").value = "";
+  if(selectedIndex<0 || !selectedKey) return;
+  const r=data[selectedIndex];
+  const ed=getEd(r);
+  if(ed.text[selectedKey]!==undefined) document.getElementById("selText").value = ed.text[selectedKey];
+  if(selectedKey==="leftGene") document.getElementById("selStrand").value = ed.strandLeft || r.left_strand || "+";
+  if(selectedKey==="rightGene") document.getElementById("selStrand").value = ed.strandRight || r.right_strand || "+";
+  if(selectedKey==="insertion") document.getElementById("selStrand").value = ed.insStrand || r.insertion_strand || "";
+}
+document.getElementById("applySel").addEventListener("click", ()=>{
+  if(selectedIndex<0 || !selectedKey) return;
+  const r=data[selectedIndex], ed=getEd(r);
+  const txt=document.getElementById("selText").value;
+  if(selectedKey==="leftGene" || selectedKey==="rightGene" || selectedKey==="insertion"){
+    const s=document.getElementById("selStrand").value;
+    if(selectedKey==="leftGene" && (s==="+"||s==="-" )) ed.strandLeft=s;
+    if(selectedKey==="rightGene" && (s==="+"||s==="-" )) ed.strandRight=s;
+    if(selectedKey==="insertion" && (s==="+"||s==="-" || s==="")) ed.insStrand = (s==="+"||s==="-") ? s : "";
+  }
+  if(txt.trim().length) ed.text[selectedKey]=txt; else delete ed.text[selectedKey];
+  render();
+});
+function flipSelected(){
+  if(selectedIndex<0 || !selectedKey) return;
+  const r=data[selectedIndex], ed=getEd(r);
+  if(selectedKey==="leftGene"){
+    const cur=ed.strandLeft||r.left_strand||"+";
+    ed.strandLeft = (cur==="-"?"+":"-");
+  } else if(selectedKey==="rightGene"){
+    const cur=ed.strandRight||r.right_strand||"+";
+    ed.strandRight = (cur==="-"?"+":"-");
+  } else if(selectedKey==="insertion"){
+    const cur=(ed.insStrand||r.insertion_strand||"+");
+    ed.insStrand = (cur==="-"?"+":"-");
+  } else return;
+  syncSelUI(); render();
+}
+document.getElementById("flipSel").addEventListener("click", flipSelected);
+document.addEventListener("keydown",(e)=>{ if(e.key.toLowerCase()==="f") flipSelected(); });
+
+svg.addEventListener("click",(e)=>{
+  const t=e.target.closest("text");
+  if(t && t.getAttribute("data-key")){
+    selectedKey=t.getAttribute("data-key"); syncSelUI(); return;
+  }
+  const g=e.target.closest("g[data-key]");
+  if(g){ selectedKey=g.getAttribute("data-key"); syncSelUI(); }
+});
+svg.addEventListener("dblclick",(e)=>{
+  if(selectedIndex<0) return;
+  const t=e.target.closest("text");
+  if(!t) return;
+  const k=t.getAttribute("data-key");
+  if(!k) return;
+  selectedKey=k; syncSelUI();
+  const cur=t.textContent||"";
+  const next=prompt("Edit text:", cur);
+  if(next===null) return;
+  const r=data[selectedIndex], ed=getEd(r);
+  if(next.trim().length) ed.text[k]=next; else delete ed.text[k];
+  render();
+});
+
+/* Drag genes x-only */
+let dragging=null; // {key,startX,baseDx}
+svg.addEventListener("mousedown",(e)=>{
+  if(selectedIndex<0) return;
+  const g=e.target.closest('g[data-key]');
+  if(!g) return;
+  const key=g.getAttribute("data-key");
+  if(key!=="leftGene" && key!=="rightGene") return;
+  e.preventDefault();
+  selectedKey=key; syncSelUI();
+  const p=clientToSvg(e);
+  const r=data[selectedIndex], ed=getEd(r);
+  const baseDx = (key==="leftGene") ? ed.dxLeft : ed.dxRight;
+  dragging={key,startX:p.x,baseDx};
+});
+svg.addEventListener("mousemove",(e)=>{
+  if(!dragging || selectedIndex<0) return;
+  const p=clientToSvg(e);
+  const delta=p.x-dragging.startX;
+  const r=data[selectedIndex], ed=getEd(r);
+  if(dragging.key==="leftGene") ed.dxLeft = dragging.baseDx + delta;
+  else ed.dxRight = dragging.baseDx + delta;
+  render();
+});
+function endDrag(){ dragging=null; }
+svg.addEventListener("mouseup", endDrag);
+svg.addEventListener("mouseleave", endDrag);
+
+/* Render */
+function render(){
+  if(selectedIndex<0 || !data[selectedIndex]) return;
+  try{ drawRecord(data[selectedIndex]); }
+  catch(e){ showErr(e.stack||String(e)); }
+}
+
+
+/* Reset edits */
+document.getElementById("resetCurrent").addEventListener("click", ()=>{
+  if(selectedIndex<0) return;
+  const r=data[selectedIndex];
+  edits.delete(recKey(r));
+  selectedKey=null;
+  syncSelUI();
+  render();
+});
+document.getElementById("resetAll").addEventListener("click", ()=>{
+  edits.clear();
+  selectedKey=null;
+  syncSelUI();
+  render();
+});
+/* Controls */
+document.getElementById("rerender").addEventListener("click", render);
+document.getElementById("palette").addEventListener("change", render);
+document.getElementById("labels").addEventListener("change", render);
+document.getElementById("autoFit").addEventListener("change", render);
+document.getElementById("bpPerPx").addEventListener("change", ()=>{
+  if(document.getElementById("autoFit").value==="off") render();
+});
+
+/* Export SVG */
+function download(name, blob){
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1500);
+}
+function serializeSVG(){
+  const clone=svg.cloneNode(true);
+  const style=document.createElementNS("http://www.w3.org/2000/svg","style");
+  style.textContent=`text{font-family:${cssVar("--sans")};}`;
+  clone.insertBefore(style, clone.firstChild);
+  return `<?xml version="1.0" encoding="UTF-8"?>\n` + new XMLSerializer().serializeToString(clone);
+}
+document.getElementById("exportSvg").addEventListener("click", ()=>{
+  if(selectedIndex<0) return;
+  const r=data[selectedIndex];
+  const safe=(s)=>String(s||"").replace(/[:/\\ ]+/g,"_");
+  const fname=`${safe(r.Species||"species")}_line${safe(r.line||"")}_chr${safe(r.Chr||"")}.svg`;
+  download(fname, new Blob([serializeSVG()],{type:"image/svg+xml"}));
+});
+
+
+/* Export ALL SVG (ZIP) */
+document.getElementById("exportAllSvg").addEventListener("click", async ()=>{
+  if(!data.length) return;
+  if(typeof JSZip === "undefined"){
+    showErr("JSZip을 로드하지 못했습니다. (인터넷 연결이 필요합니다)\n- 해결: 인터넷 연결 후 다시 시도하거나, 파일 상단에 JSZip 스크립트가 포함되어 있는지 확인하세요.");
+    return;
+  }
+  showErr("");
+  const btn = document.getElementById("exportAllSvg");
+  const cur = selectedIndex;
+
+  const safe=(s)=>String(s||"").replace(/[:/\\ ]+/g,"_");
+  const zip = new JSZip();
+  const folderName = `FlankingViz_export_${new Date().toISOString().slice(0,10)}`;
+  const folder = zip.folder(folderName);
+
+  const oldText = btn.textContent;
+  btn.disabled = true;
+
+  try{
+    for(let i=0;i<data.length;i++){
+      selectedIndex=i;
+      renderList();
+      render();
+
+      await new Promise(res=>requestAnimationFrame(()=>res()));
+
+      const r=data[i];
+      const fname=`${safe(r.Species||"species")}_line${safe(r.line||"")}_chr${safe(r.Chr||"")}.svg`;
+      folder.file(fname, serializeSVG());
+      btn.textContent = `Zipping... (${i+1}/${data.length})`;
+    }
+
+    if(cur>=0){ selectedIndex=cur; renderList(); render(); }
+
+    btn.textContent = "Building ZIP...";
+    const blob = await zip.generateAsync({type:"blob", compression:"DEFLATE", compressionOptions:{level:6}});
+    const zipName = `${folderName}.zip`;
+    download(zipName, blob);
+  }catch(e){
+    showErr(e.stack || String(e));
+    if(cur>=0){ selectedIndex=cur; renderList(); render(); }
+  }finally{
+    btn.disabled = false;
+    btn.textContent = oldText;
+  }
+});
+/* Load */
+document.getElementById("loadBtn").addEventListener("click", ()=>{
+  const rows=parseTable(document.getElementById("csvText").value);
+  data=normalizeRows(rows);
+  if(!data.length){
+    showErr("Parsing returned 0 rows. Pasted text can be space-aligned only, but the header row and data rows must use the same delimiter format.");
+    metaPill.textContent="No data"; scalePill.textContent="scale: -";
+    list.innerHTML="";
+    return;
+  }
+  showErr("");
+  selectedIndex=0;
+  renderList();
+  render();
+});
+document.getElementById("file").addEventListener("change", async (e)=>{
+  const f=e.target.files?.[0]; if(!f) return;
+  const txt=await f.text();
+  document.getElementById("csvText").value=txt;
+  const rows=parseTable(txt);
+  data=normalizeRows(rows);
+  if(!data.length){
+    showErr("Could not parse rows from the uploaded file. (Comma/tab/space delimiters are supported)");
+    metaPill.textContent="No data"; scalePill.textContent="scale: -";
+    list.innerHTML="";
+    return;
+  }
+  showErr("");
+  selectedIndex=0;
+  renderList();
+  render();
+});
+
+/* Init: load embedded CSV if provided; else load demo */
+(function(){
+  try{
+    if(window.__EMBEDDED_CSV__ && String(window.__EMBEDDED_CSV__).trim().length){
+      document.getElementById("csvText").value = window.__EMBEDDED_CSV__;
+      const rows=parseTable(window.__EMBEDDED_CSV__);
+      data=normalizeRows(rows);
+      if(!data.length){
+        showErr("Embedded CSV parsing returned 0 rows. Please check the generated CSV.");
+        metaPill.textContent="No data"; scalePill.textContent="scale: -";
+        list.innerHTML="";
+        return;
+      }
+      selectedIndex=0;
+      renderList();
+      render();
+    }else{
+      showErr("");
+      metaPill.textContent="No data";
+      scalePill.textContent="scale: -";
+      list.innerHTML="";
+    }
+  }catch(e){
+    showErr(e.stack||String(e));
+  }
+})();
+</script>
+</body>
+</html>

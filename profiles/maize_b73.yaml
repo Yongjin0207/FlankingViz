@@ -1,0 +1,13 @@
+name: maize_b73
+species: maize
+reference: zm_b73_reference_nam_5_0
+
+genome_fasta: Maize/Zm-B73-REFERENCE-NAM-5.0.fa
+blast_db: Maize/Zm-B73
+
+gff_files:
+  - Maize/Zm-B73-REFERENCE-NAM-5.0_Zm00001eb.1.gff3
+
+gene_feature: gene
+attr_priority: [Name, ID]
+seqid_normalization: none

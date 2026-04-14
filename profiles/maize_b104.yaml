@@ -1,0 +1,13 @@
+name: maize_b104
+species: maize
+reference: zm_b104_reference_corteva_1_0
+
+genome_fasta: Maize/Zm-B104-REFERENCE-CORTEVA-1.0.fa
+blast_db: Maize/Zm-B104
+
+gff_files:
+  - Maize/Zm-B104-REFERENCE-CORTEVA-1.0_Zm00057aa.1.gff3
+
+gene_feature: gene
+attr_priority: [Name, ID]
+seqid_normalization: none

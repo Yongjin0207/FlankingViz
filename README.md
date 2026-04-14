@@ -6,7 +6,7 @@ An Automated Tool for T-DNA Insertion Site Analysis and Visualization in Rice, M
 
 FlankingViz is a command-line tool for mapping flanking sequences to plant reference genomes and identifying nearby annotated genes based on genomic coordinates. It supports species-specific configuration through YAML profiles and generates standalone interactive HTML output for insertion site inspection.
 
-The current release includes default profiles for rice, soybean, and maize.
+The current release includes default profiles for rice, soybean, and two maize reference assemblies.
 
 Before running FlankingViz for the first time, users should initialize the local reference resources with `bash setup.sh`.
 
@@ -24,7 +24,8 @@ Default profiles are provided for:
 
 - Rice (*Oryza sativa*, IRGSP 1.0)
 - Soybean (*Glycine max*, Williams 82 v4.0)
-- Maize (*Zea mays*, B104)
+- Maize (*Zea mays*, Zm-B104-REFERENCE-CORTEVA-1.0)
+- Maize (*Zea mays*, Zm-B73-REFERENCE-NAM-5.0)
 
 Additional species can be added by creating new profile files.
 
@@ -38,7 +39,8 @@ FlankingViz/
 ├─ profiles/                   # species configuration files
 │  ├─ rice.yaml
 │  ├─ soybean.yaml
-│  └─ maize.yaml
+│  ├─ maize_b104.yaml
+│  └─ maize_b73.yaml
 ├─ Rice/                       # genome and BLAST database files for rice
 ├─ Soybean/                    # genome and BLAST database files for soybean
 ├─ Maize/                      # genome and BLAST database files for maize
@@ -117,7 +119,8 @@ To switch species:
 
 ```bash
 python3 flankingviz.py --profile soybean
-python3 flankingviz.py --profile maize
+python3 flankingviz.py --profile maize_b104
+python3 flankingviz.py --profile maize_b73
 ```
 
 To use a custom profile file:

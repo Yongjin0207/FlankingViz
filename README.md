@@ -4,6 +4,12 @@
 
 A Tool for Flanking Sequence Interpretation and Visualization in Rice, Maize, and Soybean
 
+## Version Update
+
+**Current version: v1.0.8**
+
+FlankingViz v1.0.8 includes an update to the standalone HTML viewer. In intragenic insertion cases, the insertion marker now remains visually linked to the corresponding gene model during manual x-axis adjustment.
+
 ## Overview
 
 FlankingViz is a command-line tool for mapping flanking sequences to plant reference genomes and identifying nearby annotated genes based on genomic coordinates. It supports species-specific configuration through YAML profiles and generates synchronized CSV summaries and standalone interactive HTML output for insertion site inspection.

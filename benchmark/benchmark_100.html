@@ -1,0 +1,1310 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>FlankingViz</title>
+<style>
+  :root{--headerH:54px;
+    --bg:#f7f8fb; --panel:#ffffff; --text:#0b1220; --muted:#4b5563;
+    --axis:#1f2937; --ins:#c73535; --geneP:#1f6feb; --geneM:#0f766e;
+    --radius:14px; --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+    --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  }
+
+  *,
+  *::before,
+  *::after{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);overflow:auto;}
+  header{padding:12px 16px;border-bottom:1px solid rgba(15,23,42,.10);background:var(--panel);position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:8px;height:var(--headerH);box-sizing:border-box;display:flex;align-items:center;}
+  header b{letter-spacing:.2px}
+  .hint{color:var(--muted);font-size:12px}
+  .err{display:none; padding:10px 16px; border-bottom:1px solid rgba(15,23,42,.10);
+       background:rgba(210,69,69,.12); color:#ffb4b4; font-family:var(--mono); font-size:12px; white-space:pre-wrap;}
+  .wrap{display:grid;grid-template-columns: 340px 420px 1fr;grid-template-rows:auto auto;gap:10px;padding:10px;align-items:start;box-sizing:border-box;}
+  .scrollY{overflow-y:auto;overflow-x:hidden;max-height:740px;padding-right:6px;}
+  .card{
+    background:var(--panel);
+    border:1px solid rgba(15,23,42,.10);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:0 6px 22px rgba(15,23,42,.05);
+  }background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+        border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); overflow:hidden;}
+  .hd{padding:10px 12px;background:rgba(15,23,42,.02);border-bottom:1px solid rgba(15,23,42,.08);font-weight:800;}
+  .bd{padding:10px;display:flex;flex-direction:column;gap:10px;}
+  textarea,input,select{width:100%;max-width:100%;background:#f3f4f6;border:1px solid rgba(15,23,42,.14);
+    color:var(--text);border-radius:10px;padding:9px 10px;outline:none;font-size:13px;}
+  textarea{min-height:150px;font-family:var(--mono);font-size:12px;white-space:pre-wrap;overflow-x:hidden;word-break:break-word;resize:vertical;}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .btn{border:1px solid rgba(15,23,42,.14);background:#ffffff;color:var(--text);
+       padding:9px 10px;border-radius:12px;cursor:pointer;font-weight:800;font-size:13px;}
+  .btn:hover{background:#f3f4f6;}
+  .btn.primary{background:rgba(31,111,235,.10);border-color:rgba(31,111,235,.35);}
+  .list{max-height:460px;overflow-y:auto;overflow-x:hidden;border-radius:12px;border:1px solid rgba(15,23,42,.12);background:#f9fafb;}
+  .item{padding:14px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;overflow-wrap:anywhere;}
+  .item:last-child{border-bottom:0;}
+  .item.active{background:rgba(47,111,179,.16);}
+  .k{font-weight:850;font-size:14px;}
+  .s{color:var(--muted);font-size:12.5px;margin-top:2px;font-family:var(--mono);overflow-wrap:anywhere;}
+  .toolbar{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;
+           padding:10px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);}
+  .pill{border:1px solid rgba(255,255,255,.10);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:12px;}
+  svg{width:100%;height:520px;display:block;background:#ffffff;border:1px solid rgba(15,23,42,.12);border-radius:14px;}
+  .mini{font-size:12px;color:var(--muted)}
+  .kbd{font-family:var(--mono);font-size:11px;padding:2px 6px;border:1px solid rgba(255,255,255,.18);border-radius:7px;color:var(--muted)}
+
+  
+
+  body{font-size:13px;}
+  .hd{padding:8px 10px;font-size:14px;}
+  .bd{padding:10px;}
+  .row{gap:8px;margin-top:8px;}
+  textarea{min-height:120px; font-size:12px;}
+  input,select{padding:8px 10px; font-size:12px;}
+  .btn{padding:8px 10px; font-size:12px;}
+  .mini{font-size:12px; line-height:1.35;}
+  .list{max-height:460px;}
+  .toolbar{padding:8px 10px;}
+  .pill{font-size:12px;}
+  svg{height:420px;} /* 결과는 고정 높이 */
+
+
+  #optCard .bd{padding:8px 10px;}
+  #optCard .bd{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px 16px;
+}
+
+#optCard .row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-top:0;
+}
+
+#optCard .mini{
+    flex:0 0 90px;
+    margin-top:0;
+}
+
+#optCard input,
+#optCard select{
+    width:120px;
+    max-width:120px;
+    min-width:120px;
+}
+
+#optCard input[type="color"]{
+    width:70px;
+    min-width:70px;
+    max-width:70px;
+}
+
+#optCard .row:last-child{
+    grid-column:1 / span 2;
+}
+
+#optCard details{
+    grid-column:1 / span 2;
+}
+  #optCard .row:first-child{margin-top:0;}
+  #optCard .mini{margin-top:6px;}
+
+
+
+/* ---- FlankingViz: publication-style tweaks (vQ1) ---- */
+:root{
+  /* High-quality neutral palette */
+  --ink:#0b1220;
+  --muted:#334155;
+  --muted2:#64748b;
+  --line:#cbd5e1;
+  --gene:#e2e8f0;
+  --gene2:#f1f5f9;
+  --accent:#e11d48; /* rose */
+  --accent2:#fb7185; /* light rose */
+  --bg:#ffffff;
+}
+body{background:var(--bg); color:var(--ink);} .card{background:#ffffff;}
+.canvasWrap{background:#fff;}
+svg text{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  fill:var(--ink);
+  dominant-baseline:middle;
+}
+svg .distText{fill:var(--muted2); font-weight:650;}
+svg .geneText{font-weight:750;}
+svg .distLine{stroke:var(--line); stroke-width:1.2; stroke-linecap:round;}
+svg .geneLine{stroke:rgba(11,18,32,.75); stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round;}
+svg .geneBody{stroke:rgba(11,18,32,.22); stroke-width:1.1; stroke-linejoin:round;}
+svg .insTri{stroke:rgba(15,23,42,.18); stroke-width:1.2;}
+svg .insArrow{stroke-width:3; stroke-linecap:round;}
+
+  footer.appFooter{padding:10px 16px 18px;color:var(--muted);font-size:12px;text-align:center;}
+  footer.appFooter b{font-weight:700;}
+
+#optCard input[type="color"]{
+    display:block;
+    margin-top:6px;
+}
+
+#optCard .row:has(input[type="color"]){
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+#optCard .row:has(input[type="color"]) .mini{
+    flex:none;
+}
+
+</style>
+</head>
+<body>
+<script>
+window.__EMBEDDED_CSV__ = `Species,line,Chr,insertion_strand,left_id,left_strand,left_dist_bp,left_size_bp,right_id,right_strand,right_dist_bp,right_size_bp,Note
+rice,seq001,1,+,LOC_Os01g66020,+,X,1941,LOC_Os01g66030,-,1368,3290,"BLAST: chr01:38319111-38319417(+), id=100.0%, len=307, e=9.3e-157 | Overlap: LOC_Os01g66020(MSU);Os01t0883000-00(RAP_ANN)"
+rice,seq002,1,+,Os01t0391100-01,-,X,5660,LOC_Os01g29507,+,1375,5736,"BLAST: chr01:16538489-16538803(+), id=100.0%, len=315, e=4.4e-161 | Overlap: Os01t0391100-01(RAP_ANN)"
+rice,seq003,1,+,Os01t0235800-01,+,X,4090,LOC_Os01g13480,+,8862,1532,"BLAST: chr01:7508002-7508348(+), id=100.0%, len=347, e=2.1e-178 | Overlap: LOC_Os01g13470(MSU);Os01t0235800-01(RAP_ANN)"
+rice,seq004,1,+,LOC_Os01g69810,+,X,3080,LOC_Os01g69820,+,3343,3259,"BLAST: chr01:40309224-40309570(+), id=100.0%, len=347, e=2.1e-178 | Overlap: LOC_Os01g69810(MSU)"
+rice,seq005,1,+,Os01t0181033-00,-,X,366,Os01t0181166-00,-,2998,560,"BLAST: chr01:4274624-4274960(+), id=100.0%, len=337, e=5.4e-173 | Overlap: LOC_Os01g08580(MSU);Os01t0181000-00(RAP_ANN);Os01t0181033-00(RAP_ANN)"
+rice,seq006,1,+,LOC_Os01g25860,-,2145,6749,Os01t0360600-01,-,6455,4086,"BLAST: chr01:14672547-14672851(+), id=100.0%, len=305, e=1.1e-155"
+rice,seq007,1,+,LOC_Os01g01810,-,3373,318,LOC_Os01g01830,+,1172,11525,"BLAST: chr01:436125-436441(+), id=100.0%, len=317, e=3.6e-162"
+rice,seq008,1,+,LOC_Os01g18950,-,285,1133,Os01t0294400-00,+,448,609,"BLAST: chr01:10714556-10714903(+), id=100.0%, len=348, e=5.9e-179"
+rice,seq009,1,+,LOC_Os01g49320,-,5064,1339,Os01t0687450-00,-,2477,636,"BLAST: chr01:28361173-28361516(+), id=100.0%, len=344, e=8.7e-177"
+rice,seq010,1,+,LOC_Os01g33869,+,5869,15642,LOC_Os01g33900,+,2070,231,"BLAST: chr01:18647631-18647951(+), id=100.0%, len=321, e=2.5e-164"
+rice,seq011,2,+,Os02t0254233-00,-,X,1199,Os02t0254366-00,-,13282,372,"BLAST: chr02:8680212-8680524(+), id=100.0%, len=313, e=5.3e-160 | Overlap: Os02t0254100-00(RAP_ANN);LOC_Os02g15500(MSU);Os02t0254233-00(RAP_ANN)"
+rice,seq012,2,+,Os02t0570300-00,+,X,2286,LOC_Os02g36140,+,10406,8410,"BLAST: chr02:21754298-21754603(+), id=100.0%, len=306, e=3.2e-156 | Overlap: Os02t0570300-00(RAP_ANN)"
+rice,seq013,2,+,LOC_Os02g39960,-,X,2101,LOC_Os02g39970,-,2268,7417,"BLAST: chr02:24164256-24164561(+), id=100.0%, len=306, e=3.2e-156 | Overlap: Os02t0613100-00(RAP_ANN);LOC_Os02g39960(MSU)"
+rice,seq014,2,+,LOC_Os02g36860,-,X,390,LOC_Os02g36870,+,7621,2608,"BLAST: chr02:22237030-22237367(+), id=100.0%, len=338, e=1.5e-173 | Overlap: Os02t0578500-00(RAP_ANN);LOC_Os02g36860(MSU);Os02t0578601-00(RAP_PRED)"
+rice,seq015,2,+,Os02t0139900-01,-,X,1326,LOC_Os02g04725,-,366,2636,"BLAST: chr02:2140926-2141271(+), id=100.0%, len=346, e=7.2e-178 | Overlap: Os02t0139900-01(RAP_ANN);Os02t0140000-00(RAP_PRED);LOC_Os02g04720(MSU)"
+rice,seq016,2,+,LOC_Os02g15010,-,958,642,LOC_Os02g15020,-,3266,570,"BLAST: chr02:8376942-8377275(+), id=100.0%, len=334, e=2.3e-171"
+rice,seq017,2,+,LOC_Os02g10120,-,5566,6007,LOC_Os02g10130,-,9129,8793,"BLAST: chr02:5288192-5288515(+), id=100.0%, len=324, e=5.8e-166"
+rice,seq018,2,+,LOC_Os02g33100,-,14239,342,LOC_Os02g33110,+,7347,4708,"BLAST: chr02:19674862-19675196(+), id=100.0%, len=335, e=6.5e-172"
+rice,seq019,2,+,LOC_Os02g42400,+,915,523,LOC_Os02g42406,-,728,2715,"BLAST: chr02:25509840-25510145(+), id=100.0%, len=306, e=3.2e-156"
+rice,seq020,2,+,LOC_Os02g41460,-,10317,1568,LOC_Os02g41470,-,5440,11939,"BLAST: chr02:24842425-24842734(+), id=100.0%, len=310, e=2.2e-158"
+rice,seq021,3,+,Os03t0572950-00,+,X,432,Os03t0573001-00,+,2226,1712,"BLAST: chr03:20883806-20884118(+), id=100.0%, len=313, e=5.3e-160 | Overlap: LOC_Os03g37650(MSU);Os03t0572950-00(RAP_PRED)"
+rice,seq022,3,+,Os03t0167400-00,+,X,3723,Os03t0167450-00,-,2435,513,"BLAST: chr03:3639031-3639368(+), id=100.0%, len=338, e=1.5e-173 | Overlap: LOC_Os03g07120(MSU);Os03t0167400-00(RAP_ANN)"
+rice,seq023,3,+,LOC_Os03g56100,+,X,3371,Os03t0771301-00,-,1486,231,"BLAST: chr03:31960613-31960958(+), id=100.0%, len=346, e=7.2e-178 | Overlap: LOC_Os03g56100(MSU)"
+rice,seq024,3,+,LOC_Os03g15660,-,X,1135,Os03t0263150-00,+,5131,279,"BLAST: chr03:8636353-8636681(+), id=100.0%, len=329, e=1.1e-168 | Overlap: LOC_Os03g15660(MSU);Os03t0263000-01(RAP_ANN)"
+rice,seq025,3,+,LOC_Os03g04600,-,3539,4910,Os03t0139400-01,+,121,937,"BLAST: chr03:2154211-2154524(+), id=100.0%, len=314, e=1.5e-160"
+rice,seq026,3,+,LOC_Os03g60120,-,81,1234,LOC_Os03g60130,-,844,3111,"BLAST: chr03:34193731-34194038(+), id=100.0%, len=308, e=2.7e-157"
+rice,seq027,3,+,LOC_Os03g11680,-,487,1916,LOC_Os03g11690,+,14180,3425,"BLAST: chr03:6100828-6101158(+), id=100.0%, len=331, e=9.5e-170"
+rice,seq028,3,+,LOC_Os03g19150,-,901,3046,Os03t0303900-00,+,1531,396,"BLAST: chr03:10736211-10736550(+), id=100.0%, len=340, e=1.3e-174"
+rice,seq029,4,+,Os04t0580001-01,+,X,5179,LOC_Os04g49070,-,1768,2375,"BLAST: chr04:29254524-29254861(+), id=100.0%, len=338, e=1.5e-173 | Overlap: Os04t0580001-01(RAP_ANN)"
+rice,seq030,4,+,LOC_Os04g45700,+,X,2005,LOC_Os04g45710,+,1079,4995,"BLAST: chr04:27034035-27034358(+), id=100.0%, len=324, e=5.8e-166 | Overlap: LOC_Os04g45700(MSU);Os04t0540300-00(RAP_ANN)"
+rice,seq031,4,+,Os04t0623550-01,-,X,1671,LOC_Os04g53214,+,3038,3532,"BLAST: chr04:31689746-31690078(+), id=100.0%, len=333, e=7.8e-171 | Overlap: LOC_Os04g53210(MSU);Os04t0623500-01(RAP_ANN);Os04t0623550-01(RAP_ANN)"
+rice,seq032,4,+,LOC_Os04g02210,-,X,780,LOC_Os04g02220,-,2224,2300,"BLAST: chr04:759275-759617(+), id=100.0%, len=343, e=3e-176 | Overlap: LOC_Os04g02210(MSU)"
+rice,seq033,4,+,LOC_Os04g38380,-,2192,1055,Os04t0456700-01,+,179,985,"BLAST: chr04:22828790-22829138(+), id=100.0%, len=349, e=1.7e-179"
+rice,seq034,4,+,LOC_Os04g29680,-,4329,3557,LOC_Os04g29700,-,10027,6283,"BLAST: chr04:17675740-17676085(+), id=100.0%, len=346, e=7.2e-178"
+rice,seq035,4,+,LOC_Os04g21250,-,5274,3733,LOC_Os04g21260,+,625,3238,"BLAST: chr04:11989125-11989456(+), id=100.0%, len=332, e=2.7e-170"
+rice,seq036,4,+,Os04t0206200-01,-,689,3627,Os04t0206300-00,+,152,1148,"BLAST: chr04:7141110-7141441(+), id=100.0%, len=332, e=2.7e-170"
+rice,seq037,5,+,Os05t0561500-01,-,X,3172,Os05t0561600-01,+,6282,3957,"BLAST: chr05:27937393-27937732(+), id=100.0%, len=340, e=1.3e-174 | Overlap: LOC_Os05g48750(MSU);Os05t0561500-01(RAP_ANN)"
+rice,seq038,5,+,LOC_Os05g47510,+,X,1323,LOC_Os05g47520,-,2622,943,"BLAST: chr05:27219740-27220079(+), id=100.0%, len=340, e=1.3e-174 | Overlap: Os05t0548600-01(RAP_ANN);LOC_Os05g47510(MSU)"
+rice,seq039,5,+,Os05t0430300-01,+,X,5970,LOC_Os05g35540,-,3639,3627,"BLAST: chr05:21122069-21122380(+), id=100.0%, len=312, e=1.8e-159 | Overlap: Os05t0430300-01(RAP_ANN);LOC_Os05g35530(MSU)"
+rice,seq040,5,+,Os05t0297001-01,+,X,2164,LOC_Os05g23200,-,1983,2629,"BLAST: chr05:13233076-13233423(+), id=100.0%, len=348, e=5.9e-179 | Overlap: Os05t0297001-01(RAP_ANN)"
+rice,seq041,5,+,LOC_Os05g00996,-,284,4047,LOC_Os05g00998,-,4936,1061,"BLAST: chr05:19190-19522(+), id=100.0%, len=333, e=7.8e-171"
+rice,seq042,5,+,LOC_Os05g14360,+,241,1667,LOC_Os05g14370,+,4280,1684,"BLAST: chr05:8082310-8082612(+), id=100.0%, len=303, e=1.4e-154"
+rice,seq043,5,+,LOC_Os05g41930,-,3577,2770,LOC_Os05g41940,+,1448,3390,"BLAST: chr05:24558744-24559048(+), id=100.0%, len=305, e=1.1e-155"
+rice,seq044,5,+,Os05t0514600-01,-,5316,1812,LOC_Os05g43890,+,5033,353,"BLAST: chr05:25521574-25521877(+), id=100.0%, len=304, e=3.9e-155"
+rice,seq045,6,+,Os06t0488300-00,+,X,600,LOC_Os06g29370,+,3956,1922,"BLAST: chr06:16786916-16787264(+), id=100.0%, len=349, e=1.7e-179 | Overlap: LOC_Os06g29360(MSU);Os06t0488300-00(RAP_PRED)"
+rice,seq046,6,+,Os06t0163000-01,-,X,5833,LOC_Os06g06770,+,6341,5325,"BLAST: chr06:3179668-3180009(+), id=100.0%, len=342, e=1e-175 | Overlap: LOC_Os06g06760(MSU);Os06t0163000-01(RAP_ANN)"
+rice,seq047,6,+,Os06t0715200-01,+,X,843,LOC_Os06g50140,-,886,2609,"BLAST: chr06:30362834-30363168(+), id=100.0%, len=335, e=6.5e-172 | Overlap: Os06t0715200-01(RAP_ANN);LOC_Os06g50130(MSU)"
+rice,seq048,6,+,Os06t0233800-01,-,X,2387,LOC_Os06g12750,-,2488,342,"BLAST: chr06:6955428-6955760(+), id=100.0%, len=333, e=7.8e-171 | Overlap: Os06t0233800-01(RAP_ANN);LOC_Os06g12740(MSU)"
+rice,seq049,6,+,LOC_Os06g36980,-,13506,1443,LOC_Os06g36990,+,2797,5581,"BLAST: chr06:21806290-21806631(+), id=100.0%, len=342, e=1e-175"
+rice,seq050,6,+,LOC_Os06g04880,-,1734,6582,LOC_Os06g04889,-,3105,855,"BLAST: chr06:2148353-2148666(+), id=100.0%, len=314, e=1.5e-160"
+rice,seq051,6,+,Os06t0112550-00,+,3384,68,Os06t0112700-01,+,10577,2064,"BLAST: chr06:705793-706113(+), id=100.0%, len=321, e=2.5e-164"
+rice,seq052,6,+,LOC_Os06g31980,-,1533,466,LOC_Os06g31990,-,420,6525,"BLAST: chr06:18586523-18586859(+), id=100.0%, len=337, e=5.4e-173"
+rice,seq053,7,+,LOC_Os07g12060,+,X,6686,LOC_Os07g12070,-,5167,2808,"BLAST: chr07:6734529-6734865(+), id=100.0%, len=337, e=5.4e-173 | Overlap: LOC_Os07g12060(MSU)"
+rice,seq054,7,+,Os07t0103600-01,-,X,1077,LOC_Os07g01350,+,6778,351,"BLAST: chr07:218947-219250(+), id=100.0%, len=304, e=3.9e-155 | Overlap: Os07t0103500-01(RAP_ANN);LOC_Os07g01340(MSU);Os07t0103600-01(RAP_ANN)"
+rice,seq055,7,+,LOC_Os07g03710,+,X,934,LOC_Os07g03720,+,5126,4223,"BLAST: chr07:1512094-1512407(+), id=100.0%, len=314, e=1.5e-160 | Overlap: LOC_Os07g03710(MSU);Os07t0129200-01(RAP_ANN)"
+rice,seq056,7,+,Os07t0686900-01,+,X,4785,Os07t0686950-01,-,1872,544,"BLAST: chr07:29185653-29185954(+), id=100.0%, len=302, e=4.7e-154 | Overlap: LOC_Os07g48750(MSU);Os07t0686900-01(RAP_ANN)"
+rice,seq057,7,+,LOC_Os07g16010,-,12609,627,Os07t0264000-01,+,170,4831,"BLAST: chr07:9344147-9344461(+), id=100.0%, len=315, e=4.4e-161"
+rice,seq058,7,+,LOC_Os07g27920,+,3186,309,LOC_Os07g27930,-,1773,3525,"BLAST: chr07:16287808-16288149(+), id=100.0%, len=342, e=1e-175"
+rice,seq059,7,+,LOC_Os07g32480,+,2547,3183,LOC_Os07g32510,+,27367,2583,"BLAST: chr07:19334455-19334790(+), id=100.0%, len=336, e=1.9e-172"
+rice,seq060,7,+,LOC_Os07g14290,-,2777,2389,LOC_Os07g14300,+,1934,1092,"BLAST: chr07:8153635-8153964(+), id=100.0%, len=330, e=3.3e-169"
+rice,seq061,8,+,LOC_Os08g42380,-,X,1078,LOC_Os08g42390,+,689,3195,"BLAST: chr08:26750352-26750681(+), id=100.0%, len=330, e=3.3e-169 | Overlap: Os08t0535600-01(RAP_ANN);LOC_Os08g42380(MSU)"
+rice,seq062,8,+,LOC_Os08g09800,-,X,5829,LOC_Os08g09810,-,7794,3979,"BLAST: chr08:5664372-5664677(+), id=100.0%, len=306, e=3.2e-156 | Overlap: LOC_Os08g09800(MSU)"
+rice,seq063,8,+,LOC_Os08g36820,-,X,1245,LOC_Os08g36830,+,1749,1608,"BLAST: chr08:23261158-23261484(+), id=100.0%, len=327, e=1.4e-167 | Overlap: Os08t0472400-00(RAP_ANN);LOC_Os08g36820(MSU)"
+rice,seq064,8,+,LOC_Os08g24290,+,X,2670,Os08t0331800-01,-,1885,692,"BLAST: chr08:14661188-14661513(+), id=100.0%, len=326, e=4.8e-167 | Overlap: LOC_Os08g24290(MSU)"
+rice,seq065,8,+,LOC_Os08g03800,-,526,429,LOC_Os08g03810,-,600,3959,"BLAST: chr08:1817684-1818029(+), id=100.0%, len=346, e=7.2e-178"
+rice,seq066,8,+,LOC_Os08g22389,+,4113,281,LOC_Os08g22400,+,6526,4290,"BLAST: chr08:13509729-13510031(+), id=100.0%, len=303, e=1.4e-154"
+rice,seq067,8,+,LOC_Os08g19070,+,790,273,LOC_Os08g19080,+,1939,2301,"BLAST: chr08:11385107-11385452(+), id=100.0%, len=346, e=7.2e-178"
+rice,seq068,8,+,LOC_Os08g10830,+,4915,2748,LOC_Os08g10840,+,4,868,"BLAST: chr08:6382352-6382663(+), id=100.0%, len=312, e=1.8e-159"
+rice,seq069,9,+,Os09t0495500-01,-,X,2112,LOC_Os09g32160,+,4142,1255,"BLAST: chr09:19186140-19186467(+), id=100.0%, len=328, e=4e-168 | Overlap: LOC_Os09g32150(MSU);Os09t0495500-01(RAP_ANN)"
+rice,seq070,9,+,LOC_Os09g26490,+,X,1248,Os09t0435650-00,-,2463,363,"BLAST: chr09:16009931-16010241(+), id=100.0%, len=311, e=6.4e-159 | Overlap: LOC_Os09g26490(MSU)"
+rice,seq071,9,+,LOC_Os09g28290,+,X,703,Os09t0456100-01,+,7325,5449,"BLAST: chr09:17175228-17175542(+), id=100.0%, len=315, e=4.4e-161 | Overlap: LOC_Os09g28290(MSU)"
+rice,seq072,9,+,Os09t0446500-00,+,X,924,LOC_Os09g27400,-,122,1581,"BLAST: chr09:16648366-16648700(+), id=100.0%, len=335, e=6.5e-172 | Overlap: Os09t0446350-01(RAP_ANN);Os09t0446500-00(RAP_PRED)"
+rice,seq073,9,+,LOC_Os09g26610,-,7174,801,LOC_Os09g26620,+,1137,1995,"BLAST: chr09:16151709-16152039(+), id=100.0%, len=331, e=9.5e-170"
+rice,seq074,9,+,LOC_Os09g22240,-,3319,2411,LOC_Os09g22260,-,5069,1600,"BLAST: chr09:13456680-13456992(+), id=100.0%, len=313, e=5.3e-160"
+rice,seq075,9,+,LOC_Os09g14890,-,8603,603,LOC_Os09g14900,-,611,4857,"BLAST: chr09:8898738-8899061(+), id=100.0%, len=324, e=5.8e-166"
+rice,seq076,9,+,LOC_Os09g23810,-,2782,2507,Os09t0403300-01,-,64,2689,"BLAST: chr09:14193776-14194093(+), id=100.0%, len=318, e=1e-162"
+rice,seq077,10,+,LOC_Os10g42750,+,X,3839,LOC_Os10g42754,-,464,3284,"BLAST: chr10:23065662-23066007(+), id=100.0%, len=346, e=7.2e-178 | Overlap: LOC_Os10g42750(MSU);Os10t0578200-01(RAP_ANN)"
+rice,seq078,10,+,Os10t0504900-01,+,X,543,Os10t0505000-01,-,3108,654,"BLAST: chr10:19303966-19304307(+), id=100.0%, len=342, e=1e-175 | Overlap: Os10t0504900-01(RAP_ANN);LOC_Os10g36100(MSU)"
+rice,seq079,10,+,Os10t0467900-01,-,X,6087,LOC_Os10g33000,+,7944,2932,"BLAST: chr10:17268693-17269001(+), id=100.0%, len=309, e=7.7e-158 | Overlap: Os10t0467900-01(RAP_ANN);LOC_Os10g32990(MSU)"
+rice,seq080,10,+,LOC_Os10g21490,-,X,2595,LOC_Os10g21500,-,3345,276,"BLAST: chr10:11007495-11007807(+), id=100.0%, len=313, e=5.3e-160 | Overlap: LOC_Os10g21490(MSU);Os10t0358900-00(RAP_PRED)"
+rice,seq081,10,+,Os10t0482066-00,-,632,231,LOC_Os10g34090,-,2837,2837,"BLAST: chr10:18193053-18193389(+), id=100.0%, len=337, e=5.4e-173"
+rice,seq082,10,+,LOC_Os10g20750,-,2831,5593,LOC_Os10g20770,-,7517,2628,"BLAST: chr10:10522832-10523134(+), id=100.0%, len=303, e=1.4e-154"
+rice,seq083,10,+,LOC_Os10g05450,-,456,293,LOC_Os10g05460,-,2934,1033,"BLAST: chr10:2688095-2688426(+), id=100.0%, len=332, e=2.7e-170"
+rice,seq084,10,+,LOC_Os10g04750,-,945,895,LOC_Os10g04760,-,243,1756,"BLAST: chr10:2280389-2280726(+), id=100.0%, len=338, e=1.5e-173"
+rice,seq085,11,+,LOC_Os11g39480,-,X,555,LOC_Os11g39490,-,1332,4763,"BLAST: chr11:23506719-23507033(+), id=100.0%, len=315, e=4.4e-161 | Overlap: LOC_Os11g39480(MSU)"
+rice,seq086,11,+,LOC_Os11g06180,+,X,2062,Os11t0160600-01,+,1212,494,"BLAST: chr11:2950522-2950857(+), id=100.0%, len=336, e=1.9e-172 | Overlap: Os11t0160550-00(RAP_ANN);LOC_Os11g06180(MSU)"
+rice,seq087,11,+,Os11t0549695-01,-,X,3528,LOC_Os11g34860,+,5337,6427,"BLAST: chr11:20420165-20420502(+), id=100.0%, len=338, e=1.5e-173 | Overlap: LOC_Os11g34850(MSU);Os11t0549695-01(RAP_ANN)"
+rice,seq088,11,+,LOC_Os11g36860,-,X,2936,LOC_Os11g36870,+,2422,5249,"BLAST: chr11:21743324-21743628(+), id=100.0%, len=305, e=1.1e-155 | Overlap: LOC_Os11g36860(MSU)"
+rice,seq089,11,+,LOC_Os11g15430,+,3482,3898,LOC_Os11g15440,+,2159,3788,"BLAST: chr11:8749845-8750164(+), id=100.0%, len=320, e=8.6e-164"
+rice,seq090,11,+,LOC_Os11g37900,-,788,3235,Os11t0591400-01,-,12553,5085,"BLAST: chr11:22472275-22472587(+), id=100.0%, len=313, e=5.3e-160"
+rice,seq091,11,+,LOC_Os11g18660,-,2907,1329,LOC_Os11g18670,-,6032,7563,"BLAST: chr11:10542262-10542606(+), id=100.0%, len=345, e=2.5e-177"
+rice,seq092,11,+,Os11t0575200-00,+,1643,3675,LOC_Os11g36690,+,5608,1805,"BLAST: chr11:21659413-21659754(+), id=100.0%, len=342, e=1e-175"
+rice,seq093,12,+,Os12t0265100-01,-,X,3325,LOC_Os12g16420,+,6468,972,"BLAST: chr12:9398329-9398657(+), id=100.0%, len=329, e=1.1e-168 | Overlap: LOC_Os12g16410(MSU);Os12t0265100-01(RAP_ANN)"
+rice,seq094,12,+,LOC_Os12g42876,+,X,4086,LOC_Os12g42884,+,10163,5803,"BLAST: chr12:26646726-26647029(+), id=100.0%, len=304, e=3.9e-155 | Overlap: Os12t0623900-01(RAP_ANN);Os12t0623950-00(RAP_ANN);LOC_Os12g42876(MSU)"
+rice,seq095,12,+,LOC_Os12g27510,+,X,1226,LOC_Os12g27520,-,3270,3372,"BLAST: chr12:16192509-16192847(+), id=100.0%, len=339, e=4.4e-174 | Overlap: LOC_Os12g27510(MSU)"
+rice,seq096,12,+,Os12t0148301-00,-,X,2578,Os12t0148400-01,-,4156,9854,"BLAST: chr12:2368517-2368820(+), id=100.0%, len=304, e=3.9e-155 | Overlap: Os12t0148301-00(RAP_PRED);LOC_Os12g05310(MSU)"
+rice,seq097,12,+,Os12t0472432-00,+,3436,324,LOC_Os12g28730,+,153,2947,"BLAST: chr12:16974674-16974986(+), id=100.0%, len=313, e=5.3e-160"
+rice,seq098,12,+,LOC_Os12g08710,+,9029,468,LOC_Os12g08720,+,2847,3484,"BLAST: chr12:4444505-4444820(+), id=100.0%, len=316, e=1.2e-161"
+rice,seq099,12,+,LOC_Os12g22030,-,2634,3912,LOC_Os12g22040,+,8356,783,"BLAST: chr12:12399272-12399586(+), id=100.0%, len=315, e=4.4e-161"
+rice,seq100,12,+,LOC_Os12g17710,-,2804,1344,LOC_Os12g17730,-,3319,549,"BLAST: chr12:10150791-10151135(+), id=100.0%, len=345, e=2.5e-177"
+`;
+</script>
+
+<header>
+  <div><b>FlankingViz</b> <span class="hint">Drag: move along x-axis · Double-click: edit text · <span class="kbd">F</span>: element flip</span></div>
+  <div class="hint">FlankingViz • Yong Jin Choi • Kyung Hee University • jaayoutony@khu.ac.kr</div>
+</header>
+<div id="err" class="err"></div>
+
+<div class="wrap">
+  <!-- Left: data -->
+  <div class="card" style="grid-column:1;grid-row:1 / span 2;">
+    <div class="hd">1) Data Input</div>
+    <div class="bd scrollY">
+      <input id="file" type="file" accept=".csv,text/csv"/>
+      <textarea id="csvText" placeholder="Species,line,Chr,insertion_strand,left_id,left_strand,left_dist_bp,left_size_bp,right_id,right_strand,right_dist_bp,right_size_bp"></textarea>
+      <div class="row">
+        <button class="btn primary" id="loadBtn">Load / Parse</button>
+              </div>
+      <div class="mini">
+        • If the distance field is <b>X</b>, it is treated as an “intragenic insertion.”<br/>
+        • Comma, tab, or multiple spaces are all accepted as delimiters.
+      </div>
+
+      <div class="hd" style="margin:10px 0 0 0;">2) Line Selection</div>
+      <div class="list" id="list"></div>
+
+      <div class="row" style="margin-top:10px;">
+        <button class="btn" id="resetCurrent">Reset edits (current)</button>
+        <button class="btn" id="resetAll">Reset edits (ALL)</button>
+      </div>
+
+      <div class="mini" style="margin-top:6px;">
+        • Reset clears position (dx), strand, and label overrides.
+      </div>
+    </div>
+  </div>
+
+  <!-- Middle: render options -->
+  <div class="card" id="optCard" style="grid-column:2;grid-row:1;">
+    <div class="hd">3) Render Options</div>
+    <div class="bd">
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Auto fit</span>
+        <select id="autoFit">
+          <option value="on" selected>ON</option>
+          <option value="off">OFF</option>
+        </select>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">bp → px</span>
+        <input id="bpPerPx" type="number" step="0.5" min="0.5" value="1.000"/>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Palette</span>
+        <select id="palette">
+          <option value="nature" selected>Nature</option>
+          <option value="gray">Gray</option>
+        </select>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Labels</span>
+        <select id="labels">
+          <option value="all" selected>Distance + size + strand</option>
+          <option value="dist">Distance only</option>
+          <option value="none">Hidden</option>
+        </select>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Strand colors</span>
+        <select id="strandColorMode">
+          <option value="auto" selected>Auto (+ / -)</option>
+          <option value="palette">Palette only</option>
+        </select>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">+ strand</span>
+        <input id="strandPlusColor" type="color" value="#2f6fb3"/>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">- strand</span>
+        <input id="strandMinusColor" type="color" value="#2a9d8f"/>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Marker style</span>
+        <select id="insStyle">
+          <option value="triangle" selected>Triangle</option>
+          <option value="diamond">Diamond</option>
+          <option value="line">Line</option>
+        </select>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Marker size</span>
+        <input id="insSize" type="number" step="1" min="12" max="40" value="18"/>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Gene label</span>
+        <input id="geneFontSize" type="number" min="8" max="40" value="18"/>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Distance label</span>
+        <input id="distFontSize" type="number" min="8" max="50" value="24"/>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Title label</span>
+        <input id="titleFontSize" type="number" min="12" max="60" value="30"/>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Insertion label</span>
+        <input id="insFontSize" type="number" min="8" max="40" value="13"/>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Marker color</span>
+        <input id="insColor" type="color" value="#d24545"/>
+      </div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Overlap fix</span>
+        <select id="overlapFix">
+          <option value="on" selected>ON (separate along x-axis)</option>
+          <option value="off">OFF</option>
+        </select>
+      </div>
+      <div class="row">
+        <button class="btn" id="rerender">Re-render</button>
+        <button class="btn" id="resetAppearance">Reset appearance</button>
+      </div>
+      <details class="mini" style="margin-top:8px;"><summary style="cursor:pointer;">Help (collapse/expand)</summary>
+• Overlap resolution automatically spreads elements along the x-axis <b>without moving them on the y-axis</b>.<br/>
+• Drag moves elements only along the x-axis, double-click edits text, and <span class="kbd">F</span> flips the selected element.
+</details>
+    </div>
+  </div>
+
+  <!-- Right: selection editor -->
+  <div class="card" style="grid-column:2;grid-row:2;">
+    <div class="hd">4) Edit Selected Element</div>
+    <div class="bd">
+      <div class="row"><span class="mini" style="min-width:90px;">Selection</span><input id="selKey" type="text" readonly value="(none)"/></div>
+      <div class="row">
+        <span class="mini" style="min-width:90px;">Strand</span>
+        <select id="selStrand">
+          <option value="">(N/A)</option>
+          <option value="+">+</option>
+          <option value="-">-</option>
+        </select>
+      </div>
+      <div class="row"><span class="mini" style="min-width:90px;">Text</span><input id="selText" type="text" placeholder="Label override (leave blank for default)"/></div>
+      <div class="row">
+        <button class="btn" id="applySel">Apply</button>
+        <button class="btn" id="flipSel">Flip (F)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom: preview spans col 2-3 -->
+  <div class="card" style="grid-column:3;grid-row:1 / span 2;">
+    <div class="toolbar">
+      <div class="row">
+        <span class="pill" id="metaPill">No data</span>
+        <span class="pill" id="scalePill">scale: -</span>
+      </div>
+      <div class="row">
+        <button class="btn" id="exportSvg">Export SVG</button>
+        <button class="btn" id="exportAllSvg">Export ALL (ZIP)</button>
+      </div>
+    </div>
+    <div class="svgWrap" style="padding:10px;min-height:0;">
+      <svg id="svg" viewBox="0 0 1400 520" tabindex="0"></svg>
+    </div>
+  </div>
+</div>
+
+<footer class="appFooter">Created by <b>Yongjin Choi</b></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+
+/* Error surface */
+const errBox = document.getElementById("err");
+function showErr(msg){
+  if(!msg){ errBox.style.display="none"; errBox.textContent=""; return; }
+  errBox.style.display="block";
+  errBox.textContent = "ERROR\\n" + msg;
+}
+window.addEventListener("error",(e)=> showErr((e.message||"") + "\\n" + (e.filename||"") + ":" + (e.lineno||"")));
+window.addEventListener("unhandledrejection",(e)=> showErr(String(e.reason||e)));
+
+/* Palette */
+const DEFAULT_APPEARANCE = {
+  palette: "nature",
+  strandColorMode: "auto",
+  strandPlusColor: "#2f6fb3",
+  strandMinusColor: "#2a9d8f",
+  insStyle: "triangle",
+  insSize: "18",
+  insColor: "#d24545",
+  geneFontSize: "18",
+  distFontSize: "24",
+  titleFontSize: "30",
+  insFontSize: "13"
+};
+
+function resetAppearanceControls(){
+  const byId = (id)=>document.getElementById(id);
+  byId("palette").value = DEFAULT_APPEARANCE.palette;
+  byId("strandColorMode").value = DEFAULT_APPEARANCE.strandColorMode;
+  byId("strandPlusColor").value = DEFAULT_APPEARANCE.strandPlusColor;
+  byId("strandMinusColor").value = DEFAULT_APPEARANCE.strandMinusColor;
+  byId("insStyle").value = DEFAULT_APPEARANCE.insStyle;
+  byId("insSize").value = DEFAULT_APPEARANCE.insSize;
+  byId("insColor").value = DEFAULT_APPEARANCE.insColor;
+  if(byId("geneFontSize")) byId("geneFontSize").value = DEFAULT_APPEARANCE.geneFontSize;
+  if(byId("distFontSize")) byId("distFontSize").value = DEFAULT_APPEARANCE.distFontSize;
+  if(byId("titleFontSize")) byId("titleFontSize").value = DEFAULT_APPEARANCE.titleFontSize;
+  if(byId("insFontSize")) byId("insFontSize").value = DEFAULT_APPEARANCE.insFontSize;
+}
+
+function setPalette(){
+  const root = document.documentElement;
+  const pal = document.getElementById("palette").value;
+  const strandMode = document.getElementById("strandColorMode")?.value || "auto";
+  const plusColor = document.getElementById("strandPlusColor")?.value || "#2f6fb3";
+  const minusColor = document.getElementById("strandMinusColor")?.value || "#2a9d8f";
+  const insColor = document.getElementById("insColor")?.value || "#d24545";
+  if(pal==="gray"){
+    root.style.setProperty("--geneP","#9aa4b2");
+    root.style.setProperty("--geneM","#6b7280");
+    root.style.setProperty("--axis","#7e8a97");
+  } else {
+    root.style.setProperty("--geneP","#2f6fb3");
+    root.style.setProperty("--geneM","#2a9d8f");
+    root.style.setProperty("--axis","#7a8a9a");
+  }
+  root.style.setProperty("--ins", insColor);
+  root.style.setProperty("--strandColorMode", strandMode);
+  root.style.setProperty("--strandPlus", plusColor);
+  root.style.setProperty("--strandMinus", minusColor);
+}
+function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+function COL(){
+  return {axis:cssVar("--axis"), ins:cssVar("--ins"), gp:cssVar("--geneP"), gm:cssVar("--geneM"), sp:cssVar("--strandPlus"), sm:cssVar("--strandMinus"), strandMode:cssVar("--strandColorMode")||"auto",
+                       text:cssVar("--text"), muted:cssVar("--muted")};
+}
+function geneFillByStrand(strand, col){
+  if((col.strandMode||"auto")==="auto") return strand==="-" ? col.sm : col.sp;
+  return strand==="-" ? col.gm : col.gp;
+}
+
+/* Flexible parsing: comma / tab / whitespace */
+function detectMode(headerLine){
+  const c = (headerLine.match(/,/g)||[]).length;
+  const t = (headerLine.match(/\\t/g)||[]).length;
+  if(c>0) return "comma";
+  if(t>0) return "tab";
+  return "ws";
+}
+function splitFlex(line, mode){
+  line = line.trim();
+  if(mode==="comma") return splitQuoted(line, ",");
+  if(mode==="tab") return splitQuoted(line, "\\t");
+  // whitespace: collapse multiple spaces/tabs; NO quote support needed for your use-case
+  return line.split(/\\s+/g);
+}
+function splitQuoted(line, delim){
+  const out=[]; let cur="", inQ=false;
+  for(let i=0;i<line.length;i++){
+    const ch=line[i];
+    if(ch === '"'){
+      if(inQ && line[i+1] === '"'){ cur+='"'; i++; }
+      else inQ = !inQ;
+    } else if(ch===delim && !inQ){
+      out.push(cur); cur="";
+    } else cur += ch;
+  }
+  out.push(cur);
+  return out;
+}
+function parseTable(text){
+  // Normalize line separators across environments
+  let raw = (text ?? "").toString();
+  raw = raw.replace(/\r\n/g,"\n").replace(/\r/g,"\n").replace(/\u2028|\u2029/g,"\n");
+  raw = raw.trim();
+  if(!raw) return [];
+
+  // --- Fix: allow multiline quoted fields (e.g., pasted FASTA in "sequence" column)
+  // Replace newlines that occur INSIDE double quotes with a single space.
+  // Also supports escaped quotes ("") inside quoted fields.
+  (function(){
+    let out = "";
+    let inQ = false;
+    for(let i=0;i<raw.length;i++){
+      const c = raw[i];
+      if(c === '"'){
+        if(inQ && raw[i+1] === '"'){ out += '"'; i++; continue; }
+        inQ = !inQ;
+        out += '"';
+        continue;
+      }
+      if(c === "\n" && inQ){ out += " "; continue; }
+      out += c;
+    }
+    raw = out;
+  })();
+
+  // If everything came in as a single line (common when pasting from some UIs),
+  // try to reconstruct records by splitting at "GB::" boundaries.
+  if(!raw.includes("\n") && raw.includes("GB::")){
+    const first = raw.indexOf("GB::");
+    if(first > 0){
+      const header = raw.slice(0, first).trim();
+      const rest = raw.slice(first).trim();
+      const recs = rest.split(/(?=GB::)/g).map(s=>s.trim()).filter(Boolean);
+      raw = [header, ...recs].join("\n");
+    }
+  }
+
+  let lines = raw.split("\n").map(l=>l.trim()).filter(l=>l.length>0);
+  if(lines.length < 1) return [];
+
+  const mode = detectMode(lines[0]);
+  const firstCols = splitFlex(lines[0], mode).map(s=>s.trim());
+
+  // Headerless input support (e.g., direct CSV export with no header row)
+  const headStr = firstCols.join("|").toLowerCase();
+  const looksLikeHeader =
+    headStr.includes("species") || headStr.includes("chr") || headStr.includes("왼쪽") ||
+    headStr.includes("오른쪽") || headStr.includes("left") || headStr.includes("right");
+
+  let header = firstCols;
+  let startIdx = 1;
+
+  if(!looksLikeHeader){
+    const n = firstCols.length;
+
+    // --- Headerless column inference ---
+    // Supports both:
+    //  A) with sequence column (often multiline FASTA): Species,line,Chr,insertion_strand,Bar_fw sequence,왼쪽,왼쪽 strand,왼쪽 거리(bp),왼쪽 size (bp),오른쪽,오른쪽 strand,오른쪽 거리(bp),오른쪽 size (bp)  (n=13)
+    //  B) without sequence column: Species,line,Chr,insertion_strand,왼쪽,왼쪽 strand,왼쪽 거리(bp),왼쪽 size (bp),오른쪽,오른쪽 strand,오른쪽 거리(bp),오른쪽 size (bp) (n=12)
+
+    if(n >= 13){
+      header = ["Species","line","Chr","insertion_strand","Bar_fw sequence","왼쪽","왼쪽 strand","왼쪽 거리(bp)","왼쪽 size (bp)","오른쪽","오른쪽 strand","오른쪽 거리(bp)","오른쪽 size (bp)"].slice(0,n);
+    }else if(n === 12){
+      header = ["Species","line","Chr","insertion_strand","왼쪽","왼쪽 strand","왼쪽 거리(bp)","왼쪽 size (bp)","오른쪽","오른쪽 strand","오른쪽 거리(bp)","오른쪽 size (bp)"];
+    }else if(n === 11){
+      // legacy (no insertion_strand column)
+      header = ["Species","line","Chr","왼쪽","왼쪽 strand","왼쪽 거리(bp)","왼쪽 size (bp)","오른쪽","오른쪽 strand","오른쪽 거리(bp)","오른쪽 size (bp)"];
+    }else{
+      header = Array.from({length:n}, (_,i)=>`col${i+1}`);
+    }
+    startIdx = 0; // include the first line as a data row
+  }
+
+  const rows=[];
+  for(let i=startIdx;i<lines.length;i++){
+    const cols = splitFlex(lines[i], mode);
+    if(cols.length===1 && cols[0]==="") continue;
+    const obj={};
+    for(let j=0;j<header.length;j++) obj[header[j]] = (cols[j]??"").trim();
+    rows.push(obj);
+  }
+  return rows;
+}
+
+
+/* Normalization */
+function normStrand(s){
+  s=(s??"").toString().trim();
+  if(["+","→","(→)"].includes(s)) return "+";
+  if(["-","←","(←)"].includes(s)) return "-";
+  return "";
+}
+function isX(v){ return (v??"").toString().trim().toLowerCase()==="x"; }
+function toNum(v){
+  const s=(v??"").toString().trim();
+  if(!s || isX(s)) return null;
+  const n=Number(s);
+  return Number.isFinite(n)?n:null;
+}
+function normalizeRows(rows){
+  const get=(o,...ks)=>{ for(const k of ks){ if(k in o) return o[k]; } return ""; };
+  return rows.map(r=>({
+    Note:get(r,"Note","note","NOTE","Heuristic","heuristic","비고")||"",
+    Species:get(r,"Species"),
+    line:get(r,"line","Line"),
+    Chr:get(r,"Chr","chr"),
+    insertion_strand:normStrand(get(r,"insertion_strand","Insertion strand","insertion strand","삽입 strand","삽입 방향","ins_strand","insertion","Insertion"))||"",
+    left_id:get(r,"left_id","left","Left","왼쪽"),
+    left_strand:normStrand(get(r,"left_strand","left strand","왼쪽 strand","왼쪽 방향"))||"+",
+    left_intragenic:isX(get(r,"left_dist_bp","left_dist_bp","left distance","왼쪽 거리(bp)")),
+    left_dist_bp:toNum(get(r,"left_dist_bp","left_dist_bp","left distance","왼쪽 거리(bp)")),
+    left_size_bp:toNum(get(r,"left_size_bp","left_size_bp","left size","왼쪽 size (bp)")) ?? 0,
+    right_id:get(r,"right_id","right","Right","오른쪽"),
+    right_strand:normStrand(get(r,"right_strand","right strand","오른쪽 strand","오른쪽 방향"))||"+",
+    right_intragenic:isX(get(r,"right_dist_bp","right_dist_bp","right distance","오른쪽 거리(bp)")),
+    right_dist_bp:toNum(get(r,"right_dist_bp","right_dist_bp","right distance","오른쪽 거리(bp)")),
+    right_size_bp:toNum(get(r,"right_size_bp","right_size_bp","right size","오른쪽 size (bp)")) ?? 0,
+  }));
+}
+
+/* State */
+let data=[], selectedIndex=-1, selectedKey=null;
+const edits = new Map(); // recKey -> {dxLeft, dxRight, strandLeft, strandRight, text:{}}
+function recKey(r){ return `${r.Species||""}__${r.line||""}__${r.Chr||""}`; }
+function getEd(r){
+  const k=recKey(r);
+  if(!edits.has(k)) edits.set(k,{dxLeft:0, dxRight:0, strandLeft:null, strandRight:null, text:{}});
+  return edits.get(k);
+}
+
+/* SVG helpers */
+const svg = document.getElementById("svg");
+const metaPill = document.getElementById("metaPill");
+const scalePill = document.getElementById("scalePill");
+const list = document.getElementById("list");
+
+function mk(tag, attrs={}){
+  const el=document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for(const [k,v] of Object.entries(attrs)) el.setAttribute(k,String(v));
+  return el;
+}
+function clearSVG(){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+function clientToSvg(evt){
+  const vb = svg.viewBox.baseVal;
+  const rect = svg.getBoundingClientRect();
+  const x = (evt.clientX - rect.left) * (vb.width / rect.width) + vb.x;
+  const y = (evt.clientY - rect.top)  * (vb.height/ rect.height)+ vb.y;
+  return {x,y};
+}
+
+function pxFromBp(bp, bpPerPx){ return bp / bpPerPx; }
+function geneInterval(centerX, sizeBp, bpPerPx, minVisBp){
+  const visBp=Math.max(sizeBp, minVisBp);
+  const w=pxFromBp(visBp, bpPerPx);
+  return {w, xL:centerX-w/2, xR:centerX+w/2};
+}
+function ellipseText(s, max=28){
+  s=(s??"").toString();
+  if(s.length<=max) return s;
+  return s.slice(0, Math.max(0, max-3)) + "...";
+}
+function computeScale(r, W, margin, minVisBp){
+  const leftSize=Math.max(r.left_size_bp||0,0);
+  const rightSize=Math.max(r.right_size_bp||0,0);
+  const leftExt = r.left_id ? (r.left_intragenic ? Math.max(leftSize/2, minVisBp/2)
+    : (Math.max(r.left_dist_bp||0,0)+Math.max(leftSize/2,minVisBp/2))) : 1;
+  const rightExt = r.right_id? (r.right_intragenic ? Math.max(rightSize/2, minVisBp/2)
+    : (Math.max(r.right_dist_bp||0,0)+Math.max(rightSize/2,minVisBp/2))) : 1;
+  const usable = W-2*margin;
+  const maxExt = Math.max(leftExt,rightExt,1);
+  return maxExt/(usable/2);
+}
+function assignLanes(leftInfo, rightInfo){
+  if(!leftInfo || !rightInfo) return {l:0,r:0};
+  const overlap = !(leftInfo.interval.xR < rightInfo.interval.xL || rightInfo.interval.xR < leftInfo.interval.xL);
+  if(!overlap) return {l:0,r:0};
+  return {l:-95,r:+95};
+}
+
+function drawGeneGroup(root, r, side, cfg){
+  const col=COL();
+  const ed=getEd(r);
+  const isLeft = side==="left";
+  const id = isLeft ? r.left_id : r.right_id;
+  if(!id) return null;
+
+  const keyGene = isLeft ? "leftGene" : "rightGene";
+  const keyName = isLeft ? "leftName" : "rightName";
+  const keyStr  = isLeft ? "leftStrand" : "rightStrand";
+  const keySize = isLeft ? "leftSize" : "rightSize";
+  const keyDist = isLeft ? "leftDist" : "rightDist";
+
+  const baseStr = isLeft ? r.left_strand : r.right_strand;
+  const strand  = isLeft ? (ed.strandLeft||baseStr) : (ed.strandRight||baseStr);
+
+  const sizeBp  = isLeft ? (r.left_size_bp||0) : (r.right_size_bp||0);
+  const distBp  = isLeft ? (r.left_dist_bp||0) : (r.right_dist_bp||0);
+  const intragenic = isLeft ? r.left_intragenic : r.right_intragenic;
+
+  const dxManual = isLeft ? ed.dxLeft : ed.dxRight;
+
+  // For intragenic insertions (distance = X), the gene and insertion marker
+  // must remain coupled. The insertion marker can be shifted together with
+  // the intragenic gene through cfg.xIns.
+  let centerX;
+  if(intragenic) {
+    centerX = cfg.xIns ?? cfg.x0;
+  } else {
+    const dx = pxFromBp(distBp, cfg.bpPerPx);
+    centerX = isLeft ? (cfg.x0 - dx) : (cfg.x0 + dx);
+    centerX += dxManual;
+  }
+
+  const interval = geneInterval(centerX, sizeBp, cfg.bpPerPx, cfg.minVisBp);
+  const w=interval.w;
+
+  const geneH=34;
+  const yCenter = cfg.baseY + cfg.laneY;
+  const yT = yCenter - geneH/2;
+
+  const head=Math.min(Math.max(w*0.16,18),64);
+  const body=Math.max(w-head,10);
+
+  let d;
+  if(strand==="-"){
+    d=`M ${interval.xR} ${yT}
+       L ${interval.xR-body} ${yT}
+       L ${interval.xR-body} ${yT-geneH*0.55}
+       L ${interval.xL} ${yT+geneH/2}
+       L ${interval.xR-body} ${yT+geneH+geneH*0.55}
+       L ${interval.xR-body} ${yT+geneH}
+       L ${interval.xR} ${yT+geneH} Z`;
+  } else {
+    d=`M ${interval.xL} ${yT}
+       L ${interval.xL+body} ${yT}
+       L ${interval.xL+body} ${yT-geneH*0.55}
+       L ${interval.xR} ${yT+geneH/2}
+       L ${interval.xL+body} ${yT+geneH+geneH*0.55}
+       L ${interval.xL+body} ${yT+geneH}
+       L ${interval.xL} ${yT+geneH} Z`;
+  }
+
+  const geneFontSize = Number(document.getElementById("geneFontSize")?.value || 18);
+  const distFontSize = Number(document.getElementById("distFontSize")?.value || 24);
+
+  const g = mk("g", {"data-key": keyGene, cursor:"ew-resize"});
+  root.appendChild(g);
+  const fill = geneFillByStrand(strand, col);
+  g.appendChild(mk("path",{d, fill, stroke:"rgba(0,0,0,.35)", "stroke-width":"2"}));
+
+  const labelsMode = document.getElementById("labels").value;
+  if(labelsMode!=="none"){
+    const nameText = ed.text[keyName] ?? id;
+    const tName = mk("text",{x:centerX,y:yT-18,"text-anchor":"middle",fill:col.text,"font-size": geneFontSize,"font-weight":"850"});
+    tName.textContent = ellipseText(nameText, 30);
+    tName.setAttribute("data-key", keyName);
+    g.appendChild(tName);
+
+    if(labelsMode==="all"){
+      const tStr = mk("text",{x:centerX,y:yT-42,"text-anchor":"middle",fill:col.muted,"font-size": geneFontSize,"font-weight":"800"});
+      tStr.textContent = ed.text[keyStr] ?? `(${strand})`;
+      tStr.setAttribute("data-key", keyStr);
+      g.appendChild(tStr);
+
+      const tSize = mk("text",{x:centerX,y:yT+geneH+26,"text-anchor":"middle",fill:col.muted,"font-size": geneFontSize,"font-weight":"650"});
+      tSize.textContent = ed.text[keySize] ?? `size ${Math.round(sizeBp)} bp`;
+      tSize.setAttribute("data-key", keySize);
+      g.appendChild(tSize);
+    }
+  }
+
+  if(intragenic){
+    // tick at insertion; for intragenic events, this follows the coupled insertion x-position
+    const xIns = cfg.xIns ?? cfg.x0;
+    root.appendChild(mk("line",{x1:xIns,y1:cfg.baseY-20,x2:xIns,y2:cfg.baseY+20,stroke:col.ins,"stroke-width":"5","stroke-linecap":"round"}));
+    return {interval, intragenic:true};
+  }
+
+  // distance bracket line
+  const xIns = cfg.xIns ?? cfg.x0;
+  const xEdge = isLeft ? interval.xR : interval.xL;
+  const yBracket = cfg.baseY + 72;
+  const yStemTop = yBracket - 14, yStemBot = yBracket + 14;
+
+  root.appendChild(mk("line",{x1:xEdge,y1:yBracket,x2:xIns,y2:yBracket,stroke:col.muted,"stroke-width":"3","stroke-dasharray":"10 8"}));
+  root.appendChild(mk("line",{x1:xEdge,y1:yStemTop,x2:xEdge,y2:yStemBot,stroke:col.muted,"stroke-width":"3"}));
+  root.appendChild(mk("line",{x1:xIns,y1:yStemTop,x2:xIns,y2:yStemBot,stroke:col.muted,"stroke-width":"3"}));
+
+  if(labelsMode!=="none"){
+    const tDist = mk("text",{x:(xEdge+xIns)/2,y:yBracket+32,"text-anchor":"middle",fill:col.text,"font-size": distFontSize,"font-weight":"900"});
+    tDist.textContent = ed.text[keyDist] ?? `${Math.round(distBp)} bp`;
+    tDist.setAttribute("data-key", keyDist);
+    root.appendChild(tDist);
+  }
+
+  return {interval, intragenic:false};
+}
+
+function drawRecord(r){
+  showErr("");
+  setPalette();
+  clearSVG();
+
+  const col=COL();
+  const W0=1400, margin=80, baseY=300, x0=W0/2, minVisBp=250;
+
+  const autoFit = document.getElementById("autoFit").value==="on";
+  let bpPerPx = Number(document.getElementById("bpPerPx").value||1);
+  if(autoFit){
+    bpPerPx = computeScale(r, W0, margin, minVisBp);
+    document.getElementById("bpPerPx").value = bpPerPx.toFixed(3);
+  }
+  scalePill.textContent = `scale: 1px = ${bpPerPx.toFixed(3)} bp`;
+  metaPill.textContent = `${r.Species||"(no speceis)"} | line ${r.line||"-"} | Chr ${r.Chr||"-"}`;
+
+  const root = mk("g",{}); svg.appendChild(root);
+
+  const ed=getEd(r);
+
+  function insertionDisplayX(){
+    if(r.left_id && r.left_intragenic) return x0 + (ed.dxLeft || 0);
+    if(r.right_id && r.right_intragenic) return x0 + (ed.dxRight || 0);
+    return x0;
+  }
+
+  let xIns = insertionDisplayX();
+
+  function centerFor(side){
+    const isLeft = side==="left";
+    const id = isLeft ? r.left_id : r.right_id;
+    if(!id) return null;
+    const distBp = isLeft ? (r.left_dist_bp||0) : (r.right_dist_bp||0);
+    const intragenic = isLeft ? r.left_intragenic : r.right_intragenic;
+    const dxManual = isLeft ? (ed.dxLeft||0) : (ed.dxRight||0);
+
+    if(intragenic) return xIns;
+    let cx = isLeft ? (x0 - pxFromBp(distBp,bpPerPx)) : (x0 + pxFromBp(distBp,bpPerPx));
+    cx += dxManual;
+    return cx;
+  }
+  let cxL = centerFor("left");
+  let cxR = centerFor("right");
+
+  const overlapFix = document.getElementById("overlapFix")?.value==="on";
+  if(overlapFix){
+    const pad = 34;
+    const insPad = 36;
+    const maxIter = 4;
+
+    for(let iter=0; iter<maxIter; iter++){
+      let changed=false;
+
+      if(cxL!=null && r.left_id && !r.left_intragenic){
+        const Lint = geneInterval(cxL, r.left_size_bp||0, bpPerPx, minVisBp);
+        const maxRight = x0 - insPad;
+        if(Lint.xR > maxRight){
+          const shift = (Lint.xR - maxRight);
+          cxL -= shift;
+          ed.dxLeft = (ed.dxLeft||0) - shift;
+          changed=true;
+        }
+      }
+      if(cxR!=null && r.right_id && !r.right_intragenic){
+        const Rint = geneInterval(cxR, r.right_size_bp||0, bpPerPx, minVisBp);
+        const minLeft = x0 + insPad;
+        if(Rint.xL < minLeft){
+          const shift = (minLeft - Rint.xL);
+          cxR += shift;
+          ed.dxRight = (ed.dxRight||0) + shift;
+          changed=true;
+        }
+      }
+
+      if(cxL!=null && cxR!=null && r.left_id && r.right_id){
+        const Lint = geneInterval(cxL, r.left_size_bp||0, bpPerPx, minVisBp);
+        const Rint = geneInterval(cxR, r.right_size_bp||0, bpPerPx, minVisBp);
+        const overlap = (Lint.xR + pad) - Rint.xL;
+        if(overlap > 0){
+          const shift = overlap/2;
+          cxL -= shift;
+          cxR += shift;
+          ed.dxLeft  = (ed.dxLeft||0)  - shift;
+          ed.dxRight = (ed.dxRight||0) + shift;
+          changed=true;
+        }
+      }
+
+      if(!changed) break;
+    }
+  }
+
+  // Recalculate after overlap-fix, because overlap resolution can update dxLeft/dxRight.
+  xIns = insertionDisplayX();
+  cxL = centerFor("left");
+  cxR = centerFor("right");
+
+  let minX = x0 - 520, maxX = x0 + 520;
+  function considerGene(cx, sizeBp, distBp, intragenic){
+    if(cx==null) return;
+    const gi = geneInterval(cx, sizeBp||0, bpPerPx, minVisBp);
+    minX = Math.min(minX, gi.xL);
+    maxX = Math.max(maxX, gi.xR);
+    if(!intragenic && distBp!=null){
+      minX = Math.min(minX, xIns, gi.xL, gi.xR);
+      maxX = Math.max(maxX, xIns, gi.xL, gi.xR);
+    }
+  }
+  considerGene(cxL, r.left_size_bp, r.left_dist_bp, r.left_intragenic);
+  considerGene(cxR, r.right_size_bp, r.right_dist_bp, r.right_intragenic);
+  minX -= 140; maxX += 140;
+
+  const vbX = minX;
+  const vbW = Math.max(1200, maxX - minX);
+  svg.setAttribute("viewBox", `${vbX} 0 ${vbW} 520`);
+
+  root.appendChild(mk("line",{x1:minX+40,y1:baseY,x2:maxX-40,y2:baseY,stroke:col.axis,"stroke-width":"4","stroke-linecap":"round"}));
+
+  const titleFontSize = Number(document.getElementById("titleFontSize")?.value || 30);
+  const insFontSize = Number(document.getElementById("insFontSize")?.value || 13);
+
+  const title = mk("text",{x:(minX+maxX)/2,y:66,"text-anchor":"middle",fill:col.text,"font-size":titleFontSize,"font-weight":"900"});
+  title.setAttribute("data-key","mainTitle");
+  title.style.cursor="text";
+  const defaultMainTitle = `${r.Species||""} | line ${r.line||""} | Chr ${r.Chr||""}`;
+  title.textContent = (ed.text && ed.text["mainTitle"]) ? ed.text["mainTitle"] : defaultMainTitle;
+  root.appendChild(title);
+
+  // Insertion marker (selectable)
+  const gIns = mk("g",{"data-key":"insertion"});
+  const insStyle = document.getElementById("insStyle")?.value || "triangle";
+  const insSize = Math.max(12, Math.min(40, Number(document.getElementById("insSize")?.value || 18)));
+  const markerTopY = baseY - 78;
+
+  if(insStyle === "diamond") {
+    const diamond = mk("path",{d:`M ${xIns} ${markerTopY-insSize} L ${xIns+insSize} ${markerTopY} L ${xIns} ${markerTopY+insSize} L ${xIns-insSize} ${markerTopY} Z`, fill:col.ins, stroke:"rgba(15,23,42,.18)","stroke-width":"1.2","class":"insTri"});
+    gIns.appendChild(diamond);
+    gIns.appendChild(mk("line",{x1:xIns,y1:markerTopY+insSize,x2:xIns,y2:baseY,stroke:col.ins,"stroke-width":"4","stroke-linecap":"round"}));
+  } else if(insStyle === "line") {
+    gIns.appendChild(mk("line",{x1:xIns,y1:markerTopY-insSize,x2:xIns,y2:baseY,stroke:col.ins,"stroke-width":"6","stroke-linecap":"round"}));
+    gIns.appendChild(mk("line",{x1:xIns-insSize,y1:markerTopY-insSize,x2:xIns+insSize,y2:markerTopY-insSize,stroke:col.ins,"stroke-width":"4","stroke-linecap":"round"}));
+  } else {
+    const tri = mk("path",{d:`M ${xIns-insSize} ${markerTopY} L ${xIns+insSize} ${markerTopY} L ${xIns} ${baseY} Z`, fill:col.ins, stroke:"rgba(15,23,42,.18)","stroke-width":"1.2","class":"insTri"});
+    gIns.appendChild(tri);
+  }
+
+  // insertion strand (from edit override > CSV)
+  const insS = (ed.insStrand || r.insertion_strand || "").trim();
+  const insText = mk("text",{x:xIns,y:baseY-104,"text-anchor":"middle",fill:col.text,"font-size":insFontSize,"font-weight":"850","data-key":"insertion"});
+  insText.textContent = (insS==="+"||insS==="-") ? `Insertion (${insS})` : "Insertion";
+  gIns.appendChild(insText);
+
+  if(insS==="+" || insS==="-"){
+    const yA = baseY - 132;
+    const L = 26;
+    const x1 = insS==="+" ? (xIns - L) : (xIns + L);
+    const x2 = insS==="+" ? (xIns + L) : (xIns - L);
+    gIns.appendChild(mk("line",{x1, y1:yA, x2, y2:yA, stroke:col.ins, "stroke-width":"3", "stroke-linecap":"round","class":"insArrow"}));
+    const ah = 14, aw = 12;
+    const hx = x2, hy = yA;
+    const sign = insS==="+" ? 1 : -1;
+    const p = `M ${hx} ${hy} L ${hx - sign*ah} ${hy - aw/2} L ${hx - sign*ah} ${hy + aw/2} Z`;
+    gIns.appendChild(mk("path",{d:p, fill:col.ins, stroke:"rgba(0,0,0,.15)", "stroke-width":"2"}));
+  }
+
+  root.appendChild(gIns);
+
+  drawGeneGroup(root, r, "left",  {x0, xIns, baseY, bpPerPx, minVisBp, laneY:0});
+  drawGeneGroup(root, r, "right", {x0, xIns, baseY, bpPerPx, minVisBp, laneY:0});
+}
+
+/* List */
+function renderList(){
+  list.innerHTML="";
+  data.forEach((r,i)=>{
+    const div=document.createElement("div");
+    div.className="item"+(i===selectedIndex?" active":"");
+    const k=document.createElement("div"); k.className="k";
+    k.textContent=`${r.Species||"(no species)"} | line ${r.line||"-"} | Chr ${r.Chr||"-"}`;
+    const s=document.createElement("div"); s.className="s";
+    const L = r.left_id ? `L:${r.left_id}${r.left_intragenic?"(X)":"("+ (r.left_dist_bp??"-")+"bp)"}` : "L:-";
+    const R = r.right_id? `R:${r.right_id}${r.right_intragenic?"(X)":"("+ (r.right_dist_bp??"-")+"bp)"}` : "R:-";
+    const N = (r.Note||"").toString().trim();
+    s.textContent = N ? `${L}  ${R} | ${N}` : `${L}  ${R}`;
+    div.appendChild(k); div.appendChild(s);
+    div.onclick=()=>{ selectedIndex=i; selectedKey=null; syncSelUI(); renderList(); render(); };
+    list.appendChild(div);
+  });
+}
+
+/* Selection */
+function syncSelUI(){
+  document.getElementById("selKey").value = selectedKey || "(none)";
+  document.getElementById("selText").value = "";
+  document.getElementById("selStrand").value = "";
+  if(selectedIndex<0 || !selectedKey) return;
+  const r=data[selectedIndex];
+  const ed=getEd(r);
+  if(ed.text[selectedKey]!==undefined) document.getElementById("selText").value = ed.text[selectedKey];
+  if(selectedKey==="leftGene") document.getElementById("selStrand").value = ed.strandLeft || r.left_strand || "+";
+  if(selectedKey==="rightGene") document.getElementById("selStrand").value = ed.strandRight || r.right_strand || "+";
+  if(selectedKey==="insertion") document.getElementById("selStrand").value = ed.insStrand || r.insertion_strand || "";
+}
+document.getElementById("applySel").addEventListener("click", ()=>{
+  if(selectedIndex<0 || !selectedKey) return;
+  const r=data[selectedIndex], ed=getEd(r);
+  const txt=document.getElementById("selText").value;
+  if(selectedKey==="leftGene" || selectedKey==="rightGene" || selectedKey==="insertion"){
+    const s=document.getElementById("selStrand").value;
+    if(selectedKey==="leftGene" && (s==="+"||s==="-" )) ed.strandLeft=s;
+    if(selectedKey==="rightGene" && (s==="+"||s==="-" )) ed.strandRight=s;
+    if(selectedKey==="insertion" && (s==="+"||s==="-" || s==="")) ed.insStrand = (s==="+"||s==="-") ? s : "";
+  }
+  if(txt.trim().length) ed.text[selectedKey]=txt; else delete ed.text[selectedKey];
+  render();
+});
+function flipSelected(){
+  if(selectedIndex<0 || !selectedKey) return;
+  const r=data[selectedIndex], ed=getEd(r);
+  if(selectedKey==="leftGene"){
+    const cur=ed.strandLeft||r.left_strand||"+";
+    ed.strandLeft = (cur==="-"?"+":"-");
+  } else if(selectedKey==="rightGene"){
+    const cur=ed.strandRight||r.right_strand||"+";
+    ed.strandRight = (cur==="-"?"+":"-");
+  } else if(selectedKey==="insertion"){
+    const cur=(ed.insStrand||r.insertion_strand||"+");
+    ed.insStrand = (cur==="-"?"+":"-");
+  } else return;
+  syncSelUI(); render();
+}
+document.getElementById("flipSel").addEventListener("click", flipSelected);
+document.addEventListener("keydown",(e)=>{ if(e.key.toLowerCase()==="f") flipSelected(); });
+
+svg.addEventListener("click",(e)=>{
+  const t=e.target.closest("text");
+  if(t && t.getAttribute("data-key")){
+    selectedKey=t.getAttribute("data-key"); syncSelUI(); return;
+  }
+  const g=e.target.closest("g[data-key]");
+  if(g){ selectedKey=g.getAttribute("data-key"); syncSelUI(); }
+});
+svg.addEventListener("dblclick",(e)=>{
+  if(selectedIndex<0) return;
+  const t=e.target.closest("text");
+  if(!t) return;
+  const k=t.getAttribute("data-key");
+  if(!k) return;
+  selectedKey=k; syncSelUI();
+  const cur=t.textContent||"";
+  const next=prompt("Edit text:", cur);
+  if(next===null) return;
+  const r=data[selectedIndex], ed=getEd(r);
+  if(next.trim().length) ed.text[k]=next; else delete ed.text[k];
+  render();
+});
+
+/* Drag genes x-only */
+let dragging=null; // {key,startX,baseDx}
+svg.addEventListener("mousedown",(e)=>{
+  if(selectedIndex<0) return;
+  const g=e.target.closest('g[data-key]');
+  if(!g) return;
+  const key=g.getAttribute("data-key");
+  if(key!=="leftGene" && key!=="rightGene") return;
+  e.preventDefault();
+  selectedKey=key; syncSelUI();
+  const p=clientToSvg(e);
+  const r=data[selectedIndex], ed=getEd(r);
+  const baseDx = (key==="leftGene") ? ed.dxLeft : ed.dxRight;
+  dragging={key,startX:p.x,baseDx};
+});
+svg.addEventListener("mousemove",(e)=>{
+  if(!dragging || selectedIndex<0) return;
+  const p=clientToSvg(e);
+  const delta=p.x-dragging.startX;
+  const r=data[selectedIndex], ed=getEd(r);
+  if(dragging.key==="leftGene") ed.dxLeft = dragging.baseDx + delta;
+  else ed.dxRight = dragging.baseDx + delta;
+  render();
+});
+function endDrag(){ dragging=null; }
+svg.addEventListener("mouseup", endDrag);
+svg.addEventListener("mouseleave", endDrag);
+
+/* Render */
+function render(){
+  if(selectedIndex<0 || !data[selectedIndex]) return;
+  try{ drawRecord(data[selectedIndex]); }
+  catch(e){ showErr(e.stack||String(e)); }
+}
+
+
+/* Reset edits */
+document.getElementById("resetCurrent").addEventListener("click", ()=>{
+  if(selectedIndex<0) return;
+  const r=data[selectedIndex];
+  edits.delete(recKey(r));
+  selectedKey=null;
+  syncSelUI();
+  render();
+});
+document.getElementById("resetAll").addEventListener("click", ()=>{
+  edits.clear();
+  selectedKey=null;
+  syncSelUI();
+  render();
+});
+/* Controls */
+document.getElementById("rerender").addEventListener("click", render);
+document.getElementById("palette").addEventListener("change", render);
+document.getElementById("labels").addEventListener("change", render);
+document.getElementById("strandColorMode").addEventListener("change", render);
+document.getElementById("strandPlusColor").addEventListener("input", render);
+document.getElementById("strandMinusColor").addEventListener("input", render);
+document.getElementById("insStyle").addEventListener("change", render);
+document.getElementById("insSize").addEventListener("change", render);
+document.getElementById("insColor").addEventListener("input", render);
+document.getElementById("resetAppearance").addEventListener("click", ()=>{
+  resetAppearanceControls();
+  render();
+});
+document.getElementById("autoFit").addEventListener("change", render);
+document.getElementById("bpPerPx").addEventListener("change", ()=>{
+  if(document.getElementById("autoFit").value==="off") render();
+});
+
+document.getElementById("geneFontSize")?.addEventListener("change", render);
+document.getElementById("distFontSize")?.addEventListener("change", render);
+document.getElementById("titleFontSize")?.addEventListener("change", render);
+document.getElementById("insFontSize")?.addEventListener("change", render);
+
+/* Export SVG */
+function download(name, blob){
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1500);
+}
+function serializeSVG(){
+  const clone=svg.cloneNode(true);
+  const style=document.createElementNS("http://www.w3.org/2000/svg","style");
+  style.textContent=`text{font-family:${cssVar("--sans")};}`;
+  clone.insertBefore(style, clone.firstChild);
+  return `<?xml version="1.0" encoding="UTF-8"?>\n` + new XMLSerializer().serializeToString(clone);
+}
+document.getElementById("exportSvg").addEventListener("click", ()=>{
+  if(selectedIndex<0) return;
+  const r=data[selectedIndex];
+  const safe=(s)=>String(s||"").replace(/[:/\\ ]+/g,"_");
+  const fname=`${safe(r.Species||"species")}_line${safe(r.line||"")}_chr${safe(r.Chr||"")}.svg`;
+  download(fname, new Blob([serializeSVG()],{type:"image/svg+xml"}));
+});
+
+
+/* Export ALL SVG (ZIP) */
+document.getElementById("exportAllSvg").addEventListener("click", async ()=>{
+  if(!data.length) return;
+  if(typeof JSZip === "undefined"){
+    showErr("JSZip을 로드하지 못했습니다. (인터넷 연결이 필요합니다)\n- 해결: 인터넷 연결 후 다시 시도하거나, 파일 상단에 JSZip 스크립트가 포함되어 있는지 확인하세요.");
+    return;
+  }
+  showErr("");
+  const btn = document.getElementById("exportAllSvg");
+  const cur = selectedIndex;
+
+  const safe=(s)=>String(s||"").replace(/[:/\\ ]+/g,"_");
+  const zip = new JSZip();
+  const folderName = `FlankingViz_export_${new Date().toISOString().slice(0,10)}`;
+  const folder = zip.folder(folderName);
+
+  const oldText = btn.textContent;
+  btn.disabled = true;
+
+  try{
+    for(let i=0;i<data.length;i++){
+      selectedIndex=i;
+      renderList();
+      render();
+
+      await new Promise(res=>requestAnimationFrame(()=>res()));
+
+      const r=data[i];
+      const fname=`${safe(r.Species||"species")}_line${safe(r.line||"")}_chr${safe(r.Chr||"")}.svg`;
+      folder.file(fname, serializeSVG());
+      btn.textContent = `Zipping... (${i+1}/${data.length})`;
+    }
+
+    if(cur>=0){ selectedIndex=cur; renderList(); render(); }
+
+    btn.textContent = "Building ZIP...";
+    const blob = await zip.generateAsync({type:"blob", compression:"DEFLATE", compressionOptions:{level:6}});
+    const zipName = `${folderName}.zip`;
+    download(zipName, blob);
+  }catch(e){
+    showErr(e.stack || String(e));
+    if(cur>=0){ selectedIndex=cur; renderList(); render(); }
+  }finally{
+    btn.disabled = false;
+    btn.textContent = oldText;
+  }
+});
+/* Load */
+document.getElementById("loadBtn").addEventListener("click", ()=>{
+  const rows=parseTable(document.getElementById("csvText").value);
+  data=normalizeRows(rows);
+  if(!data.length){
+    showErr("Parsing returned 0 rows. Pasted text can be space-aligned only, but the header row and data rows must use the same delimiter format.");
+    metaPill.textContent="No data"; scalePill.textContent="scale: -";
+    list.innerHTML="";
+    return;
+  }
+  showErr("");
+  selectedIndex=0;
+  renderList();
+  render();
+});
+document.getElementById("file").addEventListener("change", async (e)=>{
+  const f=e.target.files?.[0]; if(!f) return;
+  const txt=await f.text();
+  document.getElementById("csvText").value=txt;
+  const rows=parseTable(txt);
+  data=normalizeRows(rows);
+  if(!data.length){
+    showErr("Could not parse rows from the uploaded file. (Comma/tab/space delimiters are supported)");
+    metaPill.textContent="No data"; scalePill.textContent="scale: -";
+    list.innerHTML="";
+    return;
+  }
+  showErr("");
+  selectedIndex=0;
+  renderList();
+  render();
+});
+
+/* Init: load embedded CSV if provided; else load demo */
+(function(){
+  try{
+    if(window.__EMBEDDED_CSV__ && String(window.__EMBEDDED_CSV__).trim().length){
+      document.getElementById("csvText").value = window.__EMBEDDED_CSV__;
+      const rows=parseTable(window.__EMBEDDED_CSV__);
+      data=normalizeRows(rows);
+      if(!data.length){
+        showErr("Embedded CSV parsing returned 0 rows. Please check the generated CSV.");
+        metaPill.textContent="No data"; scalePill.textContent="scale: -";
+        list.innerHTML="";
+        return;
+      }
+      selectedIndex=0;
+      renderList();
+      render();
+    }else{
+      showErr("");
+      metaPill.textContent="No data";
+      scalePill.textContent="scale: -";
+      list.innerHTML="";
+    }
+  }catch(e){
+    showErr(e.stack||String(e));
+  }
+})();
+</script>
+</body>
+</html>

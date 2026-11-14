@@ -59,9 +59,10 @@ FlankingViz/
 │  ├─ soybean.yaml
 │  ├─ maize_b104.yaml
 │  └─ maize_b73.yaml
-├─ benchmark/                  # original rice example and historical outputs
+├─ benchmark/                  # rice example and current expected outputs
 │  ├─ benchmark_100_seqs/
 │  ├─ benchmark_100.csv
+│  ├─ benchmark_100.candidates.csv
 │  ├─ benchmark_100.html
 │  └─ benchmark_100_truth.csv
 └─ seqs/
@@ -209,7 +210,7 @@ JSZip 3.10.1 is loaded from jsDelivr when the HTML opens. If that service cannot
 
 ## Benchmark Example
 
-The original rice reference-derived example remains in `benchmark/`:
+The original 100 rice reference-derived input sequences are retained in `benchmark/`. Expected CSV and HTML outputs have been regenerated with the current implementation:
 
 ```bash
 python3 flankingviz.py \
@@ -218,7 +219,15 @@ python3 flankingviz.py \
   --out out/benchmark_100.html
 ```
 
-This processes 100 pseudo-flanking sequences and creates the current output files described above. The supplied `benchmark_100.csv`, `benchmark_100.html`, and `benchmark_100_truth.csv` are retained as historical example material. Saved outputs from the earlier implementation are not expected to match every revised output field or boundary interpretation. Reference-derived examples are not independent experimental junction validation.
+This processes 100 pseudo-flanking sequences without an optional vector reference. The repository provides these expected outputs:
+
+- `benchmark_100.csv`: one initial selected result or status per input (100 rows).
+- `benchmark_100.candidates.csv`: all reported mapping candidates, including alternatives.
+- `benchmark_100.html`: the current interactive viewer with the same results and candidate data.
+
+Compare newly generated results with these files using the same input sequences, rice reference resources, and default analysis settings. The expected files were regenerated on 2026-11-14 using BLAST+ 2.12.0+ and four BLAST threads. Different reference resources or software settings may change the results. ZIP export from the HTML requires internet access.
+
+The original `benchmark_100_truth.csv` is preserved as the reference-derived source table; it has not been rewritten from the pipeline output. Its original coordinate and annotation conventions should be distinguished from inferred junction coordinates. These examples support reproducibility and regression checks, not independent experimental junction validation.
 
 ## Profile System and Additional Species
 
@@ -254,7 +263,7 @@ To add another reference, prepare its genome FASTA and compatible GFF gene annot
 
 ## Notes on Third-Party Data
 
-Reference genomes, annotation archives, and prebuilt BLAST databases are not bundled with this repository. Setup downloads resources from the original providers, including RAP-DB, the Rice Genome Annotation Project/UGA, NCBI, SoyBase, and MaizeGDB as specified in `setup.sh`. The repository includes the original example sequences and historical example outputs.
+Reference genomes, annotation archives, and prebuilt BLAST databases are not bundled with this repository. Setup downloads resources from the original providers, including RAP-DB, the Rice Genome Annotation Project/UGA, NCBI, SoyBase, and MaizeGDB as specified in `setup.sh`. The repository includes the original example sequences and reference-derived source table, together with regenerated expected outputs.
 
 Observe the providers' terms of use and cite the genome and annotation resources used in your analysis. Species-specific preprocessing in setup aligns resource identifiers with the supplied profiles.
 

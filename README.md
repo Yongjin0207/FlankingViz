@@ -6,7 +6,7 @@ FlankingViz for interpreting and visualizing flanking sequences in rice maize an
 
 ## Version Update
 
-**Version: v1.0.9**
+**Version: v1.1.0**
 
 This version adds optional vector-assisted junction interpretation, BLAST-based boundary estimation without a vector, alternative mapping candidates with alignment scores, and explicit uncertainty reporting. The complete analysis runs through a single Python entry point, `flankingviz.py`.
 

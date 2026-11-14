@@ -232,11 +232,22 @@ The original `benchmark_100_truth.csv` is preserved as the reference-derived sou
 
 ## Synthetic Validation
 
-The [`validation/`](validation/) directory provides **40 synthetic reads per profile** for rice, soybean, maize B104 and maize B73 (160 reads in total). Each set represents 20 reference positions in two read orientations and includes an artificial vector, known construction coordinates, checked result CSVs and comparison summaries. These are in-silico tests, not experimental sequencing data.
+The [`validation/`](validation/) directory contains synthetic junction reads made from the actual **pCAMBIA1300 sequence ([GenBank AF234296.1](https://www.ncbi.nlm.nih.gov/nuccore/AF234296.1))** and host reference sequence. These replace the previous examples containing a randomly generated vector segment; they are not experimental reads from transformed plants.
 
-Each profile folder also includes `result.html` (interactive report), `result.csv` (40 initially selected results, identical to `expected.csv`) and `result.candidates.csv` (all reported mapping candidates). Download `result.html` and open it in a browser to inspect the results without rerunning the analysis. ZIP export requires internet access.
+Rice, soybean, maize B104 and maize B73 each have **40 reads**, representing 20 reference positions in two read orientations. Each read contains 80 bp from an LB- or RB-adjacent T-DNA region and 200 bp of host sequence. The complete 8,958-bp vector reference is supplied in `vector.fa`. Reverse-complement reads test read orientation; they are not paired flanks of one insertion.
 
-After installing the dependencies and completing `bash setup.sh`, run from the repository root:
+Each profile provides:
+
+- `seqs/`: 40 input sequences.
+- `vector.fa`: the matching vector reference.
+- `truth.json`: coordinates recorded when constructing the reads.
+- `result.html`, `result.csv` and `result.candidates.csv`: the report, initial selected results and all reported candidates.
+- `assessment.json`: comparison with the construction coordinates, including unresolved and ambiguous outcomes.
+- `expected.csv`: a copy of the selected-result CSV for reproducibility, not independent ground truth.
+
+The vector accession and fragment coordinates are documented in `validation/source/`.
+
+After installing dependencies and running `bash setup.sh`, run from the repository root:
 
 ```bash
 mkdir -p out/validation
@@ -250,7 +261,9 @@ for profile in rice soybean maize_b104 maize_b73; do
 done
 ```
 
-Outputs are written to `out/validation/`. For an intentional rerun using the same output names, add `--overwrite`. Each profile folder contains `truth.json` (construction coordinates), `expected.csv` (checked selected results) and `assessment.json` (comparisons, including uncertain cases). Interval-valued and mapping-uncertain results are not counted as exact junction calls. These curated public examples are separate from private local validation records.
+To analyze the same inputs without a vector reference, omit `--vector` and choose a different output name. Add `--overwrite` only when intentionally replacing earlier outputs. Download `result.html` and open it in a browser to inspect the stored results. ZIP export requires internet access.
+
+Exact points, boundary intervals and ambiguous or search-limited mappings are reported separately. These examples evaluate computational behavior at known construction coordinates; they do not establish independent biological junction accuracy.
 
 ## Profile System and Additional Species
 
@@ -292,7 +305,7 @@ Observe the providers' terms of use and cite the genome and annotation resources
 
 ## Citation
 
-If you use FlankingViz in academic work, cite the corresponding publication when available and identify the software version and reference resources used. The existing software archive is available at [Zenodo](https://doi.org/10.5281/zenodo.19062013). Use a version-specific archive matching the analyzed release when available.
+If you use FlankingViz in academic work, cite the corresponding publication when available and identify the software version and reference resources used. The unchanged analysis code is archived at [Zenodo](https://doi.org/10.5281/zenodo.24214700). The pCAMBIA1300 validation update postdates that archive; archive the updated repository release to preserve this dataset snapshot.
 
 ## License
 

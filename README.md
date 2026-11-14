@@ -234,6 +234,8 @@ The original `benchmark_100_truth.csv` is preserved as the reference-derived sou
 
 The [`validation/`](validation/) directory provides **40 synthetic reads per profile** for rice, soybean, maize B104 and maize B73 (160 reads in total). Each set represents 20 reference positions in two read orientations and includes an artificial vector, known construction coordinates, checked result CSVs and comparison summaries. These are in-silico tests, not experimental sequencing data.
 
+Each profile folder also includes `result.html` (interactive report), `result.csv` (40 initially selected results, identical to `expected.csv`) and `result.candidates.csv` (all reported mapping candidates). Download `result.html` and open it in a browser to inspect the results without rerunning the analysis. ZIP export requires internet access.
+
 After installing the dependencies and completing `bash setup.sh`, run from the repository root:
 
 ```bash

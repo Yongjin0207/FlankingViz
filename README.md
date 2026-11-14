@@ -234,7 +234,7 @@ The original `benchmark_100_truth.csv` is preserved as the reference-derived sou
 
 The [`validation/`](validation/) directory contains synthetic junction reads made from the actual **pCAMBIA1300 sequence ([GenBank AF234296.1](https://www.ncbi.nlm.nih.gov/nuccore/AF234296.1))** and host reference sequence. These replace the previous examples containing a randomly generated vector segment; they are not experimental reads from transformed plants.
 
-Rice, soybean, maize B104 and maize B73 each have **40 reads**, representing 20 reference positions in two read orientations. Each read contains 80 bp from an LB- or RB-adjacent T-DNA region and 200 bp of host sequence. The complete 8,958-bp vector reference is supplied in `vector.fa`. Reverse-complement reads test read orientation; they are not paired flanks of one insertion.
+Rice, soybean, maize B104 and maize B73 each have **40 reads**, representing 20 reference positions in two read orientations. Each baseline read contains 80 bp from an LB- or RB-adjacent T-DNA region and 300 bp of host sequence (380 bp in total). The complete 8,958-bp vector reference is supplied in `vector.fa`. Reverse-complement reads test read orientation; they are not paired flanks of one insertion.
 
 Each profile provides:
 
@@ -246,6 +246,8 @@ Each profile provides:
 - `expected.csv`: a copy of the selected-result CSV for reproducibility, not independent ground truth.
 
 The vector accession and fragment coordinates are documented in `validation/source/`.
+
+The 300-bp host segments were sampled across canonical nuclear chromosomes with fixed random seeds. Windows containing ambiguous bases were excluded, and positions yielding no host hits under the default low-complexity filter were replaced by further random draws. Multi-hit and unresolved-boundary results were retained. Each profile represents 20 positions in both read orientations (40 reads); sampling details and construction coordinates are recorded in `validation/source/source.json` and each profile’s `truth.json`.
 
 After installing dependencies and running `bash setup.sh`, run from the repository root:
 

@@ -1,0 +1,454 @@
+{
+  "accession": "AF234296.1",
+  "name": "Binary vector pCAMBIA-1300",
+  "length_bp": 8958,
+  "retrieved_date": "2026-11-14",
+  "source_url": "https://www.ncbi.nlm.nih.gov/nuccore/AF234296.1",
+  "download_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=AF234296.1&rettype=gbwithparts&retmode=text",
+  "RB_annotation_1based": [
+    298,
+    323
+  ],
+  "LB_annotation_1based": [
+    6557,
+    6582
+  ],
+  "RB_read_fragment": {
+    "start": 244,
+    "end": 323,
+    "orientation": "+"
+  },
+  "LB_read_fragment": {
+    "start": 6557,
+    "end": 6636,
+    "orientation": "reverse_complement"
+  },
+  "boundary_convention": "Constructed adjacency at the outside end of the annotated border interval; not a claim about a biological nick position. The T-DNA-containing segment crosses the circular sequence origin.",
+  "baseline_host_bases": 300,
+  "baseline_vector_bases": 80,
+  "baseline_read_length": 380,
+  "primary_design": "20 positions sampled across canonical nuclear chromosomes/profile, uniformly over possible 300-bp start positions before excluding non-ACGT windows; no selection for gene location, mapping uniqueness or junction correctness. Alternate RB and LB, two read orientations, 40 reads/profile. These are separate test reads, not paired flanks of one integration. Baseline positions yielding no host hits with the default DUST filter are replaced by further random draws; multi-hit and unresolved-boundary results are retained.",
+  "interpretation": "Known-vector-sequence synthetic junction tests, not observed transformation events or independent biological junction validation.",
+  "sampling": {
+    "rice": {
+      "seed": 2026111400,
+      "algorithm": "Python random.Random; uniform draw over canonical chromosome start positions; reject non-ACGT windows and exact duplicates only",
+      "eligible_chromosomes": {
+        "chr01": 43270923,
+        "chr02": 35937250,
+        "chr03": 36413819,
+        "chr04": 35502694,
+        "chr05": 29958434,
+        "chr06": 31248787,
+        "chr07": 29697621,
+        "chr08": 28443022,
+        "chr09": 23012720,
+        "chr10": 23207287,
+        "chr11": 29021106,
+        "chr12": 27531856
+      },
+      "possible_start_positions": 373241931,
+      "rejected_windows": [],
+      "selected_positions": [
+        {
+          "chrom": "chr11",
+          "position": 17795902
+        },
+        {
+          "chrom": "chr05",
+          "position": 16986842
+        },
+        {
+          "chrom": "chr07",
+          "position": 22533978
+        },
+        {
+          "chrom": "chr08",
+          "position": 28041876
+        },
+        {
+          "chrom": "chr05",
+          "position": 2066059
+        },
+        {
+          "chrom": "chr11",
+          "position": 22698966
+        },
+        {
+          "chrom": "chr08",
+          "position": 21915511
+        },
+        {
+          "chrom": "chr10",
+          "position": 15993517
+        },
+        {
+          "chrom": "chr12",
+          "position": 8433505
+        },
+        {
+          "chrom": "chr09",
+          "position": 13511515
+        },
+        {
+          "chrom": "chr12",
+          "position": 5860722
+        },
+        {
+          "chrom": "chr08",
+          "position": 16364614
+        },
+        {
+          "chrom": "chr04",
+          "position": 29505598
+        },
+        {
+          "chrom": "chr04",
+          "position": 18133509
+        },
+        {
+          "chrom": "chr01",
+          "position": 3017335
+        },
+        {
+          "chrom": "chr02",
+          "position": 4308744
+        },
+        {
+          "chrom": "chr01",
+          "position": 37944037
+        },
+        {
+          "chrom": "chr09",
+          "position": 1190135
+        },
+        {
+          "chrom": "chr07",
+          "position": 17013250
+        },
+        {
+          "chrom": "chr01",
+          "position": 40564041
+        }
+      ]
+    },
+    "soybean": {
+      "seed": 2026111401,
+      "algorithm": "Python random.Random; uniform draw over canonical chromosome start positions; reject non-ACGT windows and exact duplicates only; continue the same RNG stream to replace baseline positions having no DUST-enabled hits; do not select by uniqueness, junction resolution, gene status or correctness",
+      "eligible_chromosomes": {
+        "glyma.Wm82.gnm6.Gm01": 59600650,
+        "glyma.Wm82.gnm6.Gm02": 54790513,
+        "glyma.Wm82.gnm6.Gm03": 49119424,
+        "glyma.Wm82.gnm6.Gm04": 55533332,
+        "glyma.Wm82.gnm6.Gm05": 44449196,
+        "glyma.Wm82.gnm6.Gm06": 53606008,
+        "glyma.Wm82.gnm6.Gm07": 47205696,
+        "glyma.Wm82.gnm6.Gm08": 50288313,
+        "glyma.Wm82.gnm6.Gm09": 51135784,
+        "glyma.Wm82.gnm6.Gm10": 55391814,
+        "glyma.Wm82.gnm6.Gm11": 42152160,
+        "glyma.Wm82.gnm6.Gm12": 43682070,
+        "glyma.Wm82.gnm6.Gm13": 46106413,
+        "glyma.Wm82.gnm6.Gm14": 52776670,
+        "glyma.Wm82.gnm6.Gm15": 55366112,
+        "glyma.Wm82.gnm6.Gm16": 40198974,
+        "glyma.Wm82.gnm6.Gm17": 44073542,
+        "glyma.Wm82.gnm6.Gm18": 60749638,
+        "glyma.Wm82.gnm6.Gm19": 53875614,
+        "glyma.Wm82.gnm6.Gm20": 51026854
+      },
+      "possible_start_positions": 1011122797,
+      "rejected_windows": [],
+      "selected_positions": [
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm12",
+          "position": 14997253
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm19",
+          "position": 20239698
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm12",
+          "position": 5913304
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm18",
+          "position": 24891233
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm06",
+          "position": 11175088
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm13",
+          "position": 24731332
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm10",
+          "position": 31822870
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm11",
+          "position": 39255541
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm02",
+          "position": 2329991
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm18",
+          "position": 6686292
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm10",
+          "position": 25443807
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm07",
+          "position": 38186410
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm06",
+          "position": 33208903
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm11",
+          "position": 9755778
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm08",
+          "position": 2327505
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm01",
+          "position": 1450577
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm05",
+          "position": 43376961
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm07",
+          "position": 37499127
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm13",
+          "position": 39571714
+        },
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm02",
+          "position": 42728002
+        }
+      ],
+      "excluded_low_complexity_positions": [
+        {
+          "chrom": "glyma.Wm82.gnm6.Gm20",
+          "position": 49638047,
+          "reason": "no hit in either orientation with DUST enabled; hits recovered with DUST disabled",
+          "case_index": 5
+        }
+      ]
+    },
+    "maize_b104": {
+      "seed": 2026111402,
+      "algorithm": "Python random.Random; uniform draw over canonical chromosome start positions; reject non-ACGT windows and exact duplicates only",
+      "eligible_chromosomes": {
+        "chr1": 307827052,
+        "chr2": 245480105,
+        "chr3": 237285934,
+        "chr4": 248723290,
+        "chr5": 223076319,
+        "chr6": 174959880,
+        "chr7": 180552106,
+        "chr8": 180694962,
+        "chr9": 160443788,
+        "chr10": 153494717
+      },
+      "possible_start_positions": 2112535163,
+      "rejected_windows": [],
+      "selected_positions": [
+        {
+          "chrom": "chr1",
+          "position": 108356522
+        },
+        {
+          "chrom": "chr6",
+          "position": 68787285
+        },
+        {
+          "chrom": "chr1",
+          "position": 57564086
+        },
+        {
+          "chrom": "chr3",
+          "position": 218176302
+        },
+        {
+          "chrom": "chr2",
+          "position": 171806507
+        },
+        {
+          "chrom": "chr7",
+          "position": 122553821
+        },
+        {
+          "chrom": "chr5",
+          "position": 156771760
+        },
+        {
+          "chrom": "chr9",
+          "position": 109974301
+        },
+        {
+          "chrom": "chr6",
+          "position": 149337003
+        },
+        {
+          "chrom": "chr1",
+          "position": 143962877
+        },
+        {
+          "chrom": "chr3",
+          "position": 13825643
+        },
+        {
+          "chrom": "chr5",
+          "position": 134817756
+        },
+        {
+          "chrom": "chr10",
+          "position": 80169171
+        },
+        {
+          "chrom": "chr9",
+          "position": 129622850
+        },
+        {
+          "chrom": "chr1",
+          "position": 177888979
+        },
+        {
+          "chrom": "chr4",
+          "position": 40432794
+        },
+        {
+          "chrom": "chr4",
+          "position": 4770547
+        },
+        {
+          "chrom": "chr1",
+          "position": 254253690
+        },
+        {
+          "chrom": "chr6",
+          "position": 89532464
+        },
+        {
+          "chrom": "chr4",
+          "position": 16490512
+        }
+      ]
+    },
+    "maize_b73": {
+      "seed": 2026111403,
+      "algorithm": "Python random.Random; uniform draw over canonical chromosome start positions; reject non-ACGT windows and exact duplicates only",
+      "eligible_chromosomes": {
+        "chr1": 308452471,
+        "chr2": 243675191,
+        "chr3": 238017767,
+        "chr4": 250330460,
+        "chr5": 226353449,
+        "chr6": 181357234,
+        "chr7": 185808916,
+        "chr8": 182411202,
+        "chr9": 163004744,
+        "chr10": 152435371
+      },
+      "possible_start_positions": 2131843815,
+      "rejected_windows": [],
+      "selected_positions": [
+        {
+          "chrom": "chr4",
+          "position": 94246486
+        },
+        {
+          "chrom": "chr5",
+          "position": 97305376
+        },
+        {
+          "chrom": "chr9",
+          "position": 23696436
+        },
+        {
+          "chrom": "chr2",
+          "position": 207695313
+        },
+        {
+          "chrom": "chr1",
+          "position": 85663845
+        },
+        {
+          "chrom": "chr8",
+          "position": 132009494
+        },
+        {
+          "chrom": "chr3",
+          "position": 847928
+        },
+        {
+          "chrom": "chr1",
+          "position": 273777496
+        },
+        {
+          "chrom": "chr1",
+          "position": 21412359
+        },
+        {
+          "chrom": "chr4",
+          "position": 49290608
+        },
+        {
+          "chrom": "chr10",
+          "position": 105204676
+        },
+        {
+          "chrom": "chr4",
+          "position": 99131069
+        },
+        {
+          "chrom": "chr6",
+          "position": 50618817
+        },
+        {
+          "chrom": "chr4",
+          "position": 225455183
+        },
+        {
+          "chrom": "chr8",
+          "position": 82958695
+        },
+        {
+          "chrom": "chr9",
+          "position": 149901072
+        },
+        {
+          "chrom": "chr1",
+          "position": 141328227
+        },
+        {
+          "chrom": "chr7",
+          "position": 14665487
+        },
+        {
+          "chrom": "chr5",
+          "position": 175350390
+        },
+        {
+          "chrom": "chr6",
+          "position": 139447087
+        }
+      ]
+    }
+  }
+}

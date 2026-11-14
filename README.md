@@ -6,7 +6,7 @@ FlankingViz for interpreting and visualizing flanking sequences in rice maize an
 
 ## Version Update
 
-**Version: v1.1.0**
+**Version: v1.1.1**
 
 This version adds optional vector-assisted junction interpretation, BLAST-based boundary estimation without a vector, alternative mapping candidates with alignment scores, and explicit uncertainty reporting. The complete analysis runs through a single Python entry point, `flankingviz.py`.
 
@@ -65,6 +65,7 @@ FlankingViz/
 │  ├─ benchmark_100.candidates.csv
 │  ├─ benchmark_100.html
 │  └─ benchmark_100_truth.csv
+├─ validation/                 # synthetic inputs, truth coordinates and checked results
 └─ seqs/
    └─ example.seq
 ```
@@ -228,6 +229,26 @@ This processes 100 pseudo-flanking sequences without an optional vector referenc
 Compare newly generated results with these files using the same input sequences, rice reference resources, and default analysis settings. The expected files were regenerated on 2026-11-14 using BLAST+ 2.12.0+ and four BLAST threads. Different reference resources or software settings may change the results. ZIP export from the HTML requires internet access.
 
 The original `benchmark_100_truth.csv` is preserved as the reference-derived source table; it has not been rewritten from the pipeline output. Its original coordinate and annotation conventions should be distinguished from inferred junction coordinates. These examples support reproducibility and regression checks, not independent experimental junction validation.
+
+## Synthetic Validation
+
+The [`validation/`](validation/) directory provides **40 synthetic reads per profile** for rice, soybean, maize B104 and maize B73 (160 reads in total). Each set represents 20 reference positions in two read orientations and includes an artificial vector, known construction coordinates, checked result CSVs and comparison summaries. These are in-silico tests, not experimental sequencing data.
+
+After installing the dependencies and completing `bash setup.sh`, run from the repository root:
+
+```bash
+mkdir -p out/validation
+for profile in rice soybean maize_b104 maize_b73; do
+  python3 flankingviz.py \
+    --profile "$profile" \
+    --seqs_dir "validation/$profile/seqs" \
+    --vector "validation/$profile/vector.fa" \
+    --threads 4 \
+    --out "out/validation/$profile.html" || break
+done
+```
+
+Outputs are written to `out/validation/`. For an intentional rerun using the same output names, add `--overwrite`. Each profile folder contains `truth.json` (construction coordinates), `expected.csv` (checked selected results) and `assessment.json` (comparisons, including uncertain cases). Interval-valued and mapping-uncertain results are not counted as exact junction calls. These curated public examples are separate from private local validation records.
 
 ## Profile System and Additional Species
 

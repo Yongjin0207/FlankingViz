@@ -1,0 +1,29 @@
+{
+  "accession": "AF234296.1",
+  "name": "Binary vector pCAMBIA-1300",
+  "length_bp": 8958,
+  "retrieved_date": "2026-11-14",
+  "source_url": "https://www.ncbi.nlm.nih.gov/nuccore/AF234296.1",
+  "download_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=AF234296.1&rettype=gbwithparts&retmode=text",
+  "RB_annotation_1based": [
+    298,
+    323
+  ],
+  "LB_annotation_1based": [
+    6557,
+    6582
+  ],
+  "RB_read_fragment": {
+    "start": 244,
+    "end": 323,
+    "orientation": "+"
+  },
+  "LB_read_fragment": {
+    "start": 6557,
+    "end": 6636,
+    "orientation": "reverse_complement"
+  },
+  "boundary_convention": "Constructed adjacency at the outside end of the annotated border interval; not a claim about a biological nick position. The T-DNA-containing segment crosses the circular sequence origin.",
+  "primary_design": "20 retained reference positions/profile, alternate RB and LB at successive positions, two read orientations, 40 reads/profile. These are separate test reads, not paired flanks of one integration.",
+  "interpretation": "Known-vector-sequence synthetic junction tests, not observed transformation events or independent biological junction validation."
+}

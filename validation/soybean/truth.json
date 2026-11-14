@@ -1,0 +1,282 @@
+[
+  {
+    "line": "case00_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 91048,
+    "classification": "intragenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case00_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 91048,
+    "classification": "intragenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case01_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 105719,
+    "classification": "intragenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case01_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 105719,
+    "classification": "intragenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case02_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 123292,
+    "classification": "intragenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case02_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 123292,
+    "classification": "intragenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case03_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 143724,
+    "classification": "intragenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case03_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 143724,
+    "classification": "intragenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case04_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 172640,
+    "classification": "intragenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case04_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 172640,
+    "classification": "intragenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case05_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 185146,
+    "classification": "intragenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case05_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 185146,
+    "classification": "intragenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case06_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 219132,
+    "classification": "intragenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case06_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 219132,
+    "classification": "intragenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case07_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 249793,
+    "classification": "intragenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case07_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 249793,
+    "classification": "intragenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case08_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 260315,
+    "classification": "intragenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case08_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 260315,
+    "classification": "intragenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case09_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 273942,
+    "classification": "intragenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case09_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 273942,
+    "classification": "intragenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case10_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 29537064,
+    "classification": "intergenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case10_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 29537064,
+    "classification": "intergenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case11_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 33037882,
+    "classification": "intergenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case11_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 33037882,
+    "classification": "intergenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case12_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 48051302,
+    "classification": "intergenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case12_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 48051302,
+    "classification": "intergenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case13_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 6029331,
+    "classification": "intergenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case13_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 6029331,
+    "classification": "intergenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case14_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 14899907,
+    "classification": "intergenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case14_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 14899907,
+    "classification": "intergenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case15_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 49952463,
+    "classification": "intergenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case15_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 49952463,
+    "classification": "intergenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case16_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 31282175,
+    "classification": "intergenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case16_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 31282175,
+    "classification": "intergenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case17_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 27011088,
+    "classification": "intergenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case17_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 27011088,
+    "classification": "intergenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case18_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 34717431,
+    "classification": "intergenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case18_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 34717431,
+    "classification": "intergenic",
+    "condition": "read_reverse"
+  },
+  {
+    "line": "case19_vector_first",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 38786444,
+    "classification": "intergenic",
+    "condition": "vector_first"
+  },
+  {
+    "line": "case19_read_reverse",
+    "chrom": "glyma.Wm82.gnm6.Gm01",
+    "position": 38786444,
+    "classification": "intergenic",
+    "condition": "read_reverse"
+  }
+]

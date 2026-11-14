@@ -1,0 +1,936 @@
+{
+  "profile": "soybean",
+  "summary": {
+    "inputs": 40,
+    "unique_mapping_point_calls": 14,
+    "exact_correct_unique_point_calls": 14,
+    "unique_mapping_overlap_intervals": 2,
+    "truth_within_unique_overlap_intervals": 2,
+    "ambiguous_or_search_limited_inputs": 24,
+    "uncertain_inputs_truth_in_reported_context": 24,
+    "uncertain_inputs_truth_not_in_reported_context": 0
+  },
+  "interpretation": "Constructed in-silico cases. Uncertain mappings and overlap intervals are not exact junction successes. Truth is relative to the supplied reference and gene annotations, not independent biological validation.",
+  "cases": [
+    {
+      "line": "case00_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 91048,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "91048",
+        "junction_max": "91049",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "12"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case00_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 91048,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "91048",
+        "junction_max": "91049",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "12"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case01_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 105719,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "105719",
+        "junction_min": "105719",
+        "junction_max": "105719",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "8"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case01_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 105719,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "105719",
+        "junction_min": "105719",
+        "junction_max": "105719",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "8"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case02_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 123292,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "123292",
+        "junction_min": "123292",
+        "junction_max": "123292",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "46"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case02_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 123292,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "123292",
+        "junction_min": "123292",
+        "junction_max": "123292",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "46"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case03_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 143724,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "143724",
+        "junction_min": "143724",
+        "junction_max": "143724",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "4"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case03_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 143724,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "143724",
+        "junction_min": "143724",
+        "junction_max": "143724",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "4"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case04_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 172640,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "172640",
+        "junction_min": "172640",
+        "junction_max": "172640",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "9"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case04_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 172640,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "172640",
+        "junction_min": "172640",
+        "junction_max": "172640",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "9"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case05_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 185146,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "185146",
+        "junction_min": "185146",
+        "junction_max": "185146",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "85"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case05_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 185146,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "185146",
+        "junction_min": "185146",
+        "junction_max": "185146",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "85"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case06_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 219132,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "219132",
+        "junction_min": "219132",
+        "junction_max": "219132",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "58"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case06_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 219132,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "219132",
+        "junction_min": "219132",
+        "junction_max": "219132",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "58"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case07_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 249793,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "249793",
+        "junction_max": "249794",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case07_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 249793,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "249793",
+        "junction_max": "249794",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case08_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 260315,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "260308",
+        "junction_max": "260316",
+        "mapping_status": "unique_best",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "1"
+      },
+      "category": "unique_overlap_interval",
+      "truth_within_interval": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case08_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 260315,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "260308",
+        "junction_max": "260316",
+        "mapping_status": "unique_best",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "1"
+      },
+      "category": "unique_overlap_interval",
+      "truth_within_interval": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case09_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 273942,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "273942",
+        "junction_min": "273942",
+        "junction_max": "273942",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "2"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case09_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 273942,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "273942",
+        "junction_min": "273942",
+        "junction_max": "273942",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "2"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case10_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 29537064,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "29537064",
+        "junction_max": "29537066",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case10_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 29537064,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "29537064",
+        "junction_max": "29537066",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case11_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 33037882,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "33037881",
+        "junction_max": "33037882",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case11_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 33037882,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "33037881",
+        "junction_max": "33037882",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case12_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 48051302,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "48051302",
+        "junction_max": "48051303",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case12_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 48051302,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "48051302",
+        "junction_max": "48051303",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case13_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 6029331,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "6029331",
+        "junction_min": "6029331",
+        "junction_max": "6029331",
+        "mapping_status": "search_limited",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case13_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 6029331,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "6029331",
+        "junction_min": "6029331",
+        "junction_max": "6029331",
+        "mapping_status": "search_limited",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case14_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 14899907,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "14899906",
+        "junction_max": "14899907",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case14_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 14899907,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "14899906",
+        "junction_max": "14899907",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case15_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 49952463,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "49952463",
+        "junction_min": "49952463",
+        "junction_max": "49952463",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "27"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case15_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 49952463,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "49952463",
+        "junction_min": "49952463",
+        "junction_max": "49952463",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "27"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case16_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 31282175,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "31282175",
+        "junction_min": "31282175",
+        "junction_max": "31282175",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case16_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 31282175,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "31282175",
+        "junction_min": "31282175",
+        "junction_max": "31282175",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case17_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 27011088,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "27011087",
+        "junction_max": "27011089",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case17_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 27011088,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "27011087",
+        "junction_max": "27011089",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case18_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 34717431,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "34717431",
+        "junction_min": "34717431",
+        "junction_max": "34717431",
+        "mapping_status": "search_limited",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case18_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 34717431,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "34717431",
+        "junction_min": "34717431",
+        "junction_max": "34717431",
+        "mapping_status": "search_limited",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case19_vector_first",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 38786444,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "38786443",
+        "junction_max": "38786444",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case19_read_reverse",
+      "truth": {
+        "chrom": "glyma.Wm82.gnm6.Gm01",
+        "position": 38786444,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "glyma.Wm82.gnm6.Gm01",
+        "insertion_pos": "",
+        "junction_min": "38786443",
+        "junction_max": "38786444",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    }
+  ]
+}

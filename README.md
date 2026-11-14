@@ -2,140 +2,122 @@
 
 # FlankingViz
 
-A Tool for Flanking Sequence Interpretation and Visualization in Rice, Maize, and Soybean
+FlankingViz for interpreting and visualizing flanking sequences in rice maize and soybean
 
 ## Version Update
 
-**Current version: v1.0.8**
+**Version: v1.0.9**
 
-FlankingViz v1.0.8 includes an update to the standalone HTML viewer. In intragenic insertion cases, the insertion marker now remains visually linked to the corresponding gene model during manual x-axis adjustment.
+This version adds optional vector-assisted junction interpretation, BLAST-based boundary estimation without a vector, alternative mapping candidates with alignment scores, and explicit uncertainty reporting. The complete analysis runs through a single Python entry point, `flankingviz.py`.
+
+The viewer provides candidate selection, editable figures, CSV and SVG exports, and ZIP export through an externally loaded JSZip library. No `vendor/` directory is required. **ZIP export requires an internet connection when opening the HTML report.** Analysis, viewing, CSV export, and individual SVG export do not require JSZip.
+
+The DOI badge links to the existing archive. Check the version recorded in that archive before citing it as this version; a repository update does not automatically update an archived release.
 
 ## Overview
 
-FlankingViz is a command-line tool for mapping flanking sequences to plant reference genomes and identifying nearby annotated genes based on genomic coordinates. It supports species-specific configuration through YAML profiles and generates synchronized CSV summaries and standalone interactive HTML output for insertion site inspection.
+FlankingViz maps flanking sequencing reads to plant reference genomes using BLAST, identifies overlapping and neighboring annotated genes, and generates interactive HTML and structured result files. It supports genome walking, flanking PCR, and insertion-site inspection through species-specific YAML profiles.
 
-The current release includes default profiles for rice, soybean, and two maize reference assemblies.
+Vector sequence is optional. Reads may retain vector-derived sequence and may be supplied in either orientation. A single flank can be analyzed independently; paired-flank information is not required.
 
-Before running FlankingViz for the first time, users should initialize the local reference resources with `bash setup.sh`.
+Before the first analysis, install the dependencies and initialize the reference resources with `bash setup.sh`.
 
 ## Key Features
 
-- BLAST-based mapping of flanking sequences to reference genomes
-- Identification of nearby annotated genes from genome annotation files
-- Insertion-site interpretation based on genomic coordinates
-- Species-specific settings through simple YAML profiles
-- Synchronized CSV summary output and standalone interactive HTML visualization
-- Useful for genome walking, flanking PCR, and insertion site inspection
+- BLAST-based mapping with automatic handling of both query orientations
+- Optional full-vector FASTA or GenBank input to support host–vector boundary interpretation
+- Boundary estimation without a vector when a qualifying unaligned read end is present
+- Gene-level intragenic/intergenic classification and neighboring-gene distances
+- Alternative mapping candidates with bit score, E-value, identity, and alignment length
+- Separate reporting of mapping ambiguity and junction uncertainty
+- Interactive candidate selection, figure editing, and CSV/SVG/ZIP export
+- Species profiles and recorded analysis parameters for reproducibility
 
 ## Supported Species
 
-Default profiles are provided for:
+| Profile | Species | Reference resources |
+|---|---|---|
+| `rice` | Rice (*Oryza sativa*) | IRGSP 1.0; RAP annotated, RAP predicted, and MSU/UGA gene models |
+| `soybean` | Soybean (*Glycine max*) | Williams 82, `Wm82.gnm6.S97D`; annotation `gnm6.ann1.PKSW` |
+| `maize_b104` | Maize (*Zea mays*) | `Zm-B104-REFERENCE-CORTEVA-1.0` |
+| `maize_b73` | Maize (*Zea mays*) | `Zm-B73-REFERENCE-NAM-5.0` |
 
-- Rice (*Oryza sativa*, IRGSP 1.0)
-- Soybean (*Glycine max*, Williams 82 v4.0)
-- Maize (*Zea mays*, Zm-B104-REFERENCE-CORTEVA-1.0)
-- Maize (*Zea mays*, Zm-B73-REFERENCE-NAM-5.0)
-
-Additional species can be added by creating new profile files.
+Exact resource paths are defined in `profiles/` and `setup.sh`. Additional references can be configured through custom profiles.
 
 ## Project Structure
 
 ```text
 FlankingViz/
-├─ flankingviz.py              # main pipeline script
-├─ flankingviz.html            # HTML visualization template
-├─ setup.sh                    # reference data setup script
-├─ profiles/                   # species configuration files
+├─ flankingviz.py              # complete analysis and command-line entry point
+├─ flankingviz.html            # interactive viewer template
+├─ setup.sh                    # reference download and BLAST database setup
+├─ README.md
+├─ LICENSE
+├─ .gitignore
+├─ profiles/
 │  ├─ rice.yaml
 │  ├─ soybean.yaml
 │  ├─ maize_b104.yaml
 │  └─ maize_b73.yaml
-├─ benchmark/                  # benchmark dataset and expected outputs
-│  ├─ benchmark_100_seqs/      # 100 pseudo-flanking sequences in FASTA format
-│  ├─ benchmark_100.csv        # expected CSV output generated by FlankingViz
-│  ├─ benchmark_100.html       # expected standalone HTML output generated by FlankingViz
-│  └─ benchmark_100_truth.csv  # reference-derived truth table
-├─ Rice/                       # genome and BLAST database files for rice
-├─ Soybean/                    # genome and BLAST database files for soybean
-├─ Maize/                      # genome and BLAST database files for maize
-├─ seqs/                       # user input flanking sequence files
-└─ out/                        # output HTML and CSV files
+├─ benchmark/                  # original rice example and historical outputs
+│  ├─ benchmark_100_seqs/
+│  ├─ benchmark_100.csv
+│  ├─ benchmark_100.html
+│  └─ benchmark_100_truth.csv
+└─ seqs/
+   └─ example.seq
 ```
+
+`Rice/`, `Soybean/`, and `Maize/` are created locally by setup. Analysis output is written to the selected output directory. Downloaded references, private inputs, local validation records, and development scripts are not part of this minimal distribution.
 
 ## Requirements
 
-- Python 3.8 or higher
-- BLAST+ (`makeblastdb`, `blastn`)
-- Python package: `pyyaml`
-- Standard command-line tools: `wget`, `curl`, `gunzip`, `tar`, `awk`
+- Python 3 with PyYAML
+- NCBI BLAST+ (`blastn` and `makeblastdb`)
+- Bash, `wget`, `curl`, `awk`, `tar`, and `gzip`
+- A modern web browser for the HTML viewer
+- Internet access for initial reference downloads and the viewer's ZIP export library
 
-Install the Python dependency with:
+The analysis was tested on Ubuntu 24.04 under WSL2 with Python 3.12.3, BLAST+ 2.12.0+, and PyYAML. These are the verified environment versions, not minimum-version compatibility claims.
 
-```bash
-pip install pyyaml
-```
-
-On Ubuntu or WSL, BLAST+ and standard command-line tools can be installed with:
+On Ubuntu or WSL:
 
 ```bash
 sudo apt update
-sudo apt install -y ncbi-blast+ wget curl gawk tar gzip
+sudo apt install -y python3 python3-yaml ncbi-blast+ wget curl gawk tar gzip
 ```
 
-On shared servers or HPC systems where `sudo` privileges are not available, the required programs can be provided by system modules, Conda environments, or user-level installations.
+Alternatively, install PyYAML into your active Python environment:
+
+```bash
+python3 -m pip install pyyaml
+```
+
+On shared servers or HPC systems, dependencies can be supplied through system modules, Conda environments, or user-level installations.
 
 ## Reference Data Setup
 
-FlankingViz uses a setup script to download reference genome and annotation files from the original public sources and to build local BLAST databases.
-
-Run:
+Run from the project directory:
 
 ```bash
 bash setup.sh
 ```
 
-This script will:
+The script downloads genome and annotation resources, extracts and organizes them, applies the required species-specific preprocessing, and builds local BLAST databases. It does not install system packages; the required programs must already be available.
 
-1. Download reference genome and annotation files for rice, soybean, and maize
-2. Extract and organize the files into species-specific directories
-3. Apply species-specific preprocessing where needed
-4. Build local BLAST databases inside the project directory
-
-The setup script itself does not install system-wide software. The required command-line programs, including `makeblastdb`, must already be available in the user environment.
-
-After setup is complete, FlankingViz can be run directly with the provided profiles.
+Setup prepares all four supplied profiles. Existing resources are reused where the script's checks permit. A completed setup does not need to be repeated before each analysis. Downloaded `.gff3.gz` files are decompressed to the `.gff3` paths used by the profiles; compression itself does not change annotation content.
 
 ## Input
 
-Place flanking sequence files in the `seqs/` directory.
+Place sequence files in `seqs/` or another input directory. Accepted extensions are `.seq`, `.fa`, `.fasta`, and `.txt`.
 
-Accepted extensions:
+Each file must contain **one raw sequence or one FASTA record**. Split multi-record FASTA files before analysis. File stems identify the input lines and must be unique within the input directory. Standard IUPAC ambiguity bases are retained. The default minimum input length is 80 bp; shorter inputs and reads without a qualifying hit are reported with status information.
 
-- `.seq`
-- `.fa`
-- `.fasta`
-- `.txt`
-
-Each file should contain a single flanking sequence. Multi-record FASTA files are not supported and should be split into separate files before use.
-
-Example:
-
-```fasta
->line1_LB
-ATGCTAGCTAGCTAGCTAGC...
-```
+Reads can include vector sequence; trimming it away is not required. Input sequence text is expected, not chromatogram files. FlankingViz does not perform chromatogram base calling or quality trimming.
 
 ## Usage
 
-By default, FlankingViz reads input sequence files from the `seqs/` directory and writes output files to the `out/` directory.
-
-Run the pipeline with a species profile:
-
-```bash
-python3 flankingviz.py --profile rice
-```
-
-To specify the input sequence directory and output file explicitly:
+### Without a vector
 
 ```bash
 python3 flankingviz.py \
@@ -144,42 +126,90 @@ python3 flankingviz.py \
   --out out/rice_flankingviz.html
 ```
 
-FlankingViz automatically generates a matching CSV file with the same output prefix:
+Intragenic/intergenic classification and neighboring-gene distances remain available without vector input. Their coordinate basis depends on the boundary evidence described below.
 
-```text
-out/rice_flankingviz.html
-out/rice_flankingviz.csv
-```
-
-To switch species:
+### With an optional vector
 
 ```bash
-python3 flankingviz.py --profile soybean
-python3 flankingviz.py --profile maize_b104
-python3 flankingviz.py --profile maize_b73
+python3 flankingviz.py \
+  --profile rice \
+  --seqs_dir seqs \
+  --vector vectors/my_vector.fa \
+  --out out/rice_vector.html
 ```
 
-To use a custom profile file:
+Supply the actual vector sequence, preferably including the T-DNA and backbone. Only a matching fragment needs to be present in a read. Vector FASTA may contain multiple records with unique identifiers; GenBank sequence in the ORIGIN section is also accepted. Export Clone Manager `.cm5` files to FASTA or GenBank first.
+
+An optional `vector_fasta` entry can also be added to a profile. The command-line `--vector` takes precedence.
+
+### Other profiles and options
 
 ```bash
-python3 flankingviz.py --profile profiles/custom_profile.yaml
+python3 flankingviz.py --profile soybean --seqs_dir seqs --out out/soybean.html
+python3 flankingviz.py --profile maize_b104 --seqs_dir seqs --out out/maize_b104.html
+python3 flankingviz.py --profile maize_b73 --seqs_dir seqs --out out/maize_b73.html
+python3 flankingviz.py --profile profiles/custom_profile.yaml --out out/custom.html
 ```
+
+Use `--threads 4` to request four BLAST threads. The default is one. Choose a new output prefix for each run, or add `--overwrite` to explicitly replace existing outputs. Run `python3 flankingviz.py --help` for all options. Existing legacy rice options (`--db`, `--rap_annot`, `--rap_pred`, and `--msu`) remain available.
+
+Optional paired-flank screening accepts `--pairs pairs.csv` with columns `pair_id,line_a,line_b`. It checks coordinate relationships and flags inconsistencies; it does not reconstruct insertion structure. Ordinary single-flank analysis does not require this option.
+
+## Interpreting Boundaries and Gene Distances
+
+FlankingViz distinguishes three main situations:
+
+| Evidence | Interpretation and annotation basis |
+|---|---|
+| Adjacent qualifying vector and host alignments | A vector-supported boundary at the adjacent aligned host base |
+| A qualifying single unaligned read end without a usable vector boundary | A labelled BLAST-based boundary estimate |
+| Boundary unresolved, including ambiguous alignment context | Gene overlap and distances based on the complete aligned host interval |
+
+An unaligned read end does not by itself prove the presence of vector DNA. The automatic no-vector estimate requires a qualifying tail of at least 20 bases, at least 20 unambiguous A/C/G/T bases, no more than 10% ambiguous bases, an opposite-end overhang of at most 10 bases, and no competing host alignment covering at least 20 bases of that tail. Overlapping or separated host/vector alignments are reported with their uncertainty rather than forced into an exact junction.
+
+Coordinates are 1-based. When a point is available, intragenic status means that point falls within an annotated gene interval; otherwise it is intergenic relative to the loaded gene models. Distances use coordinate differences to neighboring gene boundaries. For an unresolved host interval, any gene overlap yields interval-based intragenic context, and distances are measured from the corresponding interval edge. These interval-based distances should not be presented as confirmed junction distances.
+
+Left and right refer to increasing reference coordinates, not transcription direction. `NA` in a neighboring-gene field means there is no gene on that side in the loaded annotation, including reference-end contexts. Gene identifiers and classifications depend on the selected reference and annotation set.
+
+The marker label **Insertion** is a display label. Check the analysis details and fields such as `junction_status`, `coordinate_basis`, and `annotation_basis` before interpreting its location.
+
+## Mapping Candidates
+
+The highest-scoring reported locus is selected initially. Alternative loci, including those on different chromosomes, remain available with their own annotations and alignment scores.
+
+- The viewer displays **Top 10** candidates by default. Choose **All reported** to inspect the full retained set.
+- This display setting does not filter the underlying results. A selected candidate outside the top 10 remains accessible when returning to the compact list.
+- The default 0.95 bit-score ratio is used to flag similar top scores, **not to discard all candidates below 95% of the best score**.
+- The viewer adds no separate bit-score or E-value cutoff. BLAST search settings and pipeline eligibility criteria still apply.
+- Default host anchors require at least 40 aligned bases and 80% identity; vector anchors require at least 20 bases and 90% identity. The BLAST E-value threshold is 0.1.
+- Default search/reporting limits are 100 target sequences, 100 HSPs per target, and 100 candidate loci per input. Reached limits are flagged; reported candidates should not be assumed exhaustive.
+
+A highest-scoring candidate is a provisional interpretation, not proof of a unique insertion site.
+
+## Output and Interactive Viewer
+
+For `--out out/rice_flankingviz.html`, the pipeline generates:
+
+| File | Contents |
+|---|---|
+| `rice_flankingviz.html` | Interactive report that opens directly in a browser |
+| `rice_flankingviz.csv` | Initial selected candidate or status for each input |
+| `rice_flankingviz.candidates.csv` | All reported mapping candidates |
+| `rice_flankingviz.json` | Structured analysis results |
+| `rice_flankingviz.run.json` | Parameters, versions, hashes, and run provenance |
+| `rice_flankingviz.pairs.csv` | Pair-screening results, only when requested |
+
+Open the HTML file, choose an input in **Line selection**, and inspect its **Mapping candidate** entries. Scores and analysis details help distinguish alternative interpretations. Figure labels, arrow direction, and layout can be edited for presentation; these edits do not change the analytical coordinates or inferred evidence. Figure notes can be shown or hidden.
+
+CSV/TSV tables and tables copied from Excel can be loaded into the viewer. Import a `.candidates.csv` file to retain alternatives grouped by species and line. For manually prepared candidate tables without candidate IDs, select the candidate-grouping import mode. Direct `.xlsx` import is not supported. A primary CSV cannot restore alternative candidates that it does not contain.
+
+**Export chosen results (CSV)** exports the current candidate choice for every input line, not just the highlighted line. Individual SVG export saves the current figure. **Export ALL (ZIP)** packages the figures together. Exported SVGs retain analysis metadata.
+
+JSZip 3.10.1 is loaded from jsDelivr when the HTML opens. If that service cannot be reached, ZIP export is unavailable and the viewer displays an explanation when requested. Reload the HTML after restoring connectivity. Core viewing, candidate selection, CSV export, and individual SVG export remain available without that library. No local web server is required.
 
 ## Benchmark Example
 
-A rice reference-derived benchmark dataset is provided in the `benchmark/` directory to help users test FlankingViz and compare the generated output with the expected result.
-
-The benchmark directory contains:
-
-```text
-benchmark/
-├─ benchmark_100_seqs/      # 100 pseudo-flanking sequences in FASTA format
-├─ benchmark_100.csv        # expected CSV output generated by FlankingViz
-├─ benchmark_100.html       # expected standalone HTML output generated by FlankingViz
-└─ benchmark_100_truth.csv  # reference-derived truth table
-```
-
-To run the benchmark, use:
+The original rice reference-derived example remains in `benchmark/`:
 
 ```bash
 python3 flankingviz.py \
@@ -188,32 +218,11 @@ python3 flankingviz.py \
   --out out/benchmark_100.html
 ```
 
-This command generates two synchronized output files:
+This processes 100 pseudo-flanking sequences and creates the current output files described above. The supplied `benchmark_100.csv`, `benchmark_100.html`, and `benchmark_100_truth.csv` are retained as historical example material. Saved outputs from the earlier implementation are not expected to match every revised output field or boundary interpretation. Reference-derived examples are not independent experimental junction validation.
 
-```text
-out/benchmark_100.html
-out/benchmark_100.csv
-```
+## Profile System and Additional Species
 
-The generated CSV file can be compared with the provided expected output:
-
-```text
-benchmark/benchmark_100.csv
-```
-
-The truth table used for benchmark comparison is provided as:
-
-```text
-benchmark/benchmark_100_truth.csv
-```
-
-The HTML file can be opened directly in a web browser for interactive inspection of the benchmark insertion-site visualizations.
-
-## Profile System
-
-Species-specific settings are defined in YAML profile files. This allows users to switch species or add new genome resources without modifying the main script.
-
-Example (`profiles/rice.yaml`):
+Profiles allow reference resources to be changed without editing the analysis code. For example, `profiles/rice.yaml` contains:
 
 ```yaml
 name: rice
@@ -233,83 +242,25 @@ attr_priority: [Name, ID]
 seqid_normalization: rice
 ```
 
-## Output
+To add another reference, prepare its genome FASTA and compatible GFF gene annotations, build a BLAST database, and create a corresponding YAML profile. Ensure that chromosome identifiers and coordinate systems agree between the genome and annotations. Place the profile in `profiles/` and use its name or supply its path with `--profile`.
 
-FlankingViz generates two synchronized output files from the same input dataset:
+## Interpretation Limits
 
-- a standalone interactive HTML report
-- a structured CSV summary file
-
-For example, if the output file is specified as:
-
-```bash
---out out/rice_flankingviz.html
-```
-
-FlankingViz generates:
-
-```text
-out/rice_flankingviz.html
-out/rice_flankingviz.csv
-```
-
-The HTML report can be opened in any modern web browser and is intended for:
-
-- insertion site inspection
-- annotation review
-- figure preparation
-- record keeping and sharing
-
-The CSV file provides the corresponding tabular summary of chromosome assignment, inferred insertion strand, neighboring gene identifiers, gene orientation, genomic distances, gene sizes, and alignment notes.
-
-## Typical Use Cases
-
-- Validation of transgene insertion sites
-- Genome walking and flanking PCR analysis
-- Identification of genic and intergenic insertions
-- Comparative inspection across multiple plant species
-
-## Adding a New Species
-
-To add a new species:
-
-1. Prepare the reference genome FASTA file
-2. Prepare one or more GFF annotation files
-3. Build a BLAST database
-4. Create a new YAML profile in the `profiles/` directory
-5. Run FlankingViz with the new profile
-
-Example:
-
-```bash
-python3 flankingviz.py --profile new_species
-```
+- The retained `insertion_strand` field and the alignment arrow describe query alignment orientation relative to the reference. They do **not** establish T-DNA orientation. `alignment_strand` records this explicitly.
+- Annotation is at the gene-interval level. Exon, intron, UTR, and promoter classifications are not assigned, even when the source GFF contains these features.
+- One flank supports interpretation of the observed side. Complete insertion architecture, copy number, rearrangements, absence of backbone DNA, and effects on gene function require additional evidence.
+- Similar loci, repetitive sequences, low-quality bases, and truncated borders can prevent a unique mapping or exact boundary assignment. Review uncertainty fields and alternative candidates.
+- Large datasets with many candidate loci can generate large HTML reports and require substantial browser memory. The Top 10 display does not reduce the stored candidate data.
 
 ## Notes on Third-Party Data
 
-FlankingViz distributes code and configuration only.
+Reference genomes, annotation archives, and prebuilt BLAST databases are not bundled with this repository. Setup downloads resources from the original providers, including RAP-DB, the Rice Genome Annotation Project/UGA, NCBI, SoyBase, and MaizeGDB as specified in `setup.sh`. The repository includes the original example sequences and historical example outputs.
 
-Reference genome, annotation, and archive files are downloaded by each user from the original providers during setup. FlankingViz does not redistribute third-party source files or prebuilt BLAST databases.
-
-Users are responsible for complying with the terms of use, licensing conditions, citation requirements, and access policies of each source database.
-
-Current default profiles use resources from:
-
-- RAP-DB
-- Rice Genome Annotation Project / UGA
-- NCBI RefSeq
-- SoyBase
-- MaizeGDB
-
-Some reference resources require minor species-specific preprocessing during setup so that BLAST output and annotation coordinates remain internally consistent.
-
-## Citation of Source Databases
-
-If you use FlankingViz in academic work, please also cite the original genome and annotation resources used in your analysis, according to the policies of the corresponding source databases.
+Observe the providers' terms of use and cite the genome and annotation resources used in your analysis. Species-specific preprocessing in setup aligns resource identifiers with the supplied profiles.
 
 ## Citation
 
-If you use FlankingViz in academic work, please cite the corresponding publication when available. Until then, please cite or link to this repository.
+If you use FlankingViz in academic work, cite the corresponding publication when available and identify the software version and reference resources used. The existing software archive is available at [Zenodo](https://doi.org/10.5281/zenodo.19062013). Use a version-specific archive matching the analyzed release when available.
 
 ## License
 

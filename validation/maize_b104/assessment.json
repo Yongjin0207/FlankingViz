@@ -1,0 +1,936 @@
+{
+  "profile": "maize_b104",
+  "summary": {
+    "inputs": 40,
+    "unique_mapping_point_calls": 4,
+    "exact_correct_unique_point_calls": 4,
+    "unique_mapping_overlap_intervals": 4,
+    "truth_within_unique_overlap_intervals": 4,
+    "ambiguous_or_search_limited_inputs": 32,
+    "uncertain_inputs_truth_in_reported_context": 32,
+    "uncertain_inputs_truth_not_in_reported_context": 0
+  },
+  "interpretation": "Constructed in-silico cases. Uncertain mappings and overlap intervals are not exact junction successes. Truth is relative to the supplied reference and gene annotations, not independent biological validation.",
+  "cases": [
+    {
+      "line": "case00_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 119150,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "119149",
+        "junction_max": "119150",
+        "mapping_status": "unique_best",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "2"
+      },
+      "category": "unique_overlap_interval",
+      "truth_within_interval": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case00_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 119150,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "119149",
+        "junction_max": "119150",
+        "mapping_status": "unique_best",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "2"
+      },
+      "category": "unique_overlap_interval",
+      "truth_within_interval": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case01_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 125590,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "125589",
+        "junction_max": "125590",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "2"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case01_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 125590,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "125589",
+        "junction_max": "125590",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "2"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case02_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 215623,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "215623",
+        "junction_min": "215623",
+        "junction_max": "215623",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "7"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case02_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 215623,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "215623",
+        "junction_min": "215623",
+        "junction_max": "215623",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "7"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case03_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 217671,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "217669",
+        "junction_max": "217671",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "13"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case03_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 217671,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "217669",
+        "junction_max": "217671",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "13"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case04_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 229723,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "229723",
+        "junction_min": "229723",
+        "junction_max": "229723",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "88"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case04_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 229723,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "229723",
+        "junction_min": "229723",
+        "junction_max": "229723",
+        "mapping_status": "unique_best",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "88"
+      },
+      "category": "unique_point",
+      "exact_chromosome_coordinate_and_classification_match": true,
+      "counted_as_exact_point_success": true
+    },
+    {
+      "line": "case05_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 233687,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "233687",
+        "junction_min": "233687",
+        "junction_max": "233687",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "5"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case05_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 233687,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "233687",
+        "junction_min": "233687",
+        "junction_max": "233687",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "5"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case06_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 237801,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "237801",
+        "junction_min": "237801",
+        "junction_max": "237801",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "41"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case06_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 237801,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "237801",
+        "junction_min": "237801",
+        "junction_max": "237801",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "41"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case07_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 268000,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "268000",
+        "junction_min": "268000",
+        "junction_max": "268000",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "8"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case07_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 268000,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "268000",
+        "junction_min": "268000",
+        "junction_max": "268000",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "8"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case08_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 265952,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "265952",
+        "junction_min": "265952",
+        "junction_max": "265952",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "37"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case08_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 265952,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "265952",
+        "junction_min": "265952",
+        "junction_max": "265952",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intragenic",
+        "reported_candidate_count": "37"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case09_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 396288,
+        "classification": "intragenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "396287",
+        "junction_max": "396288",
+        "mapping_status": "unique_best",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "3"
+      },
+      "category": "unique_overlap_interval",
+      "truth_within_interval": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case09_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 396288,
+        "classification": "intragenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "396287",
+        "junction_max": "396288",
+        "mapping_status": "unique_best",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intragenic",
+        "reported_candidate_count": "3"
+      },
+      "category": "unique_overlap_interval",
+      "truth_within_interval": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case10_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 236289512,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "236289511",
+        "junction_max": "236289512",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case10_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 236289512,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "236289511",
+        "junction_max": "236289512",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case11_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 264296061,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "264296061",
+        "junction_max": "264296062",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case11_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 264296061,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "264296061",
+        "junction_max": "264296062",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case12_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 48227653,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "48227653",
+        "junction_min": "48227653",
+        "junction_max": "48227653",
+        "mapping_status": "search_limited",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case12_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 48227653,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "48227653",
+        "junction_min": "48227653",
+        "junction_max": "48227653",
+        "mapping_status": "search_limited",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case13_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 119192263,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "119192260",
+        "junction_max": "119192264",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case13_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 119192263,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "119192260",
+        "junction_max": "119192264",
+        "mapping_status": "search_limited",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case14_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 250250400,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "250250400",
+        "junction_min": "250250400",
+        "junction_max": "250250400",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case14_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 250250400,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "250250400",
+        "junction_min": "250250400",
+        "junction_max": "250250400",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case15_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 216081709,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "216081709",
+        "junction_min": "216081709",
+        "junction_max": "216081709",
+        "mapping_status": "search_limited",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case15_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 216081709,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "216081709",
+        "junction_min": "216081709",
+        "junction_max": "216081709",
+        "mapping_status": "search_limited",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case16_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 277732451,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "5151999",
+        "junction_max": "5152000",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case16_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 277732451,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "5151999",
+        "junction_max": "5152000",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case17_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 75425482,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "75425482",
+        "junction_max": "75425483",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case17_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 75425482,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "75425482",
+        "junction_max": "75425483",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case18_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 236162001,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "236162001",
+        "junction_min": "236162001",
+        "junction_max": "236162001",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case18_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 236162001,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "236162001",
+        "junction_min": "236162001",
+        "junction_max": "236162001",
+        "mapping_status": "ambiguous",
+        "junction_status": "vector_supported",
+        "coordinate_basis": "1_based_adjacent_aligned_host_base",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case19_vector_first",
+      "truth": {
+        "chrom": "chr1",
+        "position": 29564043,
+        "classification": "intergenic",
+        "condition": "vector_first"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "29564042",
+        "junction_max": "29564043",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    },
+    {
+      "line": "case19_read_reverse",
+      "truth": {
+        "chrom": "chr1",
+        "position": 29564043,
+        "classification": "intergenic",
+        "condition": "read_reverse"
+      },
+      "observed": {
+        "reference_seqid": "chr1",
+        "insertion_pos": "",
+        "junction_min": "29564042",
+        "junction_max": "29564043",
+        "mapping_status": "ambiguous",
+        "junction_status": "unresolved_query_overlap",
+        "coordinate_basis": "vector_host_overlap_candidate_interval",
+        "classification": "intergenic",
+        "reported_candidate_count": "100"
+      },
+      "category": "uncertain_mapping",
+      "truth_in_any_reported_junction_context": true,
+      "counted_as_exact_point_success": false
+    }
+  ]
+}

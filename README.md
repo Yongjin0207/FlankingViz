@@ -6,7 +6,7 @@ FlankingViz for interpreting and visualizing flanking sequences in rice maize an
 
 ## Version Update
 
-**Version: v1.1.2**
+**Version: v1.1.3**
 
 This version adds optional vector-assisted junction interpretation, BLAST-based boundary estimation without a vector, alternative mapping candidates with alignment scores, and explicit uncertainty reporting. The complete analysis runs through a single Python entry point, `flankingviz.py`.
 
@@ -307,7 +307,7 @@ Observe the providers' terms of use and cite the genome and annotation resources
 
 ## Citation
 
-If you use FlankingViz in academic work, cite the corresponding publication when available and identify the software version and reference resources used. The unchanged analysis code is archived at [Zenodo](https://doi.org/10.5281/zenodo.24214700). The pCAMBIA1300 validation update postdates that archive; archive the updated repository release to preserve this dataset snapshot.
+If you use FlankingViz in academic work, cite the corresponding publication when available and identify the software version and reference resources used. The project is archived at [Zenodo](https://doi.org/10.5281/zenodo.19062013).
 
 ## License
 

@@ -8,17 +8,13 @@ FlankingViz for interpreting and visualizing flanking sequences in rice maize an
 
 **Version: v1.1.3**
 
-This version adds optional vector-assisted junction interpretation, BLAST-based boundary estimation without a vector, alternative mapping candidates with alignment scores, and explicit uncertainty reporting. The complete analysis runs through a single Python entry point, `flankingviz.py`.
-
-The viewer provides candidate selection, editable figures, CSV and SVG exports, and ZIP export through an externally loaded JSZip library. No `vendor/` directory is required. **ZIP export requires an internet connection when opening the HTML report.** Analysis, viewing, CSV export, and individual SVG export do not require JSZip.
-
-The DOI badge links to the existing archive. Check the version recorded in that archive before citing it as this version; a repository update does not automatically update an archived release.
+This release adds optional vector input, boundary estimation from flanking reads, and alternative mapping candidates with alignment scores. Mapping ambiguity and unresolved junctions are reported in the output.
 
 ## Overview
 
-FlankingViz maps flanking sequencing reads to plant reference genomes using BLAST, identifies overlapping and neighboring annotated genes, and generates interactive HTML and structured result files. It supports genome walking, flanking PCR, and insertion-site inspection through species-specific YAML profiles.
+FlankingViz uses BLAST to map flanking reads to plant reference genomes, identify overlapping and neighboring genes, and report gene distances. Results are saved as tables and interactive HTML figures. Species-specific YAML profiles define the reference genome and annotations.
 
-Vector sequence is optional. Reads may retain vector-derived sequence and may be supplied in either orientation. A single flank can be analyzed independently; paired-flank information is not required.
+Reads can include vector sequence and can be supplied in either orientation. A vector reference is optional, and a single flank can be analyzed without a paired read.
 
 Before the first analysis, install the dependencies and initialize the reference resources with `bash setup.sh`.
 
@@ -31,7 +27,7 @@ Before the first analysis, install the dependencies and initialize the reference
 - Alternative mapping candidates with bit score, E-value, identity, and alignment length
 - Separate reporting of mapping ambiguity and junction uncertainty
 - Interactive candidate selection, figure editing, and CSV/SVG/ZIP export
-- Species profiles and recorded analysis parameters for reproducibility
+- Configurable species profiles and saved analysis parameters
 
 ## Supported Species
 
@@ -48,12 +44,11 @@ Exact resource paths are defined in `profiles/` and `setup.sh`. Additional refer
 
 ```text
 FlankingViz/
-├─ flankingviz.py              # complete analysis and command-line entry point
+├─ flankingviz.py              # analysis pipeline
 ├─ flankingviz.html            # interactive viewer template
 ├─ setup.sh                    # reference download and BLAST database setup
 ├─ README.md
 ├─ LICENSE
-├─ .gitignore
 ├─ profiles/
 │  ├─ rice.yaml
 │  ├─ soybean.yaml
@@ -70,7 +65,7 @@ FlankingViz/
    └─ example.seq
 ```
 
-`Rice/`, `Soybean/`, and `Maize/` are created locally by setup. Analysis output is written to the selected output directory. Downloaded references, private inputs, local validation records, and development scripts are not part of this minimal distribution.
+`setup.sh` creates the local `Rice/`, `Soybean/`, and `Maize/` directories. The `--out` option sets the output path.
 
 ## Requirements
 
@@ -78,9 +73,9 @@ FlankingViz/
 - NCBI BLAST+ (`blastn` and `makeblastdb`)
 - Bash, `wget`, `curl`, `awk`, `tar`, and `gzip`
 - A modern web browser for the HTML viewer
-- Internet access for initial reference downloads and the viewer's ZIP export library
+- Internet access for reference downloads and ZIP export
 
-The analysis was tested on Ubuntu 24.04 under WSL2 with Python 3.12.3, BLAST+ 2.12.0+, and PyYAML. These are the verified environment versions, not minimum-version compatibility claims.
+Tested on Ubuntu 24.04 under WSL2 with Python 3.12.3, BLAST+ 2.12.0+, and PyYAML.
 
 On Ubuntu or WSL:
 
@@ -107,7 +102,7 @@ bash setup.sh
 
 The script downloads genome and annotation resources, extracts and organizes them, applies the required species-specific preprocessing, and builds local BLAST databases. It does not install system packages; the required programs must already be available.
 
-Setup prepares all four supplied profiles. Existing resources are reused where the script's checks permit. A completed setup does not need to be repeated before each analysis. Downloaded `.gff3.gz` files are decompressed to the `.gff3` paths used by the profiles; compression itself does not change annotation content.
+Setup prepares all four profiles and reuses existing resources when possible. It only needs to be run once unless the reference resources change.
 
 ## Input
 
@@ -153,7 +148,7 @@ python3 flankingviz.py --profile maize_b73 --seqs_dir seqs --out out/maize_b73.h
 python3 flankingviz.py --profile profiles/custom_profile.yaml --out out/custom.html
 ```
 
-Use `--threads 4` to request four BLAST threads. The default is one. Choose a new output prefix for each run, or add `--overwrite` to explicitly replace existing outputs. Run `python3 flankingviz.py --help` for all options. Existing legacy rice options (`--db`, `--rap_annot`, `--rap_pred`, and `--msu`) remain available.
+Use `--threads 4` for four BLAST threads; the default is one. Choose a new output name for each run, or add `--overwrite` to replace existing files. Run `python3 flankingviz.py --help` for all options. The rice-specific options `--db`, `--rap_annot`, `--rap_pred`, and `--msu` are also supported.
 
 Optional paired-flank screening accepts `--pairs pairs.csv` with columns `pair_id,line_a,line_b`. It checks coordinate relationships and flags inconsistencies; it does not reconstruct insertion structure. Ordinary single-flank analysis does not require this option.
 
@@ -198,7 +193,7 @@ For `--out out/rice_flankingviz.html`, the pipeline generates:
 | `rice_flankingviz.csv` | Initial selected candidate or status for each input |
 | `rice_flankingviz.candidates.csv` | All reported mapping candidates |
 | `rice_flankingviz.json` | Structured analysis results |
-| `rice_flankingviz.run.json` | Parameters, versions, hashes, and run provenance |
+| `rice_flankingviz.run.json` | Run settings, software versions, and input hashes |
 | `rice_flankingviz.pairs.csv` | Pair-screening results, only when requested |
 
 Open the HTML file, choose an input in **Line selection**, and inspect its **Mapping candidate** entries. Scores and analysis details help distinguish alternative interpretations. Figure labels, arrow direction, and layout can be edited for presentation; these edits do not change the analytical coordinates or inferred evidence. Figure notes can be shown or hidden.
@@ -207,11 +202,11 @@ CSV/TSV tables and tables copied from Excel can be loaded into the viewer. Impor
 
 **Export chosen results (CSV)** exports the current candidate choice for every input line, not just the highlighted line. Individual SVG export saves the current figure. **Export ALL (ZIP)** packages the figures together. Exported SVGs retain analysis metadata.
 
-JSZip 3.10.1 is loaded from jsDelivr when the HTML opens. If that service cannot be reached, ZIP export is unavailable and the viewer displays an explanation when requested. Reload the HTML after restoring connectivity. Core viewing, candidate selection, CSV export, and individual SVG export remain available without that library. No local web server is required.
+ZIP export requires an internet connection to load its library. If loading fails, reconnect and reopen the report. Viewing, candidate selection, CSV export, and individual SVG export work offline. No local web server is needed.
 
 ## Benchmark Example
 
-The original 100 rice reference-derived input sequences are retained in `benchmark/`. Expected CSV and HTML outputs have been regenerated with the current implementation:
+The `benchmark/` directory contains 100 rice reference-derived sequences and their expected outputs:
 
 ```bash
 python3 flankingviz.py \
@@ -226,13 +221,13 @@ This processes 100 pseudo-flanking sequences without an optional vector referenc
 - `benchmark_100.candidates.csv`: all reported mapping candidates, including alternatives.
 - `benchmark_100.html`: the current interactive viewer with the same results and candidate data.
 
-Compare newly generated results with these files using the same input sequences, rice reference resources, and default analysis settings. The expected files were regenerated on 2026-11-14 using BLAST+ 2.12.0+ and four BLAST threads. Different reference resources or software settings may change the results. ZIP export from the HTML requires internet access.
+Compare newly generated results with these files using the same input sequences, rice reference resources, and default analysis settings. The expected files were regenerated on 2026-11-14 using BLAST+ 2.12.0+ and four BLAST threads. Different reference resources or software settings may change the results.
 
 The original `benchmark_100_truth.csv` is preserved as the reference-derived source table; it has not been rewritten from the pipeline output. Its original coordinate and annotation conventions should be distinguished from inferred junction coordinates. These examples support reproducibility and regression checks, not independent experimental junction validation.
 
 ## Synthetic Validation
 
-The [`validation/`](validation/) directory contains synthetic junction reads made from the actual **pCAMBIA1300 sequence ([GenBank AF234296.1](https://www.ncbi.nlm.nih.gov/nuccore/AF234296.1))** and host reference sequence. These replace the previous examples containing a randomly generated vector segment; they are not experimental reads from transformed plants.
+The [`validation/`](validation/) directory contains synthetic junction reads made from the actual **pCAMBIA1300 sequence ([GenBank AF234296.1](https://www.ncbi.nlm.nih.gov/nuccore/AF234296.1))** and host reference sequence. These are constructed examples, not experimental reads from transformed plants.
 
 Rice, soybean, maize B104 and maize B73 each have **40 reads**, representing 20 reference positions in two read orientations. Each baseline read contains 80 bp from an LB- or RB-adjacent T-DNA region and 300 bp of host sequence (380 bp in total). The complete 8,958-bp vector reference is supplied in `vector.fa`. Reverse-complement reads test read orientation; they are not paired flanks of one insertion.
 
@@ -263,7 +258,7 @@ for profile in rice soybean maize_b104 maize_b73; do
 done
 ```
 
-To analyze the same inputs without a vector reference, omit `--vector` and choose a different output name. Add `--overwrite` only when intentionally replacing earlier outputs. Download `result.html` and open it in a browser to inspect the stored results. ZIP export requires internet access.
+To analyze the same inputs without a vector reference, omit `--vector` and choose a different output name. Use `--overwrite` to replace earlier outputs. Download `result.html` and open it in a browser to view the stored results.
 
 Exact points, boundary intervals and ambiguous or search-limited mappings are reported separately. These examples evaluate computational behavior at known construction coordinates; they do not establish independent biological junction accuracy.
 

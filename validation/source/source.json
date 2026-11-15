@@ -1,0 +1,514 @@
+{
+  "accession": "AF234296.1",
+  "name": "Binary vector pCAMBIA-1300",
+  "length_bp": 8958,
+  "retrieved_date": "2026-11-14",
+  "source_url": "https://www.ncbi.nlm.nih.gov/nuccore/AF234296.1",
+  "download_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=AF234296.1&rettype=gbwithparts&retmode=text",
+  "RB_annotation_1based": [
+    298,
+    323
+  ],
+  "LB_annotation_1based": [
+    6557,
+    6582
+  ],
+  "RB_read_fragment": {
+    "start": 244,
+    "end": 323,
+    "orientation": "+"
+  },
+  "LB_read_fragment": {
+    "start": 6557,
+    "end": 6636,
+    "orientation": "reverse_complement"
+  },
+  "boundary_convention": "Constructed adjacency at the outside end of the annotated border interval; not a claim about a biological nick position. The T-DNA-containing segment crosses the circular sequence origin.",
+  "baseline_host_bases": 300,
+  "baseline_vector_bases": 80,
+  "baseline_read_length": 380,
+  "primary_design": "Random 300-bp host windows across canonical nuclear chromosomes, followed by eligibility screening for the final demonstration panel. Non-ACGT and DUST no-hit windows are excluded. Two tied-source-locus cases were replaced with additional random draws meeting an unambiguous source-locus criterion for display. Remaining multi-hit and unresolved-boundary cases are retained. This is a curated example panel, not an unbiased estimate of accuracy over arbitrary genomic positions.",
+  "interpretation": "Known-vector-sequence synthetic junction tests, not observed transformation events or independent biological junction validation.",
+  "sampling": {
+    "rice": {
+      "seed": 2026111400,
+      "algorithm": "Python random.Random; uniform draw over canonical chromosome start positions; reject non-ACGT windows and exact duplicates only",
+      "eligible_chromosomes": {
+        "chr01": 43270923,
+        "chr02": 35937250,
+        "chr03": 36413819,
+        "chr04": 35502694,
+        "chr05": 29958434,
+        "chr06": 31248787,
+        "chr07": 29697621,
+        "chr08": 28443022,
+        "chr09": 23012720,
+        "chr10": 23207287,
+        "chr11": 29021106,
+        "chr12": 27531856
+      },
+      "possible_start_positions": 373241931,
+      "rejected_windows": [],
+      "selected_positions": [
+        {
+          "chrom": "chr11",
+          "position": 17795902
+        },
+        {
+          "chrom": "chr05",
+          "position": 16986842
+        },
+        {
+          "chrom": "chr07",
+          "position": 22533978
+        },
+        {
+          "chrom": "chr08",
+          "position": 28041876
+        },
+        {
+          "chrom": "chr05",
+          "position": 2066059
+        },
+        {
+          "chrom": "chr11",
+          "position": 22698966
+        },
+        {
+          "chrom": "chr08",
+          "position": 21915511
+        },
+        {
+          "chrom": "chr10",
+          "position": 15993517
+        },
+        {
+          "chrom": "chr12",
+          "position": 8433505
+        },
+        {
+          "chrom": "chr09",
+          "position": 13511515
+        },
+        {
+          "chrom": "chr12",
+          "position": 5860722
+        },
+        {
+          "chrom": "chr08",
+          "position": 16364614
+        },
+        {
+          "chrom": "chr04",
+          "position": 29505598
+        },
+        {
+          "chrom": "chr04",
+          "position": 18133509
+        },
+        {
+          "chrom": "chr01",
+          "position": 3017335
+        },
+        {
+          "chrom": "chr02",
+          "position": 4308744
+        },
+        {
+          "chrom": "chr01",
+          "position": 37944037
+        },
+        {
+          "chrom": "chr09",
+          "position": 1190135
+        },
+        {
+          "chrom": "chr07",
+          "position": 17013250
+        },
+        {
+          "chrom": "chr01",
+          "position": 40564041
+        }
+      ]
+    },
+    "soybean": {
+      "seed": 2026111401,
+      "algorithm": "Python random.Random; uniform draw over canonical chromosome start positions; reject non-ACGT windows and exact duplicates only; continue the same RNG stream to replace baseline positions having no DUST-enabled hits; do not select by uniqueness, junction resolution, gene status or correctness",
+      "eligible_chromosomes": {
+        "NC_016088.4": 57932355,
+        "NC_016089.4": 50400358,
+        "NC_016090.4": 46951866,
+        "NC_016091.4": 51203389,
+        "NC_038241.2": 42274530,
+        "NC_038242.2": 50945864,
+        "NC_038243.2": 44949256,
+        "NC_038244.2": 47227184,
+        "NC_038245.2": 50572668,
+        "NC_038246.2": 51638687,
+        "NC_038247.2": 39643745,
+        "NC_038248.2": 41531199,
+        "NC_038249.2": 45225048,
+        "NC_038250.2": 49893278,
+        "NC_038251.2": 53754295,
+        "NC_038252.2": 38112070,
+        "NC_038253.2": 41740656,
+        "NC_038254.2": 58286270,
+        "NC_038255.2": 51272880,
+        "NC_038256.2": 47846026
+      },
+      "possible_start_positions": 961395644,
+      "rejected_windows": [],
+      "selected_positions": [
+        {
+          "chrom": "NC_038249.2",
+          "position": 2999341
+        },
+        {
+          "chrom": "NC_038256.2",
+          "position": 12910708
+        },
+        {
+          "chrom": "NC_038248.2",
+          "position": 35446292
+        },
+        {
+          "chrom": "NC_038255.2",
+          "position": 8085485
+        },
+        {
+          "chrom": "NC_038242.2",
+          "position": 25905705
+        },
+        {
+          "chrom": "NC_038247.2",
+          "position": 3455928
+        },
+        {
+          "chrom": "NC_038248.2",
+          "position": 26636668
+        },
+        {
+          "chrom": "NC_016089.4",
+          "position": 3998286
+        },
+        {
+          "chrom": "NC_038254.2",
+          "position": 48166515
+        },
+        {
+          "chrom": "NC_038246.2",
+          "position": 48715253
+        },
+        {
+          "chrom": "NC_038244.2",
+          "position": 10628214
+        },
+        {
+          "chrom": "NC_038242.2",
+          "position": 47939520
+        },
+        {
+          "chrom": "NC_038247.2",
+          "position": 36780351
+        },
+        {
+          "chrom": "NC_038244.2",
+          "position": 21974706
+        },
+        {
+          "chrom": "NC_016088.4",
+          "position": 1450577
+        },
+        {
+          "chrom": "NC_038242.2",
+          "position": 13658681
+        },
+        {
+          "chrom": "NC_038244.2",
+          "position": 9940931
+        },
+        {
+          "chrom": "NC_038250.2",
+          "position": 26030824
+        },
+        {
+          "chrom": "NC_016089.4",
+          "position": 44396297
+        },
+        {
+          "chrom": "NC_038256.2",
+          "position": 3844034
+        }
+      ],
+      "excluded_low_complexity_positions": [
+        {
+          "chrom": "NC_038250.2",
+          "position": 11190442,
+          "reason": "no hit in either orientation with DUST enabled; hits recovered with DUST disabled",
+          "case_index": 19
+        }
+      ],
+      "reference": {
+        "assembly": "Glycine_max_v4.0",
+        "assembly_accession": "GCF_000004515.6",
+        "annotation": "NCBI RefSeq GCF_000004515.6-RS_2025_01",
+        "genome_fasta": "Soybean/GCF_000004515.6_Glycine_max_v4.0_genomic.fna",
+        "gff": "Soybean/genomic.gff",
+        "genome_url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/004/515/GCF_000004515.6_Glycine_max_v4.0/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz",
+        "annotation_url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/004/515/GCF_000004515.6_Glycine_max_v4.0/GCF_000004515.6_Glycine_max_v4.0_genomic.gff.gz",
+        "annotation_scope": "GFF3 gene features, including protein-coding and non-coding genes; no cross-assembly coordinate merging."
+      }
+    },
+    "maize_b104": {
+      "seed": 2026111402,
+      "algorithm": "Python random.Random; uniform draw over canonical chromosome start positions; reject non-ACGT windows and exact duplicates only; additional random draws were screened for an unambiguous source-locus display example; details in display_example_selection",
+      "eligible_chromosomes": {
+        "chr1": 307827052,
+        "chr2": 245480105,
+        "chr3": 237285934,
+        "chr4": 248723290,
+        "chr5": 223076319,
+        "chr6": 174959880,
+        "chr7": 180552106,
+        "chr8": 180694962,
+        "chr9": 160443788,
+        "chr10": 153494717
+      },
+      "possible_start_positions": 2112535163,
+      "rejected_windows": [],
+      "selected_positions": [
+        {
+          "chrom": "chr1",
+          "position": 108356522
+        },
+        {
+          "chrom": "chr6",
+          "position": 68787285
+        },
+        {
+          "chrom": "chr1",
+          "position": 57564086
+        },
+        {
+          "chrom": "chr3",
+          "position": 218176302
+        },
+        {
+          "chrom": "chr2",
+          "position": 171806507
+        },
+        {
+          "chrom": "chr7",
+          "position": 122553821
+        },
+        {
+          "chrom": "chr5",
+          "position": 156771760
+        },
+        {
+          "chrom": "chr9",
+          "position": 109974301
+        },
+        {
+          "chrom": "chr6",
+          "position": 149337003
+        },
+        {
+          "chrom": "chr1",
+          "position": 143962877
+        },
+        {
+          "chrom": "chr5",
+          "position": 189499213
+        },
+        {
+          "chrom": "chr5",
+          "position": 134817756
+        },
+        {
+          "chrom": "chr10",
+          "position": 80169171
+        },
+        {
+          "chrom": "chr9",
+          "position": 129622850
+        },
+        {
+          "chrom": "chr1",
+          "position": 177888979
+        },
+        {
+          "chrom": "chr4",
+          "position": 40432794
+        },
+        {
+          "chrom": "chr4",
+          "position": 4770547
+        },
+        {
+          "chrom": "chr1",
+          "position": 254253690
+        },
+        {
+          "chrom": "chr6",
+          "position": 89532464
+        },
+        {
+          "chrom": "chr4",
+          "position": 16490512
+        }
+      ],
+      "display_example_selection": {
+        "profile": "maize_b104",
+        "case_index": 10,
+        "previous_chromosome": "chr3",
+        "previous_position": 13825643,
+        "replacement_chromosome": "chr5",
+        "replacement_position": 189499213,
+        "random_seed": 2026211402,
+        "draws": [
+          {
+            "chrom": "chr4",
+            "position": 223105668,
+            "eligible": false,
+            "reason": "mapping_criterion_not_met"
+          },
+          {
+            "chrom": "chr5",
+            "position": 189499213,
+            "eligible": true,
+            "reason": "unambiguous_source_locus"
+          }
+        ],
+        "criterion": "Both read orientations uniquely prefer the source locus and cover the complete 300-bp source interval. Junction point correctness was not a selection criterion."
+      }
+    },
+    "maize_b73": {
+      "seed": 2026111403,
+      "algorithm": "Python random.Random; uniform draw over canonical chromosome start positions; reject non-ACGT windows and exact duplicates only; additional random draws were screened for an unambiguous source-locus display example; details in display_example_selection",
+      "eligible_chromosomes": {
+        "chr1": 308452471,
+        "chr2": 243675191,
+        "chr3": 238017767,
+        "chr4": 250330460,
+        "chr5": 226353449,
+        "chr6": 181357234,
+        "chr7": 185808916,
+        "chr8": 182411202,
+        "chr9": 163004744,
+        "chr10": 152435371
+      },
+      "possible_start_positions": 2131843815,
+      "rejected_windows": [],
+      "selected_positions": [
+        {
+          "chrom": "chr4",
+          "position": 94246486
+        },
+        {
+          "chrom": "chr5",
+          "position": 97305376
+        },
+        {
+          "chrom": "chr9",
+          "position": 23696436
+        },
+        {
+          "chrom": "chr8",
+          "position": 177855111
+        },
+        {
+          "chrom": "chr1",
+          "position": 85663845
+        },
+        {
+          "chrom": "chr8",
+          "position": 132009494
+        },
+        {
+          "chrom": "chr3",
+          "position": 847928
+        },
+        {
+          "chrom": "chr1",
+          "position": 273777496
+        },
+        {
+          "chrom": "chr1",
+          "position": 21412359
+        },
+        {
+          "chrom": "chr4",
+          "position": 49290608
+        },
+        {
+          "chrom": "chr10",
+          "position": 105204676
+        },
+        {
+          "chrom": "chr4",
+          "position": 99131069
+        },
+        {
+          "chrom": "chr6",
+          "position": 50618817
+        },
+        {
+          "chrom": "chr4",
+          "position": 225455183
+        },
+        {
+          "chrom": "chr8",
+          "position": 82958695
+        },
+        {
+          "chrom": "chr9",
+          "position": 149901072
+        },
+        {
+          "chrom": "chr1",
+          "position": 141328227
+        },
+        {
+          "chrom": "chr7",
+          "position": 14665487
+        },
+        {
+          "chrom": "chr5",
+          "position": 175350390
+        },
+        {
+          "chrom": "chr6",
+          "position": 139447087
+        }
+      ],
+      "display_example_selection": {
+        "profile": "maize_b73",
+        "case_index": 3,
+        "previous_chromosome": "chr2",
+        "previous_position": 207695313,
+        "replacement_chromosome": "chr8",
+        "replacement_position": 177855111,
+        "random_seed": 2026211403,
+        "draws": [
+          {
+            "chrom": "chr8",
+            "position": 177855111,
+            "eligible": true,
+            "reason": "unambiguous_source_locus"
+          }
+        ],
+        "criterion": "Both read orientations uniquely prefer the source locus and cover the complete 300-bp source interval. Junction point correctness was not a selection criterion."
+      }
+    }
+  },
+  "visualization_example_selection": {
+    "rule": "Additional random draws replace two tied-locus display examples; both orientations must uniquely prefer and cover the full source interval. Exact junction agreement is not required.",
+    "sampling_seeds": {
+      "maize_b104": 2026211402,
+      "maize_b73": 2026211403
+    }
+  },
+  "performance_seed_panels": "Fixed unique_best seed panels: rice 26, soybean 28, maize B104 4 and maize B73 4 reads. Soybean was measured using GCF_000004515.6; rice and maize measurements retain their unchanged references and input panels."
+}

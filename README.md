@@ -6,7 +6,7 @@ FlankingViz for interpreting and visualizing flanking sequences in rice maize an
 
 ## Version Update
 
-**Version: v1.1.3**
+**Version: v1.1.4**
 
 This release adds optional vector input, boundary estimation from flanking reads, and alternative mapping candidates with alignment scores. Mapping ambiguity and unresolved junctions are reported in the output.
 
@@ -34,11 +34,13 @@ Before the first analysis, install the dependencies and initialize the reference
 | Profile | Species | Reference resources |
 |---|---|---|
 | `rice` | Rice (*Oryza sativa*) | IRGSP 1.0; RAP annotated, RAP predicted, and MSU/UGA gene models |
-| `soybean` | Soybean (*Glycine max*) | Williams 82, `Wm82.gnm6.S97D`; annotation `gnm6.ann1.PKSW` |
+| `soybean` | Soybean (*Glycine max*) | Williams 82, NCBI `Glycine_max_v4.0` (`GCF_000004515.6`); RefSeq annotation `RS_2025_01` |
 | `maize_b104` | Maize (*Zea mays*) | `Zm-B104-REFERENCE-CORTEVA-1.0` |
 | `maize_b73` | Maize (*Zea mays*) | `Zm-B73-REFERENCE-NAM-5.0` |
 
 Exact resource paths are defined in `profiles/` and `setup.sh`. Additional references can be configured through custom profiles.
+
+The soybean profile uses matching NCBI genome and annotation files. Gene context is calculated from GFF3 `gene` features, including protein-coding and non-coding genes. Coordinates from other soybean assemblies are not combined with this profile.
 
 ## Project Structure
 
